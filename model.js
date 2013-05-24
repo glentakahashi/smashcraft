@@ -20,6 +20,10 @@ function Model(vertices) {
              ]), 
         gl.STATIC_DRAW);
 
+    // Just add properties because why not
+    positionBuffer.itemSize = 2;
+    positionBuffer.itemCount = 3;
+
   };
   
   self.setAnimation = function(animation) {
@@ -30,9 +34,8 @@ function Model(vertices) {
 
   self.render = function (dt) {
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(vPosition, positionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    console.log('asdf');
+    gl.drawArrays(gl.TRIANGLES, 0, positionBuffer.itemCount);
   };
 }
