@@ -33,7 +33,7 @@ function Model() {
 
   var pi = 3.14;
   self.tick = function(dt) {
-    rotation = dt/1000 * pi;
+    rotation += dt/1000 * pi;
     //console.log(rotation);
   };
 
@@ -44,7 +44,9 @@ function Model() {
 
 
     mvstack.push(modelView);
-      //mat4.rotateZ(modelView, modelView, -3.14/4);
+      // Should make new matrix with new operations. Can't pre-multiply with webgl
+      mat4.identity(modelView);
+      mat4.rotateX(modelView, modelView, rotation);
       mat4.rotateY(modelView, modelView, rotation);
       //mat4.translate(modelView, modelView, vec3.fromValues(0, -.1, 0));
       gl.uniformMatrix4fv(program.uMVMatrix, false, modelView);
