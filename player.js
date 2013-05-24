@@ -56,7 +56,9 @@ function Player() {
     model.init(vertices, colors);
   };
 
+  var rotation = 0;
   self.tick = function(dt) {
+    rotation += dt/1000 * Math.PI;
     model.tick(dt);
   };
 
@@ -66,6 +68,7 @@ function Player() {
     mat4.copy(oldMV, modelView);
     mvstack.push(oldMV);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
+      mat4.rotateY(newMV, newMV, rotation);
       mat4.translate(newMV, newMV, self.loc);
       mat4.multiply(modelView, modelView, newMV);
       //mat4.translate(modelView, modelView, loc);

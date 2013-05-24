@@ -31,9 +31,8 @@ function Model() {
   self.setAnimation = function(animation) {
   };
 
-  var pi = 3.14;
   self.tick = function(dt) {
-    rotation += dt/1000 * pi;
+    rotation += dt/1000 * Math.PI;
     //console.log(rotation);
   };
 
@@ -50,6 +49,7 @@ function Model() {
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       mat4.rotateY(newMV, newMV, rotation);
       mat4.multiply(modelView, modelView, newMV);
+
       gl.uniformMatrix4fv(program.uMVMatrix, false, modelView);
 
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
