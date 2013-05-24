@@ -8,43 +8,24 @@
   <body onload="main();">
 
     <canvas id="canvas" style="border: 1px solid black" width="500" height="500"></canvas>
-    
 
   </body>
+
+  <script src="jquery-2.0.0.min.js" type="text/javascript"></script>
+  <script src="gl-matrix-min.js" type="text/javascript"></script>
+  <script src="util.js" type="text/javascript"></script>
+
+  <!-- Classes -->
+  <script src="game.js" type="text/javascript"></script>
+  <script src="platform.js" type="text/javascript"></script>
+  <script src="player.js" type="text/javascript"></script>
+  <script src="model.js" type="text/javascript"></script>
+
   <script type="text/javascript">
-    function getShader(gl, id) {
-      var shaderScript = document.getElementById(id);
-      if (!shaderScript) {
-          return null;
-      }
+    // Global model-view matrix stack. Actually an array.
+    mvstack = []
 
-      var str = "";
-      var k = shaderScript.firstChild;
-      while (k) {
-          if (k.nodeType == 3)
-              str += k.textContent;
-          k = k.nextSibling;
-      }
-
-      var shader;
-      if (shaderScript.type == "x-shader/x-fragment") {
-          shader = gl.createShader(gl.FRAGMENT_SHADER);
-      } else if (shaderScript.type == "x-shader/x-vertex") {
-          shader = gl.createShader(gl.VERTEX_SHADER);
-      } else {
-          return null;
-      }
-
-      gl.shaderSource(shader, str);
-      gl.compileShader(shader);
-
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          alert(gl.getShaderInfoLog(shader));
-          return null;
-      }
-
-      return shader;
-    }
+    var game = new Game();
 
     function main() {
       // Get WebGL context
@@ -53,8 +34,8 @@
       console.log(gl);
 
       // Set up GLSL program
-      var vertexShader = getShader(gl, '2d-vertex-shader');
-      var fragmentShader = getShader(gl, '2d-fragment-shader');
+      var vertexShader = getShader(gl, 'vert.glsl', gl.VERTEX_SHADER);
+      var fragmentShader = getShader(gl, 'frag.glsl', gl.FRAGMENT_SHADER);
       // var program = createProgram(gl, [vertexShader, fragmentShader]);
       var program = gl.createProgram();
       gl.attachShader(program, vertexShader);
@@ -123,26 +104,9 @@
   </script>
 
   <script id="2d-vertex-shader" type="x-shader/x-vertex">
-    attribute vec2 a_position;
-    /*
-     * x goes from -1 to 1, r goes from 0 to 1
-     * y goes from -1 to 1, theta goes from 0 to 2*pi
-     */
-
-    void main() {
-      float r = (a_position.y + 1.5) / 2.5;
-      float theta = (a_position.x + 1.0) * -3.14159;
-      float x = r * cos(theta);
-      float y = r * sin(theta);
-      gl_Position = vec4(x, y, 0, 1);
-      // gl_Position = vec4(a_position, 0, 1);
-    }
   </script>
 
   <script id="2d-fragment-shader" type="x-shader/x-fragment">
-    void main() {
-      gl_FragColor = vec4(0,1,0,1);  // green
-    }
   </script>
 
 </html>
