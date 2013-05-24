@@ -15,8 +15,8 @@ function Game() {
     program = gl.createProgram();
 
     // Get and compile shaders
-    var vertexShader = getShader(gl, 'vert.glsl', gl.VERTEX_SHADER);
-    var fragmentShader = getShader(gl, 'frag.glsl', gl.FRAGMENT_SHADER);
+    var vertexShader = getShader(gl, 'vertex-shader');
+    var fragmentShader = getShader(gl, 'fragment-shader');
 
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
