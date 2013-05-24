@@ -66,7 +66,15 @@ function Game() {
     }
   };
 
-  self.tick = function(dt) {
+  var lastTime = 0;
+  self.tick = function() {
+    requestAnimFrame(self.tick);
+    var timeNow = new Date().getTime();
+    var dt = 0;
+    if (lastTime != 0) {
+      dt = timeNow - lastTime;
+    }
+    lastTime = timeNow;
     for (var i in self.platforms) {
       self.platforms[i].tick(dt);
     }
@@ -74,6 +82,8 @@ function Game() {
       self.players[i].tick(dt);
     }
     // Collision detection here?????
+
+    self.render(dt);
   };
 
   self.render = function (dt) {

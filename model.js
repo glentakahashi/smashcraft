@@ -3,6 +3,8 @@ function Model() {
   var positionBuffer;
   var colorBuffer;
 
+  var rotation = 0; // TODO: this is a hack and doesn't belong here
+
   self.init = function(vertices, colors, normals) {
     var verticesFloatArr = new Float32Array(vertices);
     var colorsFloatArr = new Float32Array(colors);
@@ -29,7 +31,10 @@ function Model() {
   self.setAnimation = function(animation) {
   };
 
+  var pi = 3.14;
   self.tick = function(dt) {
+    rotation = dt/1000 * pi;
+    //console.log(rotation);
   };
 
   self.render = function (dt) {
@@ -39,9 +44,9 @@ function Model() {
 
 
     mvstack.push(modelView);
-      mat4.translate(modelView, modelView, vec3.fromValues(0, -.1, 0));
-      mat4.rotateZ(modelView, modelView, -3.14/4);
-      mat4.rotateY(modelView, modelView, -3.14/4);
+      //mat4.rotateZ(modelView, modelView, -3.14/4);
+      mat4.rotateY(modelView, modelView, rotation);
+      //mat4.translate(modelView, modelView, vec3.fromValues(0, -.1, 0));
       gl.uniformMatrix4fv(program.uMVMatrix, false, modelView);
 
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);

@@ -57,9 +57,10 @@ function Player() {
   };
 
   self.tick = function(dt) {
+    model.tick(dt);
   };
 
   self.render = function (dt) {
-    model.render();
+    model.render(dt);
   };
 }
