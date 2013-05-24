@@ -55,8 +55,14 @@ function Game() {
 
   }
 
+  var initCamera = function() {
+    mat4.lookAt(camera, vec3.fromValues(5, 0, 0), vec3.create(), vec3.fromValues(0, 1, 0));
+    gl.uniformMatrix4fv(program.uCMatrix, false, camera);
+  };
+
   self.init = function() {
     initGL();
+    initCamera();
 
     for (var i in self.platforms) {
       self.platforms[i].init();

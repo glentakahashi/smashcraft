@@ -37,11 +37,6 @@ function Model() {
   };
 
   self.render = function (dt) {
-    // TODO: move this into somewhere less dumb
-    mat4.lookAt(camera, vec3.fromValues(5, 0, 0), vec3.create(), vec3.fromValues(0, 1, 0));
-    gl.uniformMatrix4fv(program.uCMatrix, false, camera);
-
-
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
