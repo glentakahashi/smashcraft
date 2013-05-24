@@ -42,11 +42,9 @@ function Model() {
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
 
 
-    var newMV = mat4.create();
-    var oldMV = mat4.create();
-    mat4.copy(oldMV, modelView);
-    mvstack.push(oldMV);
+    mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
+      var newMV = mat4.create();
       mat4.rotateY(newMV, newMV, rotation);
       mat4.multiply(modelView, modelView, newMV);
 
