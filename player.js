@@ -20,6 +20,28 @@ function Player() {
     -1.0, -1.0, -1.0,
     -1.0, -1.0,  1.0
   ];
+
+  var colors = [
+    // Front face
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+
+    // Right face
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+
+    // Back face
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+
+    // Left face
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+    0.0, 1.0, 0.0, 1.0
+  ];
   
   var self = this;
   var model = new Model();
@@ -31,7 +53,7 @@ function Player() {
   self.animation = null;
   
   self.init = function() {
-    model.init(vertices);
+    model.init(vertices, colors);
   };
 
   self.tick = function(dt) {

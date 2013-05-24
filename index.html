@@ -14,27 +14,26 @@
   <!-- Shaders -->
   <script id="vertex-shader" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
-    //attribute vec4 aVertexColor;
-    /*
+    attribute vec4 aVertexColor;
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
+    uniform mat4 uCMatrix;
 
     varying vec4 vColor;
 
     void main(void) {
-      //gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-      gl_Position = vec4(aVertexPosition.xyz, 1.0);
-      //vColor = aVertexColor;
-    }
-    */
-    void main() {
-      gl_Position = vec4(aVertexPosition, 1);
+      gl_Position = uPMatrix * uCMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+      vColor = aVertexColor;
     }
   </script>
 
   <script id="fragment-shader" type="x-shader/x-fragment">
-    void main() {
-      gl_FragColor = vec4(0,1,0,1);  // green
+    precision mediump float;
+
+    varying vec4 vColor;
+
+    void main(void) {
+      gl_FragColor = vColor;
     }
   </script>
 
@@ -53,6 +52,11 @@
     mvstack = [];
     gl = null;
     program = null;
+
+    // Global matrices
+    camera = null;
+    modelView = null;
+    perspective = null;
 
     var game = new Game();
     game.init();

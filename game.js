@@ -26,10 +26,33 @@ function Game() {
 
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
+    program.aVertexColor = gl.getAttribLocation(program, 'aVertexColor');
     program.uMVMatrix = gl.getUniformLocation(program, 'uMVMatrix');
     program.uPMatrix = gl.getUniformLocation(program, 'uPMatrix');
+    program.uCMatrix = gl.getUniformLocation(program, 'uCMatrix');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.enableVertexAttribArray(program.aVertexColor);
+
+    // Initialize matrices
+    camera = mat4.create();
+    modelView = mat4.create();
+    perspective = mat4.create();
+
+    // Set perspective matrix
+    // TODO: This belongs in a reshape function that gets called when canvas
+    //       changes shape. Since this canvas doesn't change, we can keep this
+    //       here for now.
+    gl.viewportWidth = canvas.width;
+    gl.viewportHeight = canvas.height;
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100);
+    gl.uniformMatrix4fv(program.uPMatrix, false, perspective);
+
+    // Init GL options
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
+    gl.enable(gl.DEPTH_TEST);
+
   }
 
   self.init = function() {
