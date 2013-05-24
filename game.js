@@ -24,9 +24,12 @@ function Game() {
     gl.linkProgram(program);
     gl.useProgram(program);
 
-    var vPosition = gl.getAttribLocation(program, 'aVertexPosition');
+    // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
+    program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
+    program.uMVMatrix = gl.getUniformLocation(program, 'uMVMatrix');
+    program.uPMatrix = gl.getUniformLocation(program, 'uPMatrix');
 
-    gl.enableVertexAttribArray(vPosition);
+    gl.enableVertexAttribArray(program.aVertexPosition);
   }
 
   self.init = function() {
@@ -55,11 +58,9 @@ function Game() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     for (var i in self.platforms) {
-      console.log('wat')
       self.platforms[i].render();
     }
     for (var i in self.players) {
-      console.log('taw')
       self.players[i].render();
     }
   };
