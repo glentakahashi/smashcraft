@@ -20,8 +20,13 @@ function Game() {
 
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
+
     gl.linkProgram(program);
     gl.useProgram(program);
+
+    var vPosition = gl.getAttribLocation(program, 'aVertexPosition');
+
+    gl.enableVertexAttribArray(vPosition);
   }
 
   self.init = function() {
@@ -50,9 +55,11 @@ function Game() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     for (var i in self.platforms) {
+      console.log('wat')
       self.platforms[i].render();
     }
     for (var i in self.players) {
+      console.log('taw')
       self.players[i].render();
     }
   };
