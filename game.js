@@ -75,6 +75,7 @@ function Game() {
       dt = timeNow - lastTime;
     }
     lastTime = timeNow;
+
     for (var i in self.platforms) {
       self.platforms[i].tick(dt);
     }

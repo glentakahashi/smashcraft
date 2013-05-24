@@ -43,12 +43,13 @@ function Model() {
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
 
 
-    mvstack.push(modelView);
+    var newMV = mat4.create();
+    var oldMV = mat4.create();
+    mat4.copy(oldMV, modelView);
+    mvstack.push(oldMV);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
-      mat4.identity(modelView);
-      mat4.rotateX(modelView, modelView, rotation);
-      mat4.rotateY(modelView, modelView, rotation);
-      //mat4.translate(modelView, modelView, vec3.fromValues(0, -.1, 0));
+      mat4.rotateY(newMV, newMV, rotation);
+      mat4.multiply(modelView, modelView, newMV);
       gl.uniformMatrix4fv(program.uMVMatrix, false, modelView);
 
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
