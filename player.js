@@ -57,66 +57,65 @@ function Player() {
 
   var textureCoords = [
     // Front face
-    0.0, 0.0,
-    1.0, 0.0,
-    1.0, 1.0,
+    1/8, 1/2,
+    1/4, 1/2,
+    1/4, 3/4,
 
-    0.0, 0.0,
-    1.0, 1.0,
-    0.0, 1.0,
+    1/8, 1/2,
+    1/4, 3/4,
+    1/8, 3/4,
 
     // Back face
-    1.0, 0.0,
-    1.0, 1.0,
-    0.0, 1.0,
+    1/2, 1/2,
+    1/2, 3/4,
+    3/8, 3/4,
 
-    1.0, 0.0,
-    0.0, 1.0,
-    0.0, 0.0,
+    1/2, 1/2,
+    3/8, 3/4,
+    3/8, 1/2,
 
     // Top face
-    0.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+    1/8, 1.0,
+    1/8, 3/4,
+    1/4, 3/4,
 
-    0.0, 1.0,
-    1.0, 0.0,
-    1.0, 1.0,
+    1/8, 1.0,
+    1/4, 3/4,
+    1/4, 1.0,
 
     // Bottom face
-    1.0, 1.0,
-    0.0, 1.0,
-    0.0, 0.0,
+    1/4, 1.0,
+    3/8, 1.0,
+    3/8, 3/4,
 
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+    1/4, 1.0,
+    3/8, 3/4,
+    1/4, 3/4,
 
     // Right face
-    1.0, 0.0,
-    1.0, 1.0,
-    0.0, 1.0,
+    3/8, 1/2,
+    3/8, 3/4,
+    1/4, 3/4,
 
-    1.0, 0.0,
-    0.0, 1.0,
-    0.0, 0.0,
+    3/8, 1/2,
+    1/4, 3/4,
+    1/4, 1/2,
 
     // Left face
-    0.0, 0.0,
-    1.0, 0.0,
-    1.0, 1.0,
+    0.0, 1/2,
+    1/8, 1/2,
+    1/8, 3/4,
 
-    0.0, 0.0,
-    1.0, 1.0,
-    0.0, 1.0,
+    0.0, 1/2,
+    1/8, 3/4,
+    0.0, 3/4,
   ];
   
   var self = this;
   var model = new Model();
 
   // Game variables
-  self.loc = vec3.create();
-  vec3.set(self.loc, -2.0, 0.0, 0.0, 1.0);
+  self.loc = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = 100;
   self.animation = null;
   
@@ -134,7 +133,8 @@ function Player() {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      //mat4.rotateY(newMV, newMV, rotation);
+      mat4.translate(newMV, newMV, vec3.fromValues(-1.0, 0.0, 0.0)); // Move it back
+      mat4.rotateY(newMV, newMV, rotation);
       mat4.translate(newMV, newMV, self.loc);
       mat4.multiply(modelView, modelView, newMV);
 

@@ -25,7 +25,7 @@ function Game() {
     gl.useProgram(program);
 
     // Get textures
-    textures.ram = getTexture('img/ram2.png');
+    textures.ram = getTexture('img/ram.png');
 
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
