@@ -6,9 +6,10 @@ function Model() {
 
   var rotation = 0; // TODO: this is a hack and doesn't belong here
 
-  self.init = function(vertices, uvCoords, normals, tex) {
+  self.init = function(vertices, uvCoords, normals, texture) {
     var verticesFloatArr = new Float32Array(vertices);
     var uvFloatArr = new Float32Array(uvCoords);
+    tex = texture;
 
     // Position buffer
     positionBuffer = gl.createBuffer();
