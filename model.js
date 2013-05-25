@@ -2,10 +2,11 @@ function Model() {
   var self = this;
   var positionBuffer;
   var uvBuffer;
+  var tex;
 
   var rotation = 0; // TODO: this is a hack and doesn't belong here
 
-  self.init = function(vertices, uvCoords, normals) {
+  self.init = function(vertices, uvCoords, normals, tex) {
     var verticesFloatArr = new Float32Array(vertices);
     var uvFloatArr = new Float32Array(uvCoords);
 
@@ -54,7 +55,7 @@ function Model() {
                              gl.FLOAT, false, 0, 0);
 
       gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, textures.ram);
+      gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.uniform1i(program.uSampler, 0);
 
       gl.drawArrays(gl.TRIANGLES, 0, positionBuffer.itemCount);

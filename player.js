@@ -120,7 +120,7 @@ function Player() {
   self.animation = null;
   
   self.init = function() {
-    model.init(vertices, textureCoords);
+    model.init(vertices, textureCoords, null, textures.ram);
   };
 
   var rotation = 0;
