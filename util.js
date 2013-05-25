@@ -1,4 +1,5 @@
-function getShader(gl, id) {
+// Global gl pls
+function getShader(id) {
   var shaderScript = document.getElementById(id);
   if (!shaderScript) {
     return null;
@@ -32,3 +33,22 @@ function getShader(gl, id) {
 
   return shader;
 }
+
+function getTexture(src) {
+  var tex = gl.createTexture();
+  tex.image = new Image();
+  tex.image.onload = function () {
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tex.image);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
+    // Tick the game after everything's loaded
+    game.tick();
+  };
+  tex.image.src = src;
+  return tex;
+}
+

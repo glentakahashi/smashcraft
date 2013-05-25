@@ -15,8 +15,8 @@ function Game() {
     program = gl.createProgram();
 
     // Get and compile shaders
-    var vertexShader = getShader(gl, 'vertex-shader');
-    var fragmentShader = getShader(gl, 'fragment-shader');
+    var vertexShader = getShader('vertex-shader');
+    var fragmentShader = getShader('fragment-shader');
 
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
@@ -24,15 +24,19 @@ function Game() {
     gl.linkProgram(program);
     gl.useProgram(program);
 
+    // Get textures
+    textures.ram = getTexture('img/ram2.png');
+
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
-    program.aVertexColor = gl.getAttribLocation(program, 'aVertexColor');
+    program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
     program.uMVMatrix = gl.getUniformLocation(program, 'uMVMatrix');
     program.uPMatrix = gl.getUniformLocation(program, 'uPMatrix');
     program.uCMatrix = gl.getUniformLocation(program, 'uCMatrix');
+    program.uSampler = gl.getUniformLocation(program, 'uSampler');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
-    gl.enableVertexAttribArray(program.aVertexColor);
+    gl.enableVertexAttribArray(program.aTextureCoord);
 
     // Initialize matrices
     camera = mat4.create();
@@ -47,8 +51,7 @@ function Game() {
     gl.viewportHeight = canvas.height;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100);
-    gl.uniformMatrix4fv(program.uPMatrix, false, perspective);
-
+    gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
     // Init GL options
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
     gl.enable(gl.DEPTH_TEST);
