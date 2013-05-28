@@ -151,10 +151,11 @@ function Player() {
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
     // Smooth rotation
-    if (self.facing == 1 && self.faceRotation < 1)
-        self.faceRotation += ms * 4;
-    else if (self.facing == 0 && self.faceRotation > 0)
-        self.faceRotation -= ms * 4;
+    if (self.facing == 1)
+      self.faceRotation += ms * 4;
+    else if (self.facing == 0)
+      self.faceRotation -= ms * 4;
+    self.faceRotation = Math.min(Math.max(self.faceRotation, 0.0), 1.0);
 
     // Friction
     self.delta[2] /= game.physics.FRICTION_Z;
