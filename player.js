@@ -122,7 +122,7 @@ function Player() {
 
   // Physics shit
   self.delta = vec3.create();
-  var facing = 0;
+  self.facing = 0;
   var faceRotation = 0;
   var jumps = MAX_JUMPS;
 
@@ -136,9 +136,9 @@ function Player() {
   self.move = function(dir) {
     self.delta[2] = dir * 0.35;
     if (dir < 0)
-      facing = 1;
+      self.facing = 1;
     else
-      facing = 0;
+      self.facing = 0;
   };
   
   self.init = function() {
@@ -153,7 +153,7 @@ function Player() {
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
     // Smooth rotation
-    if (facing == 1) {
+    if (self.facing == 1) {
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
