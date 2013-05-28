@@ -1,5 +1,7 @@
 # Smashcraft
 
+UCLA CS 174A Project
+
 Authors
 
 *   Alexander Ramirez <adr2370@gmail.com>
