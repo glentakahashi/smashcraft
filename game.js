@@ -6,11 +6,11 @@ function Game() {
   self.players = [new Player(), new Player()];
   self.camera = null;
 
+  // Physics constants
   self.physics = {
-    G_X: 0.0,
-    G_Y: -3,
-    G_Z: 0.0,
-    TERMINAL_Y: -0.70,
+    G: vec3.fromValues(0.0, -3.0, 0.0),
+    TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
+    TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
     FRICTION_Z: 1.5
   };
 
@@ -86,7 +86,7 @@ function Game() {
     });
     // S
     self.controller.hold(83, function() {
-        self.players[0].loc[1] -= 0.5;
+        //self.players[0].loc[1] -= 0.5;
     });
     // A
     self.controller.hold(65, function() {
@@ -105,7 +105,7 @@ function Game() {
     });
     // DOWN
     self.controller.hold(40, function() {
-        self.players[1].loc[1] -= 0.5;
+        //self.players[1].loc[1] -= 0.5;
     });
     // LEFT
     self.controller.hold(37, function() {
