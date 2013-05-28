@@ -5,6 +5,7 @@ function Game() {
   self.platforms = [];
   self.players = [new Player(), new Player()];
   self.camera = null;
+  self.controller = new Controller();
 
   // Physics constants
   self.physics = {
@@ -14,7 +15,6 @@ function Game() {
     FRICTION_Z: 1.5
   };
 
-  self.controller = new Controller();
 
   // Initialize WebGL context, shaders
   var initGL = function() {
