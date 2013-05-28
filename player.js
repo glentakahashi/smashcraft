@@ -151,12 +151,12 @@ function Player() {
       if (game.players[p] == self)
         continue;
       var other = game.players[p];
-      var ydist = self.loc[1] - other.loc[1];
+      var ydist = Math.abs(self.loc[1] - other.loc[1]);
       var zdist = self.loc[2] - other.loc[2];
       if (zdist * self.facing < 0) {
-        if (zdist < 3.5 && ydist < 3.5) {
+        if (Math.abs(zdist) < 3.5 && ydist < 3.5) {
           console.log('hit');
-          other.delta[2] += self.facing * 2;
+          other.delta[2] += self.facing * 3;
         }
       }
     }
