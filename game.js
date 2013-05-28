@@ -67,7 +67,11 @@ function Game() {
   }
 
   var initCamera = function() {
-    mat4.lookAt(camera, vec3.fromValues(15, 0, 0), vec3.create(), vec3.fromValues(0, 1, 0));
+    mat4.lookAt(camera,
+                vec3.fromValues(25, 6, 0),
+                vec3.fromValues(0, 5, 0),
+                vec3.fromValues(0, 1, 0)
+               );
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
   };
 
@@ -107,7 +111,13 @@ function Game() {
 
   var lastTime = 0;
   self.tick = function() {
+    // Controllers
+    self.controller.tick();
+
+    // New frame
     requestAnimFrame(self.tick);
+
+    // Calculate dt
     var timeNow = new Date().getTime();
     var dt = 0;
     if (lastTime != 0) {
