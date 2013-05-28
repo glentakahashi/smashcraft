@@ -1,5 +1,7 @@
 function Player() {
+  // Constants
   var MAX_JUMPS = 2;
+
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -122,7 +124,15 @@ function Player() {
   self.stats = {
     maxHealth: 100,
     jumpHeight: 1.0,
-    moveSpeed: 0.35
+    moveSpeed: 0.35,
+    attacks: {
+      neutral: {
+        range: vec3.fromValues(100.0, 3.5, 3.5),
+        facing: true,
+        push: vec3.fromValues(0.0, 0.0, 5.0),
+        damage: 10,
+      }
+    }
   };
 
   // Physics shit
@@ -153,13 +163,16 @@ function Player() {
     for (var p in game.players) {
       if (game.players[p] == self)
         continue;
+      var curAttack = self.stats.attacks[type];
       var other = game.players[p];
-      var ydist = Math.abs(self.loc[1] - other.loc[1]);
-      var zdist = self.loc[2] - other.loc[2];
-      if (zdist * self.facing < 0) {
-        if (Math.abs(zdist) < 3.5 && ydist < 3.5) {
+      var dist = vec3.create();
+      vec3.subtract(dist, self.loc, other.loc);
+
+      if (!curAttack.facing || dist[2] * self.facing < 0) {
+        if (Math.abs(dist[2]) < curAttack.range[2] &&
+            Math.abs(dist[1]) < curAttack.range[1]) {
           console.log('hit');
-          other.delta[2] += self.facing * 5;
+          vec3.scaleAndAdd(other.delta, other.delta, curAttack.push, self.facing);
         }
       }
     }

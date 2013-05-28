@@ -101,7 +101,7 @@ function Game() {
     });
     // F
     self.controller.tap(70, function() {
-        self.players[0].attack();
+        self.players[0].attack('neutral');
     });
 
 
@@ -123,7 +123,7 @@ function Game() {
     });
     // ENTER
     self.controller.tap(13, function() {
-        self.players[1].attack();
+        self.players[1].attack('neutral');
     });
   };
 
