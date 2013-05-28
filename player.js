@@ -1,4 +1,5 @@
 function Player() {
+  var MAX_JUMPS = 2;
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -120,11 +121,11 @@ function Player() {
   self.animation = null;
 
   // Physics shit
-  var dy = 0.0;
-  var jumps = 2;
+  self.delta = vec3.create();
+  var jumps = MAX_JUMPS;
   self.jump = function() {
-    if (true || jumps > 0) {
-      dy = 1;
+    if (jumps > 0) {
+      self.delta[1] = 1;
       jumps -= 1;
     }
   };
@@ -134,21 +135,22 @@ function Player() {
   };
 
   self.tick = function(dt) {
-    //console.log(dt);
     // Gravity
-    if (dy > game.physics.TERMINAL_Y)
-      dy += game.physics.G_Y * dt / 1000;
+    if (self.delta[1] > game.physics.TERMINAL_Y)
+      self.delta[1] += game.physics.G_Y * dt / 1000;
 
-    //console.log(dy);
-
-    self.loc[1] += dy;
+    vec3.add(self.loc, self.loc, self.delta);
 
     // TODO: this isn't ground
     if (self.loc[1] < 0) {
       self.loc[1] = 0.0;
-      dy = 0.0;
-      jumps = 2;
+      self.delta[1] = 0.0;
+      jumps = MAX_JUMPS;
     }
+
+    
+
+
 
     model.tick(dt);
   };
