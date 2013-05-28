@@ -123,6 +123,7 @@ function Player() {
   // Physics shit
   self.delta = vec3.create();
   self.facing = 0;
+  self.faceRotation = 0;
   var jumps = MAX_JUMPS;
   self.jump = function() {
     if (jumps > 0) {
@@ -133,7 +134,7 @@ function Player() {
   self.move = function(dir) {
     self.delta[2] = dir * 0.35;
     if (dir < 0)
-      self.facing = Math.PI;
+      self.facing = 1;
     else
       self.facing = 0;
   };
@@ -144,9 +145,16 @@ function Player() {
 
   self.tick = function(dt) {
     // Gravity and terminal velocities
-    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, dt/1000);
+    var ms = dt / 1000;
+    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
     vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
+
+    // Smooth rotation
+    if (self.facing == 1 && self.faceRotation < 1)
+        self.faceRotation += 1/8;
+    else if (self.facing == 0 && self.faceRotation > 0)
+        self.faceRotation -= 1/8;
 
     // Friction
     self.delta[2] /= game.physics.FRICTION_Z;
@@ -170,7 +178,7 @@ function Player() {
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
       mat4.translate(newMV, newMV, self.loc); // Move it back
-      mat4.rotateY(newMV, newMV, self.facing);
+      mat4.rotateY(newMV, newMV, self.faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
       //mat4.translate(modelView, modelView, loc);

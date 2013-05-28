@@ -97,6 +97,7 @@ function Game() {
         self.players[0].move(-1);
     });
 
+
     // UP
     self.controller.tap(38, function() {
         self.players[1].jump();
