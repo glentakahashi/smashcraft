@@ -122,13 +122,11 @@ function Player() {
   // Physics shit
   var dy = 0.0;
   var jumps = 2;
-  var lastJump = 0;
 
   self.jump = function() {
-    if (jumps == 2 || jumps > 0 && lastJump > 200) {
+    if (jumps > 0) {
       dy = 1;
       jumps -= 1;
-      lastJump = 0;
     }
   };
   
@@ -138,8 +136,8 @@ function Player() {
 
   self.tick = function(dt) {
     // Gravity
-    dy += game.physics.G_Y;
-    lastJump += dt;
+    if (dy > game.physics.TERMINAL_Y)
+      dy += game.physics.G_Y;
 
     self.loc[1] += dy;
 
@@ -148,7 +146,6 @@ function Player() {
       self.loc[1] = 0.0;
       dy = 0.0;
       jumps = 2;
-      lastJump = 0;
     }
 
     model.tick(dt);
