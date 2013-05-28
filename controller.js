@@ -1,9 +1,13 @@
 function Controller() {
-  var HOLD = 0;
-  var TAP = 1;
-
   var self = this;
+
+  // Map of char code to {fn: callback, tap: bool}
   var callbacks = {};
+
+  // 3-state set of all keys that are currently pressed
+  // undefined/not in the set: key is not down
+  // true: key is down and callback should be fired
+  // false: key is down but callback should not be fired
   var down = {};
 
   var keyDown = function(e) {
@@ -24,9 +28,9 @@ function Controller() {
   };
 
   self.tick = function() {
+    // Iterate through all keys that are down and execute their callbacks
     for (var i in down) {
       if (typeof callbacks[i] !== 'undefined' &&
-          typeof callbacks[i].fn === 'function' &&
           down[i] === true) {
         callbacks[i].fn();
         if (callbacks[i].tap == true)
