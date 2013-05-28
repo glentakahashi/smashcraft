@@ -36,6 +36,9 @@ function Game() {
 
     // Get textures
     textures.ram = getTexture('img/ram.png');
+    textures.guyman = getTexture('img/guyman.png');
+    textures.thomas = getTexture('img/thomas.png');
+    textures.numLoaded = 3;
 
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
@@ -128,9 +131,8 @@ function Game() {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    for (var i in self.players) {
-      self.players[i].init();
-    }
+    self.players[0].init(textures.guyman);
+    self.players[1].init(textures.thomas);
   };
 
   var lastTime = 0;

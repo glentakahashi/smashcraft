@@ -46,7 +46,9 @@ function getTexture(src) {
     gl.bindTexture(gl.TEXTURE_2D, null);
 
     // Tick the game after everything's loaded
-    game.tick();
+    textures.numLoaded -= 1;
+    if (textures.numLoaded == 0)
+      game.tick();
   };
   tex.image.src = src;
   return tex;

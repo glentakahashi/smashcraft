@@ -140,10 +140,13 @@ function Player() {
 
   self.move = function(dir) {
     self.delta[2] = dir * self.stats.moveSpeed;
-    if (dir < 0)
+    if (dir < 0) {
       self.facing = -1;
-    else
+    }
+    else {
       self.facing = 1;
+    }
+
   };
 
   self.attack = function(type) {
@@ -156,14 +159,14 @@ function Player() {
       if (zdist * self.facing < 0) {
         if (Math.abs(zdist) < 3.5 && ydist < 3.5) {
           console.log('hit');
-          other.delta[2] += self.facing * 3;
+          other.delta[2] += self.facing * 5;
         }
       }
     }
   };
   
-  self.init = function() {
-    model.init(vertices, textureCoords, null, textures.ram);
+  self.init = function(tex) {
+    model.init(vertices, textureCoords, null, tex);
   };
 
   self.tick = function(dt) {
@@ -173,14 +176,20 @@ function Player() {
     vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
-    // Smooth rotation
+    if (self.loc[2] < -25 && self.delta[2] < 0)
+      self.delta[2] = 0;
+    else if (self.loc[2] > 25 && self.delta[2] > 0)
+      self.delta[2] = 0;
+
     if (self.facing == -1) {
+      // Smooth rotation
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
         faceRotation += ms * 8;
     }
     else {
+      // Smooth rotation
       if (faceRotation <= 0.0)
         faceRotation = 0.0;
       else
