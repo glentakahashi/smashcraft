@@ -6,6 +6,12 @@ function Game() {
   self.players = [new Player()];
   self.camera = null;
 
+  self.physics = {
+    G_X: 0.0,
+    G_Y: -0.1,
+    G_Z: 0.0
+  };
+
   self.controller = new Controller();
 
   // Initialize WebGL context, shaders
@@ -61,7 +67,7 @@ function Game() {
   }
 
   var initCamera = function() {
-    mat4.lookAt(camera, vec3.fromValues(5, 0, 0), vec3.create(), vec3.fromValues(0, 1, 0));
+    mat4.lookAt(camera, vec3.fromValues(15, 0, 0), vec3.create(), vec3.fromValues(0, 1, 0));
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
   };
 
@@ -70,7 +76,7 @@ function Game() {
 
     // W
     self.controller.bind(87, function() {
-        self.players[0].loc[1] += 0.125;
+        self.players[0].jump();
     });
     // S
     self.controller.bind(83, function() {
