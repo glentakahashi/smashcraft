@@ -118,14 +118,30 @@ function Player() {
   self.loc = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = 100;
   self.animation = null;
+
+  // Physics shit
+  var dy = 0.0;
+
+  self.jump = function() {
+    dy = 1;
+  };
   
   self.init = function() {
     model.init(vertices, textureCoords, null, textures.ram);
   };
 
-  var rotation = 0;
   self.tick = function(dt) {
-    rotation += dt/1000 * Math.PI;
+    // Gravity
+    dy += game.physics.G_Y;
+
+    self.loc[1] += dy;
+
+    // TODO: this isn't ground
+    if (self.loc[1] < 0) {
+      self.loc[1] = 0.0;
+      dy = 0.0;
+    }
+
     model.tick(dt);
   };
 
