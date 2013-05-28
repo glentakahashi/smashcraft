@@ -10,7 +10,8 @@ function Game() {
     G_X: 0.0,
     G_Y: -3,
     G_Z: 0.0,
-    TERMINAL_Y: -0.70
+    TERMINAL_Y: -0.70,
+    FRICTION_Z: 1.5
   };
 
   self.controller = new Controller();
@@ -89,12 +90,12 @@ function Game() {
     });
     // A
     self.controller.hold(65, function() {
-        self.players[0].loc[2] += 0.35;
+        self.players[0].delta[2] = 0.6;
         self.players[0].facing = 0;
     });
     // D
     self.controller.hold(68, function() {
-        self.players[0].loc[2] -= 0.35;
+        self.players[0].delta[2] = -0.6;
         self.players[0].facing = Math.PI;
     });
 
@@ -108,12 +109,12 @@ function Game() {
     });
     // LEFT
     self.controller.hold(37, function() {
-        self.players[1].loc[2] += 0.35;
+        self.players[1].delta[2] = 0.35;
         self.players[1].facing = 0;
     });
     // RIGHT
     self.controller.hold(39, function() {
-        self.players[1].loc[2] -= 0.35;
+        self.players[1].delta[2] = -0.35;
         self.players[1].facing = Math.PI;
     });
   };
