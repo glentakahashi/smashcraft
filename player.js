@@ -152,9 +152,9 @@ function Player() {
 
     // Smooth rotation
     if (self.facing == 1 && self.faceRotation < 1)
-        self.faceRotation += 1/8;
+        self.faceRotation += ms * 4;
     else if (self.facing == 0 && self.faceRotation > 0)
-        self.faceRotation -= 1/8;
+        self.faceRotation -= ms * 4;
 
     // Friction
     self.delta[2] /= game.physics.FRICTION_Z;
