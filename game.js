@@ -8,7 +8,7 @@ function Game() {
 
   self.physics = {
     G_X: 0.0,
-    G_Y: -0.05,
+    G_Y: -4,
     G_Z: 0.0,
     TERMINAL_Y: -0.70
   };
@@ -85,7 +85,7 @@ function Game() {
     });
     // S
     self.controller.hold(83, function() {
-        self.players[0].loc[1] -= 0.125;
+        self.players[0].loc[1] -= 0.5;
     });
     // A
     self.controller.hold(65, function() {
