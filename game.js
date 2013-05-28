@@ -9,7 +9,8 @@ function Game() {
   self.physics = {
     G_X: 0.0,
     G_Y: -0.05,
-    G_Z: 0.0
+    G_Z: 0.0,
+    TERMINAL_Y: -0.70
   };
 
   self.controller = new Controller();

@@ -25,7 +25,9 @@ function Controller() {
 
   self.tick = function() {
     for (var i in down) {
-      if (typeof callbacks[i].fn === 'function' && down[i] === true) {
+      if (typeof callbacks[i] !== 'undefined' &&
+          typeof callbacks[i].fn === 'function' &&
+          down[i] === true) {
         callbacks[i].fn();
         if (callbacks[i].tap == true)
           down[i] = false;
