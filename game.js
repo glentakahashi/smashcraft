@@ -6,6 +6,8 @@ function Game() {
   self.players = [new Player()];
   self.camera = null;
 
+  self.controller = new Controller();
+
   // Initialize WebGL context, shaders
   var initGL = function() {
     var canvas = document.getElementById('canvas');
@@ -63,9 +65,31 @@ function Game() {
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
   };
 
+  var initController = function() {
+    self.controller.init();
+
+    // W
+    self.controller.bind(87, function() {
+        self.players[0].loc[1] += 0.125;
+    });
+    // S
+    self.controller.bind(83, function() {
+        self.players[0].loc[1] -= 0.125;
+    });
+    // A
+    self.controller.bind(65, function() {
+        self.players[0].loc[2] += 0.125;
+    });
+    // D
+    self.controller.bind(68, function() {
+        self.players[0].loc[2] -= 0.125;
+    });
+  };
+
   self.init = function() {
     initGL();
     initCamera();
+    initController();
 
     for (var i in self.platforms) {
       self.platforms[i].init();
