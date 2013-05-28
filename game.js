@@ -96,6 +96,10 @@ function Game() {
     self.controller.hold(68, function() {
         self.players[0].move(-1);
     });
+    // F
+    self.controller.tap(70, function() {
+        self.players[0].attack();
+    });
 
 
     // UP

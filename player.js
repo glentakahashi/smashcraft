@@ -143,7 +143,21 @@ function Player() {
     if (dir < 0)
       self.facing = 1;
     else
-      self.facing = 0;
+      self.facing = -1;
+  };
+
+  self.attack = function(type) {
+    for (var p in game.players) {
+      if (game.players[p] == self)
+        continue;
+      var other = game.players[p];
+      var ydist = self.loc[1] - other.loc[1];
+      var zdist = self.loc[2] - other.loc[2];
+      if (zdist * self.facing > 0) {
+        if (zdist < 3.5 && ydist < 3.5)
+          console.log('hit');
+      }
+    }
   };
   
   self.init = function() {
@@ -162,13 +176,13 @@ function Player() {
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
-        faceRotation += ms * 4;
+        faceRotation += ms * 8;
     }
     else {
       if (faceRotation <= 0.0)
         faceRotation = 0.0;
       else
-        faceRotation -= ms * 4;
+        faceRotation -= ms * 8;
     }
 
     // Friction
