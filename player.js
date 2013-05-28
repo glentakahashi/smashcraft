@@ -136,9 +136,10 @@ function Player() {
   };
 
   self.tick = function(dt) {
-    // Gravity
-    if (self.delta[1] > game.physics.TERMINAL_Y)
-      self.delta[1] += game.physics.G_Y * dt / 1000;
+    // Gravity and terminal velocities
+    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, dt/1000);
+    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
+    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
     // Friction
     self.delta[2] /= game.physics.FRICTION_Z;
