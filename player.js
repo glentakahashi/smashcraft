@@ -133,9 +133,7 @@ function Player() {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      mat4.translate(newMV, newMV, vec3.fromValues(-1.0, 0.0, 0.0)); // Move it back
-      mat4.rotateY(newMV, newMV, rotation);
-      mat4.translate(newMV, newMV, self.loc);
+      mat4.translate(newMV, newMV, self.loc); // Move it back
       mat4.multiply(modelView, modelView, newMV);
 
       //mat4.translate(modelView, modelView, loc);
