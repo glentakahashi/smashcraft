@@ -3,7 +3,7 @@ function Game() {
 
   // Game variables
   self.platforms = [];
-  self.players = [new Player()];
+  self.players = [new Player(), new Player()];
   self.camera = null;
 
   self.physics = {
@@ -90,10 +90,31 @@ function Game() {
     // A
     self.controller.hold(65, function() {
         self.players[0].loc[2] += 0.35;
+        self.players[0].facing = 0;
     });
     // D
     self.controller.hold(68, function() {
         self.players[0].loc[2] -= 0.35;
+        self.players[0].facing = Math.PI;
+    });
+
+    // UP
+    self.controller.tap(38, function() {
+        self.players[1].jump();
+    });
+    // DOWN
+    self.controller.hold(40, function() {
+        self.players[1].loc[1] -= 0.5;
+    });
+    // LEFT
+    self.controller.hold(37, function() {
+        self.players[1].loc[2] += 0.35;
+        self.players[1].facing = 0;
+    });
+    // RIGHT
+    self.controller.hold(39, function() {
+        self.players[1].loc[2] -= 0.35;
+        self.players[1].facing = Math.PI;
     });
   };
 

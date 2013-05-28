@@ -122,6 +122,7 @@ function Player() {
 
   // Physics shit
   self.delta = vec3.create();
+  self.facing = 0;
   var jumps = MAX_JUMPS;
   self.jump = function() {
     if (jumps > 0) {
@@ -160,6 +161,7 @@ function Player() {
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
       mat4.translate(newMV, newMV, self.loc); // Move it back
+      mat4.rotateY(newMV, newMV, self.facing);
       mat4.multiply(modelView, modelView, newMV);
 
       //mat4.translate(modelView, modelView, loc);
