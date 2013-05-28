@@ -1,21 +1,19 @@
 function Controller() {
+  var HOLD = 0;
+  var TAP = 1;
+
   var self = this;
   var callbacks = {};
   var down = {};
 
   var keyDown = function(e) {
-    if (typeof callbacks[e.which] != 'undefined') {
-      //callbacks[e.which]();
+    var oldstate = down[e.which];
+    if (typeof oldstate == 'undefined')
       down[e.which] = true;
-    }
   };
 
   var keyUp = function(e) {
-    if (typeof down[e.which] != 'undefined') {
-      //callbacks[e.which]();
-      down[e.which] = undefined;
-      delete down[e.which];
-    }
+    delete down[e.which];
   };
 
   self.init = function() {
@@ -27,11 +25,25 @@ function Controller() {
 
   self.tick = function() {
     for (var i in down) {
-      callbacks[i]();
+      if (typeof callbacks[i].fn === 'function' && down[i] === true) {
+        callbacks[i].fn();
+        if (callbacks[i].tap == true)
+          down[i] = false;
+      }
     }
   };
 
-  self.bind = function(code, fn) {
-    callbacks[code] = fn;
+  self.hold = function(code, fn) {
+    callbacks[code] = {
+      fn: fn,
+      tap: false
+    };
+  };
+
+  self.tap = function(code, fn) {
+    callbacks[code] = {
+      fn: fn,
+      tap: true
+    };
   };
 }

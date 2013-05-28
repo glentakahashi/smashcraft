@@ -8,7 +8,7 @@ function Game() {
 
   self.physics = {
     G_X: 0.0,
-    G_Y: -0.1,
+    G_Y: -0.05,
     G_Z: 0.0
   };
 
@@ -79,19 +79,19 @@ function Game() {
     self.controller.init();
 
     // W
-    self.controller.bind(87, function() {
+    self.controller.tap(87, function() {
         self.players[0].jump();
     });
     // S
-    self.controller.bind(83, function() {
+    self.controller.hold(83, function() {
         self.players[0].loc[1] -= 0.125;
     });
     // A
-    self.controller.bind(65, function() {
+    self.controller.hold(65, function() {
         self.players[0].loc[2] += 0.125;
     });
     // D
-    self.controller.bind(68, function() {
+    self.controller.hold(68, function() {
         self.players[0].loc[2] -= 0.125;
     });
   };
