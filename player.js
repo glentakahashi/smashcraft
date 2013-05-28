@@ -141,9 +141,9 @@ function Player() {
   self.move = function(dir) {
     self.delta[2] = dir * self.stats.moveSpeed;
     if (dir < 0)
-      self.facing = 1;
-    else
       self.facing = -1;
+    else
+      self.facing = 1;
   };
 
   self.attack = function(type) {
@@ -153,9 +153,11 @@ function Player() {
       var other = game.players[p];
       var ydist = self.loc[1] - other.loc[1];
       var zdist = self.loc[2] - other.loc[2];
-      if (zdist * self.facing > 0) {
-        if (zdist < 3.5 && ydist < 3.5)
+      if (zdist * self.facing < 0) {
+        if (zdist < 3.5 && ydist < 3.5) {
           console.log('hit');
+          other.delta[2] += self.facing * 2;
+        }
       }
     }
   };
@@ -172,7 +174,7 @@ function Player() {
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
     // Smooth rotation
-    if (self.facing == 1) {
+    if (self.facing == -1) {
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
