@@ -8,7 +8,7 @@ function Game() {
 
   self.physics = {
     G_X: 0.0,
-    G_Y: -4,
+    G_Y: -3,
     G_Z: 0.0,
     TERMINAL_Y: -0.70
   };
@@ -69,7 +69,7 @@ function Game() {
 
   var initCamera = function() {
     mat4.lookAt(camera,
-                vec3.fromValues(25, 6, 0),
+                vec3.fromValues(35, 6, 0),
                 vec3.fromValues(0, 5, 0),
                 vec3.fromValues(0, 1, 0)
                );
@@ -89,11 +89,11 @@ function Game() {
     });
     // A
     self.controller.hold(65, function() {
-        self.players[0].loc[2] += 0.125;
+        self.players[0].loc[2] += 0.35;
     });
     // D
     self.controller.hold(68, function() {
-        self.players[0].loc[2] -= 0.125;
+        self.players[0].loc[2] -= 0.35;
     });
   };
 
