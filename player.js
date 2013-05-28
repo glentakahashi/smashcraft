@@ -119,6 +119,11 @@ function Player() {
   self.loc = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = 100;
   self.animation = null;
+  self.stats = {
+    maxHealth: 100,
+    jumpHeight: 1.0,
+    moveSpeed: 0.35
+  };
 
   // Physics shit
   self.delta = vec3.create();
@@ -128,13 +133,13 @@ function Player() {
 
   self.jump = function() {
     if (jumps > 0) {
-      self.delta[1] = 1;
+      self.delta[1] = self.stats.jumpHeight;
       jumps -= 1;
     }
   };
 
   self.move = function(dir) {
-    self.delta[2] = dir * 0.35;
+    self.delta[2] = dir * self.stats.moveSpeed;
     if (dir < 0)
       self.facing = 1;
     else
