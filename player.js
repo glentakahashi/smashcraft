@@ -130,6 +130,13 @@ function Player() {
       jumps -= 1;
     }
   };
+  self.move = function(dir) {
+    self.delta[2] = dir * 0.35;
+    if (dir < 0)
+      self.facing = Math.PI;
+    else
+      self.facing = 0;
+  };
   
   self.init = function() {
     model.init(vertices, textureCoords, null, textures.ram);
