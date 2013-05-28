@@ -140,6 +140,11 @@ function Player() {
     if (self.delta[1] > game.physics.TERMINAL_Y)
       self.delta[1] += game.physics.G_Y * dt / 1000;
 
+    // Friction
+    self.delta[2] /= game.physics.FRICTION_Z;
+    if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
+      self.delta[2] = 0.0;
+
     vec3.add(self.loc, self.loc, self.delta);
 
     // TODO: this isn't ground
@@ -148,10 +153,6 @@ function Player() {
       self.delta[1] = 0.0;
       jumps = MAX_JUMPS;
     }
-
-    
-
-
 
     model.tick(dt);
   };
