@@ -121,6 +121,10 @@ function Game() {
     self.controller.hold(39, function() {
         self.players[1].move(-1);
     });
+    // ENTER
+    self.controller.tap(13, function() {
+        self.players[1].attack();
+    });
   };
 
   self.init = function() {
