@@ -122,21 +122,23 @@ function Player() {
 
   // Physics shit
   self.delta = vec3.create();
-  self.facing = 0;
-  self.faceRotation = 0;
+  var facing = 0;
+  var faceRotation = 0;
   var jumps = MAX_JUMPS;
+
   self.jump = function() {
     if (jumps > 0) {
       self.delta[1] = 1;
       jumps -= 1;
     }
   };
+
   self.move = function(dir) {
     self.delta[2] = dir * 0.35;
     if (dir < 0)
-      self.facing = 1;
+      facing = 1;
     else
-      self.facing = 0;
+      facing = 0;
   };
   
   self.init = function() {
@@ -151,11 +153,11 @@ function Player() {
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
     // Smooth rotation
-    if (self.facing == 1)
-      self.faceRotation += ms * 4;
-    else if (self.facing == 0)
-      self.faceRotation -= ms * 4;
-    self.faceRotation = Math.min(Math.max(self.faceRotation, 0.0), 1.0);
+    if (facing == 1)
+      faceRotation += ms * 4;
+    else if (facing == 0)
+      faceRotation -= ms * 4;
+    faceRotation = Math.min(Math.max(faceRotation, 0.0), 1.0);
 
     // Friction
     self.delta[2] /= game.physics.FRICTION_Z;
@@ -179,7 +181,7 @@ function Player() {
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
       mat4.translate(newMV, newMV, self.loc); // Move it back
-      mat4.rotateY(newMV, newMV, self.faceRotation * Math.PI);
+      mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
       //mat4.translate(modelView, modelView, loc);
