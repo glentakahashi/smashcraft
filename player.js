@@ -127,10 +127,12 @@ function Player() {
     moveSpeed: 0.35,
     attacks: {
       neutral: {
-        range: vec3.fromValues(100.0, 3.5, 3.5),
+        range: vec3.fromValues(100.0, 3.5, 4.5),
         facing: true,
-        push: vec3.fromValues(0.0, 0.0, 5.0),
+        facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+        absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
         damage: 10,
+        stun: 200, // in MS
       }
     }
   };
@@ -140,6 +142,7 @@ function Player() {
   self.facing = 0;
   var faceRotation = 0;
   var jumps = MAX_JUMPS;
+  self.stun = 0;
 
   self.jump = function() {
     if (jumps > 0) {
@@ -149,6 +152,10 @@ function Player() {
   };
 
   self.move = function(dir) {
+    // Don't move if stunned
+    if (self.stun > 0)
+      return;
+
     self.delta[2] = dir * self.stats.moveSpeed;
     if (dir < 0) {
       self.facing = -1;
@@ -156,23 +163,36 @@ function Player() {
     else {
       self.facing = 1;
     }
+  };
 
+  self.getHit = function(damage, push, stunTime) {
+    vec3.add(self.delta, self.delta, push);
+    self.stun = stunTime;
   };
 
   self.attack = function(type) {
+    var curAttack = self.stats.attacks[type];
+    if (typeof curAttack === 'undefined')
+      return;
+
     for (var p in game.players) {
       if (game.players[p] == self)
         continue;
-      var curAttack = self.stats.attacks[type];
       var other = game.players[p];
       var dist = vec3.create();
       vec3.subtract(dist, self.loc, other.loc);
+      var push = vec3.create();
 
+      // If is facing or attack doesn't need facing
       if (!curAttack.facing || dist[2] * self.facing < 0) {
-        if (Math.abs(dist[2]) < curAttack.range[2] &&
-            Math.abs(dist[1]) < curAttack.range[1]) {
+        if (Math.abs(dist[0]) < curAttack.range[0] &&
+            Math.abs(dist[1]) < curAttack.range[1] &&
+            Math.abs(dist[2]) < curAttack.range[1]) {
           console.log('hit');
-          vec3.scaleAndAdd(other.delta, other.delta, curAttack.push, self.facing);
+          vec3.scaleAndAdd(push, push, curAttack.facingPush, self.facing);
+          vec3.add(push, push, curAttack.absolutePush);
+
+          other.getHit(curAttack.damage, push, curAttack.stun);
         }
       }
     }
@@ -209,10 +229,15 @@ function Player() {
         faceRotation -= ms * 8;
     }
 
-    // Friction
-    self.delta[2] /= game.physics.FRICTION_Z;
-    if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
-      self.delta[2] = 0.0;
+    if (self.stun <= 0) {
+      // Friction
+      self.delta[2] /= game.physics.FRICTION_Z;
+      if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
+        self.delta[2] = 0.0;
+    }
+    else {
+      self.stun -= dt;
+    }
 
     vec3.add(self.loc, self.loc, self.delta);
 
