@@ -164,10 +164,10 @@ function Game() {
         if (currentPlayer.loc[2] <= currentPlatform.loc[2] + currentPlatform.scale[2] &&
             currentPlayer.loc[2] >= currentPlatform.loc[2] - currentPlatform.scale[2] &&
             currentPlayer.loc[1] >= currentPlatform.loc[1] - currentPlatform.scale[1] &&
-            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1]
+            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1] + 0.1
             ) {
 
-          if (currentPlayer.delta[1] < 0) {
+          if (currentPlayer.delta[1] <= 0) {
             currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
             currentPlayer.delta[1] = 0;
             currentPlayer.jumps = currentPlayer.stats.maxJumps;
