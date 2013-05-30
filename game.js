@@ -2,7 +2,7 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [];
+  self.platforms = [new Platform(16.0)];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
@@ -53,7 +53,6 @@ function Game() {
     }
   };
 
-
   // Initialize WebGL context, shaders
   var initGL = function() {
     var canvas = document.getElementById('canvas');
@@ -75,7 +74,8 @@ function Game() {
     // Get textures
     textures.guyman = getTexture('img/guyman.png');
     textures.thomas = getTexture('img/thomas.png');
-
+    textures.ram = getTexture('img/ram.png');
+    textures.steve = getTexture('img/steve.png');
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
@@ -195,10 +195,27 @@ function Game() {
       self.platforms[i].tick(dt);
     }
     for (var i in self.players) {
-      self.players[i].tick(dt);
-    }
-    // Collision detection here?????
+      var current = self.players[i];
 
+      // Player-platform collision
+      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
+          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].size &&
+          current.loc[1] <= self.platforms[0].loc[1] + 2
+          ) {
+
+        if (current.delta[1] < 0) {
+          current.loc[1] = self.platforms[0].loc[1] + 2
+          current.delta[1] = 0;
+          current.jumps = 2;
+        }
+      }
+      else {
+        current.jumps = 1;
+      }
+
+      current.tick(dt);
+    }
+    
     self.render(dt);
   };
 

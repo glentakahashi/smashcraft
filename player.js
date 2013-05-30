@@ -1,7 +1,6 @@
 function Player() {
   // Constants
   var MAX_JUMPS = 2;
-
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -118,22 +117,23 @@ function Player() {
   var model = new Model();
 
   // Game variables
-  self.location = vec3.fromValues(2.0, 0.0, 0.0);
+  self.loc = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = null;
   self.animation = null;
   self.stats = null;
 
   // Physics shit
-  self.velocity = vec3.create();
+  self.delta = vec3.create();
   self.facing = 0;
   var faceRotation = 0;
-  var jumps = MAX_JUMPS;
+  self.jumps = MAX_JUMPS;
   self.stun = 0;
 
   self.jump = function() {
-    if (jumps > 0) {
-      self.velocity[1] = self.stats.jumpHeight;
-      jumps -= 1;
+    if (self.jumps > 0) {
+      self.delta[1] = self.stats.jumpHeight;
+      self.jumps -= 1;
+      console.log('jump');
     }
   };
 
@@ -142,7 +142,7 @@ function Player() {
     if (self.stun > 0)
       return;
 
-    self.velocity[2] = dir * self.stats.moveSpeed;
+    self.delta[2] = dir * self.stats.moveSpeed;
     if (dir < 0) {
       self.facing = -1;
     }
@@ -152,7 +152,7 @@ function Player() {
   };
 
   self.getHit = function(damage, push, stunTime) {
-    vec3.copy(self.velocity, push);
+    vec3.copy(self.delta, push);
     self.stun = Math.max(self.stun, stunTime);
     self.health -= damage;
 
@@ -174,7 +174,7 @@ function Player() {
         continue;
       var other = game.players[p];
       var dist = vec3.create();
-      vec3.subtract(dist, self.location, other.location);
+      vec3.subtract(dist, self.loc, other.loc);
       var push = vec3.create();
 
       // If is facing or attack doesn't need facing
@@ -204,14 +204,14 @@ function Player() {
   self.tick = function(dt) {
     // Gravity and terminal velocities
     var ms = dt / 1000;
-    vec3.scaleAndAdd(self.velocity, self.velocity, game.physics.G, ms);
-    vec3.max(self.velocity, self.velocity, game.physics.TERMINAL_MAX);
-    vec3.min(self.velocity, self.velocity, game.physics.TERMINAL_MIN);
+    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
+    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
+    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
-    if (self.location[2] < -25 && self.velocity[2] < 0)
-      self.velocity[2] = 0;
-    else if (self.location[2] > 25 && self.velocity[2] > 0)
-      self.velocity[2] = 0;
+    if (self.loc[2] < -25 && self.delta[2] < 0)
+      self.delta[2] = 0;
+    else if (self.loc[2] > 25 && self.delta[2] > 0)
+      self.delta[2] = 0;
 
     if (self.facing == -1) {
       // Smooth rotation
@@ -230,22 +230,33 @@ function Player() {
 
     if (self.stun <= 0) {
       // Friction
-      self.velocity[2] /= game.physics.FRICTION_Z;
-      if (self.velocity[2] < 0.0001 && self.velocity[2] > -0.0001)
-        self.velocity[2] = 0.0;
+      self.delta[2] /= game.physics.FRICTION_Z;
+      if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
+        self.delta[2] = 0.0;
     }
     else {
       self.stun -= dt;
     }
 
-    vec3.add(self.location, self.location, self.velocity);
+    // On ground
+    if (self.jumps == MAX_JUMPS) {
+      self.loc[0] += self.delta[0];
+      self.loc[2] += self.delta[2];
+    }
+    // In air
+    else {
+      vec3.add(self.loc, self.loc, self.delta);
+    }
+
 
     // TODO: this isn't ground
-    if (self.location[1] < 0) {
-      self.location[1] = 0.0;
-      self.velocity[1] = 0.0;
+    /*
+    if (self.loc[1] < 0) {
+      self.loc[1] = 0.0;
+      self.delta[1] = 0.0;
       jumps = MAX_JUMPS;
     }
+    */
 
     model.tick(dt);
   };
@@ -254,7 +265,7 @@ function Player() {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      mat4.translate(newMV, newMV, self.location); // Move it back
+      mat4.translate(newMV, newMV, self.loc); // Move it back
       mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
