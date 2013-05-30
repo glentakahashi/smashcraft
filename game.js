@@ -2,7 +2,7 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [new Platform(16.0)];
+  self.platforms = [new Platform(vec3.fromValues(2.0, 1.0, 16.0))];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
@@ -201,14 +201,14 @@ function Game() {
       var airborne = true;
 
       // Player-platform collision
-      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
-          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].size &&
-          current.loc[1] >= self.platforms[0].loc[1] - 2 &&
-          current.loc[1] <= self.platforms[0].loc[1] + 2
+      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].scale[2] &&
+          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].scale[2] &&
+          current.loc[1] >= self.platforms[0].loc[1] - self.platforms[0].scale[1] &&
+          current.loc[1] <= self.platforms[0].loc[1] + self.platforms[0].scale[1]
           ) {
 
         if (current.delta[1] < 0) {
-          current.loc[1] = self.platforms[0].loc[1] + 2;
+          current.loc[1] = self.platforms[0].loc[1] + self.platforms[0].scale[1];
           current.delta[1] = 0;
           current.jumps = current.stats.maxJumps;
           airborne = false;
