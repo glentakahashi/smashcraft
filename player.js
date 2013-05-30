@@ -121,21 +121,7 @@ function Player() {
   self.location = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = 100;
   self.animation = null;
-  self.stats = {
-    maxHealth: 100,
-    jumpHeight: 1.0,
-    moveSpeed: 0.35,
-    attacks: {
-      neutral: {
-        range: vec3.fromValues(100.0, 3.5, 4.5),
-        facing: true,
-        facingPush: vec3.fromValues(0.0, 0.0, 2.5),
-        absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
-        damage: 10,
-        stun: 200, // in MS
-      }
-    }
-  };
+  self.stats = null;
 
   // Physics shit
   self.velocity = vec3.create();
@@ -199,8 +185,9 @@ function Player() {
     }
   };
   
-  self.init = function(tex) {
-    model.init(vertices, textureCoords, null, tex);
+  self.init = function(stats) {
+    self.stats = stats;
+    model.init(vertices, textureCoords, null, textures[self.stats.texture]);
   };
 
   self.tick = function(dt) {

@@ -15,6 +15,44 @@ function Game() {
     FRICTION_Z: 1.5
   };
 
+  // Player stats
+  self.heroes = {
+    guyman: {
+      name: 'Guy-Man',
+      texture: 'guyman',
+      maxHealth: 100,
+      jumpHeight: 1.0,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 2.5),
+          absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
+          damage: 10,
+          stun: 200, // in MS
+        }
+      }
+    },
+    thomas: {
+      name: 'Thomas',
+      texture: 'thomas',
+      maxHealth: 100,
+      jumpHeight: 1.2,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 2.5),
+          absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
+          damage: 10,
+          stun: 200, // in MS
+        }
+      }
+    }
+  };
+
 
   // Initialize WebGL context, shaders
   var initGL = function() {
@@ -35,10 +73,8 @@ function Game() {
     gl.useProgram(program);
 
     // Get textures
-    textures.ram = getTexture('img/ram.png');
     textures.guyman = getTexture('img/guyman.png');
     textures.thomas = getTexture('img/thomas.png');
-    textures.numLoaded = 3;
 
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
@@ -135,8 +171,8 @@ function Game() {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    self.players[0].init(textures.guyman);
-    self.players[1].init(textures.thomas);
+    self.players[0].init(self.heroes.guyman);
+    self.players[1].init(self.heroes.thomas);
   };
 
   var lastTime = 0;
