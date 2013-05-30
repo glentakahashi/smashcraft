@@ -142,6 +142,12 @@ function Player() {
     }
   };
 
+  self.drop = function() {
+    if (!self.airborne) {
+      self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.15;
+    }
+  };
+
   self.move = function(dir) {
     // Don't move if stunned
     if (self.stun > 0)

@@ -84,7 +84,7 @@ function Game() {
     });
     // S
     self.controller.hold(83, function() {
-        //self.players[0].loc[1] -= 0.5;
+      self.players[0].drop();
     });
     // A
     self.controller.hold(65, function() {
@@ -136,9 +136,6 @@ function Game() {
 
   var lastTime = 0;
   self.tick = function() {
-    // Controllers
-    self.controller.tick();
-
     // New frame
     requestAnimFrame(self.tick);
 
@@ -150,9 +147,15 @@ function Game() {
     }
     lastTime = timeNow;
 
+    // Controllers
+    self.controller.tick();
+
+    // Platforms
     for (var i in self.platforms) {
       self.platforms[i].tick(dt);
     }
+
+    // Players
     for (var i in self.players) {
       var currentPlayer = self.players[i];
       var airborne = true;
