@@ -155,6 +155,9 @@ function Player() {
     vec3.copy(self.velocity, push);
     self.stun = Math.max(self.stun, stunTime);
     self.health -= damage;
+    if (self.health <= 0) {
+      console.log(self.stats.name + ' has died');
+    }
   };
 
   self.attack = function(type) {
@@ -175,7 +178,6 @@ function Player() {
         if (Math.abs(dist[0]) < curAttack.range[0] &&
             Math.abs(dist[1]) < curAttack.range[1] &&
             Math.abs(dist[2]) < curAttack.range[1]) {
-          console.log('hit');
           vec3.scaleAndAdd(push, push, curAttack.facingPush, self.facing);
           vec3.add(push, push, curAttack.absolutePush);
 
