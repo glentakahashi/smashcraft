@@ -10,11 +10,7 @@ function Game() {
   ];
   self.players = [new Player(), new Player()];
   self.controller = new Controller();
-
-  // Camera stuff
-  self.zoomAmt = 1.0;
-  self.cameraTarget = vec3.fromValues(0.0, 8.0, 0.0);
-  self.cameraLoc = vec3.fromValues(120.0, 14.0, 0.0);
+  self.camera = new Camera();
 
   // Initialize WebGL context, shaders
   var initGL = function() {
@@ -51,35 +47,19 @@ function Game() {
     gl.enableVertexAttribArray(program.aTextureCoord);
 
     // Initialize matrices
-    camera = mat4.create();
     modelView = mat4.create();
-    perspective = mat4.create();
 
     // Set perspective matrix
-    doPerspective();
+    //doPerspective();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
     gl.enable(gl.DEPTH_TEST);
   }
 
   var initCamera = function() {
-    mat4.lookAt(camera,
-                self.cameraLoc,
-                self.cameraTarget,
-                vec3.fromValues(0, 1, 0)
-               );
-    gl.uniformMatrix4fv(program.uCMatrix, false, camera);
   };
 
   var doPerspective = function() {
-    gl.viewportWidth = canvas.width;
-    gl.viewportHeight = canvas.height;
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    mat4.perspective(perspective,
-                     Math.PI/2 / self.zoomAmt,
-                     gl.viewportWidth / gl.viewportHeight,
-                     0.1, 200);
-    gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
   };
 
   var initController = function() {
@@ -139,7 +119,9 @@ function Game() {
 
   self.init = function() {
     initGL();
-    initCamera();
+    //initCamera();
+    self.camera.init(vec3.fromValues(80.0, 15, 0),
+                     vec3.fromValues(0.0, 8.0, 0.0));
     initController();
 
     for (var i in self.platforms) {
@@ -219,11 +201,10 @@ function Game() {
 
     // Camera movement
     var dist = vec3.distance(minLoc, maxLoc);
-    self.zoomAmt = 56 / (Math.pow(dist, .65));
-    vec3.scale(self.cameraTarget, locSum, 1/self.players.length);
-    initCamera();
-    doPerspective();
+    self.camera.zoomTarget = 56 / (Math.pow(dist, .65));
+    vec3.scale(self.camera.atTarget, locSum, 1/self.players.length);
 
+    self.camera.tick(dt);
     
     self.render(dt);
   };
