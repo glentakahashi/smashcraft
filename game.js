@@ -2,56 +2,15 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [new Platform(16.0)];
+  self.platforms = [
+    new Platform(vec3.fromValues(2.0, 2.0, 24.0), vec3.fromValues(0.0, -9.0, 0.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, -14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, 14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 10.0, 0.0))
+  ];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
-
-  // Physics constants
-  self.physics = {
-    G: vec3.fromValues(0.0, -3.0, 0.0),
-    TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
-    TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
-    FRICTION_Z: 1.5
-  };
-
-  // Player stats
-  self.heroes = {
-    guyman: {
-      name: 'Guy-Man',
-      id: 'guyman',
-      health: 100,
-      jumpHeight: 1.0,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 10,
-          stun: 200, // in MS
-        }
-      }
-    },
-    thomas: {
-      name: 'Thomas',
-      id: 'thomas',
-      health: 100,
-      jumpHeight: 1.2,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 10,
-          stun: 200, // in MS
-        }
-      }
-    }
-  };
 
   // Initialize WebGL context, shaders
   var initGL = function() {
@@ -171,8 +130,8 @@ function Game() {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    self.players[0].init(self.heroes.guyman);
-    self.players[1].init(self.heroes.thomas);
+    self.players[0].init(constants.heros.guyman);
+    self.players[1].init(constants.heros.thomas);
   };
 
   var lastTime = 0;
@@ -195,26 +154,31 @@ function Game() {
       self.platforms[i].tick(dt);
     }
     for (var i in self.players) {
-      var current = self.players[i];
+      var currentPlayer = self.players[i];
+      var airborne = true;
 
       // Player-platform collision
-      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
-          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].size &&
-          current.loc[1] >= self.platforms[0].loc[1] - 2 &&
-          current.loc[1] <= self.platforms[0].loc[1] + 2
-          ) {
+      for (var j in self.platforms) {
+        var currentPlatform = self.platforms[j];
+        if (currentPlayer.loc[2] <= currentPlatform.loc[2] + currentPlatform.scale[2] &&
+            currentPlayer.loc[2] >= currentPlatform.loc[2] - currentPlatform.scale[2] &&
+            currentPlayer.loc[1] >= currentPlatform.loc[1] - currentPlatform.scale[1] &&
+            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1]
+            ) {
 
-        if (current.delta[1] < 0) {
-          current.loc[1] = self.platforms[0].loc[1] + 2;
-          current.delta[1] = 0;
-          current.jumps = 2;
+          if (currentPlayer.delta[1] < 0) {
+            currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
+            currentPlayer.delta[1] = 0;
+            currentPlayer.jumps = currentPlayer.stats.maxJumps;
+            airborne = false;
+          }
+
         }
       }
-      else {
-        current.jumps = 1;
-      }
 
-      current.tick(dt);
+      currentPlayer.airborne = airborne;
+      currentPlayer.tick(dt);
+
     }
     
     self.render(dt);

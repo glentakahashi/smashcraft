@@ -1,6 +1,5 @@
 function Player() {
   // Constants
-  var MAX_JUMPS = 2;
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -117,8 +116,14 @@ function Player() {
   var model = new Model();
 
   // Game variables
-  self.loc = vec3.fromValues(2.0, 0.0, 0.0);
+  self.loc = vec3.fromValues(0.0, 0.0, 0.0);
   self.health = null;
+  self.deaths = 0;
+  self.kills = 0;
+  self.lastHit = {
+    who: null,
+    when : null
+  }
   self.animation = null;
   self.stats = null;
 
@@ -126,14 +131,14 @@ function Player() {
   self.delta = vec3.create();
   self.facing = 0;
   var faceRotation = 0;
-  self.jumps = MAX_JUMPS;
+  self.jumps = 0;
+  self.airborne = true;
   self.stun = 0;
 
   self.jump = function() {
     if (self.jumps > 0) {
       self.delta[1] = self.stats.jumpHeight;
       self.jumps -= 1;
-      console.log('jump');
     }
   };
 
@@ -143,6 +148,8 @@ function Player() {
       return;
 
     self.delta[2] = dir * self.stats.moveSpeed;
+
+    // Face the right direction
     if (dir < 0) {
       self.facing = -1;
     }
@@ -151,8 +158,19 @@ function Player() {
     }
   };
 
+  self.spawn = function() {
+    vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
+    vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
+    self.health = self.stats.health;
+
+    $('#'+self.stats.id).text(self.health);
+  };
+
   self.getHit = function(damage, push, stunTime) {
-    vec3.copy(self.delta, push);
+    if (typeof push !== 'undefined')
+      vec3.copy(self.delta, push);
+    if (typeof stunTime === 'undefined')
+      var stunTime = 0;
     self.stun = Math.max(self.stun, stunTime);
     self.health -= damage;
 
@@ -160,7 +178,8 @@ function Player() {
     $('#'+self.stats.id).text(self.health);
 
     if (self.health <= 0) {
-      console.log(self.stats.name + ' has died');
+      self.deaths += 1;
+      self.spawn();
     }
   };
 
@@ -195,44 +214,45 @@ function Player() {
     self.stats = stats;
     model.init(vertices, textureCoords, null, textures[self.stats.id]);
 
-    self.health = self.stats.health;
-
-    // TODO: this is kinda hackish and odd
-    $('#'+self.stats.id).text(self.health);
+    self.spawn();
   };
 
   self.tick = function(dt) {
-    // Gravity and terminal velocities
     var ms = dt / 1000;
-    if (self.jumps != MAX_JUMPS) {
-      vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
-    }
-    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
-    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
+    // Gravity only when not on ground
+    if (self.airborne) {
+      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms);
+    }
+
+    // Terminal velocities
+    vec3.max(self.delta, self.delta, constants.physics.TERMINAL_MAX);
+    vec3.min(self.delta, self.delta, constants.physics.TERMINAL_MIN);
+
+    // Side walls
     if (self.loc[2] < -25 && self.delta[2] < 0)
       self.delta[2] = 0;
     else if (self.loc[2] > 25 && self.delta[2] > 0)
       self.delta[2] = 0;
 
+    // Smooth rotation
     if (self.facing == -1) {
-      // Smooth rotation
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
         faceRotation += ms * 8;
     }
     else {
-      // Smooth rotation
       if (faceRotation <= 0.0)
         faceRotation = 0.0;
       else
         faceRotation -= ms * 8;
     }
 
+    // Only when not stunned
     if (self.stun <= 0) {
       // Friction
-      self.delta[2] /= game.physics.FRICTION_Z;
+      self.delta[2] /= constants.physics.FRICTION_Z;
       if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
         self.delta[2] = 0.0;
     }
@@ -242,15 +262,6 @@ function Player() {
 
     vec3.add(self.loc, self.loc, self.delta);
 
-    // TODO: this isn't ground
-    /*
-    if (self.loc[1] < 0) {
-      self.loc[1] = 0.0;
-      self.delta[1] = 0.0;
-      jumps = MAX_JUMPS;
-    }
-    */
-
     model.tick(dt);
   };
 
@@ -258,7 +269,9 @@ function Player() {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      mat4.translate(newMV, newMV, self.loc); // Move it back
+      // TODO: this transformation just puts the head on top of the origin
+      mat4.translate(newMV, newMV, vec3.fromValues(0.0, 1.0, 0.0));
+      mat4.translate(newMV, newMV, self.loc); // Move it to location
       mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
