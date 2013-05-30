@@ -12,7 +12,8 @@ var constants = {
       id: 'guyman',
       health: 100,
       jumpHeight: 1.0,
-      maxJumps: 2.0,
+      maxJumps: 2,
+      weight: 1.0,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
@@ -29,8 +30,9 @@ var constants = {
       name: 'Thomas',
       id: 'thomas',
       health: 100,
-      jumpHeight: 1.2,
-      maxJumps: 4.0,
+      jumpHeight: 0.6,
+      maxJumps: 6,
+      weight: 0.6,
       moveSpeed: 0.35,
       attacks: {
         neutral: {

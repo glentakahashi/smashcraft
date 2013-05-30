@@ -80,7 +80,7 @@ function Game() {
 
     // W
     self.controller.tap(87, function() {
-        self.players[0].jump();
+      self.players[0].jump();
     });
     // S
     self.controller.hold(83, function() {
@@ -88,37 +88,37 @@ function Game() {
     });
     // A
     self.controller.hold(65, function() {
-        self.players[0].move(1);
+      self.players[0].move(1);
     });
     // D
     self.controller.hold(68, function() {
-        self.players[0].move(-1);
+      self.players[0].move(-1);
     });
     // F
     self.controller.tap(70, function() {
-        self.players[0].attack('neutral');
+      self.players[0].attack('neutral');
     });
 
 
     // UP
     self.controller.tap(38, function() {
-        self.players[1].jump();
+      self.players[1].jump();
     });
     // DOWN
     self.controller.hold(40, function() {
-        //self.players[1].loc[1] -= 0.5;
+      self.players[1].drop();
     });
     // LEFT
     self.controller.hold(37, function() {
-        self.players[1].move(1);
+      self.players[1].move(1);
     });
     // RIGHT
     self.controller.hold(39, function() {
-        self.players[1].move(-1);
+      self.players[1].move(-1);
     });
     // ENTER
     self.controller.tap(13, function() {
-        self.players[1].attack('neutral');
+      self.players[1].attack('neutral');
     });
   };
 

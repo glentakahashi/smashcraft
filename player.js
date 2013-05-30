@@ -237,7 +237,7 @@ function Player() {
 
     // Gravity only when not on ground
     if (self.airborne) {
-      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms);
+      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms * self.stats.weight);
     }
 
     // Terminal velocities
