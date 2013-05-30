@@ -1,7 +1,10 @@
-function Platform(scale) {
+function Platform(scale, loc) {
   var self = this;
-  self.scale = scale;
   var model = new Model();
+
+  self.scale = scale;
+  self.loc = loc;
+
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -114,25 +117,19 @@ function Platform(scale) {
     0.0, 3/4,
   ];
  
-  self.loc = vec3.create();
-  var x = 0;
   
-  self.init = function(loc) {
-    if (typeof loc !== 'undefined')
-      vec3.copy(self.loc, loc);
+  self.init = function() {
     model.init(vertices, textureCoords, null, textures.steve);
   };
 
   self.tick = function(dt) {
-    x += dt;
-    self.loc[1] = -2 + 2*Math.sin(x / 1000); // this is for fun!
   };
 
   self.render = function (dt) {
     mvstack.push(modelView);
       var newMV = mat4.create();
-      mat4.scale(newMV, newMV, self.scale);
       mat4.translate(newMV, newMV, self.loc);
+      mat4.scale(newMV, newMV, self.scale);
       mat4.multiply(modelView, modelView, newMV);
       model.render(dt);
     modelView = mvstack.pop();

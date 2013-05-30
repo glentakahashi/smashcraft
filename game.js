@@ -2,7 +2,12 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [new Platform(vec3.fromValues(2.0, 1.0, 16.0))];
+  self.platforms = [
+    new Platform(vec3.fromValues(2.0, 2.0, 24.0), vec3.fromValues(0.0, -9.0, 0.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, -14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, 14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 10.0, 0.0))
+  ];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
@@ -153,23 +158,27 @@ function Game() {
       var airborne = true;
 
       // Player-platform collision
-      if (currentPlayer.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].scale[2] &&
-          currentPlayer.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].scale[2] &&
-          currentPlayer.loc[1] >= self.platforms[0].loc[1] - self.platforms[0].scale[1] &&
-          currentPlayer.loc[1] <= self.platforms[0].loc[1] + self.platforms[0].scale[1]
-          ) {
+      for (var j in self.platforms) {
+        var currentPlatform = self.platforms[j];
+        if (currentPlayer.loc[2] <= currentPlatform.loc[2] + currentPlatform.scale[2] &&
+            currentPlayer.loc[2] >= currentPlatform.loc[2] - currentPlatform.scale[2] &&
+            currentPlayer.loc[1] >= currentPlatform.loc[1] - currentPlatform.scale[1] &&
+            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1]
+            ) {
 
-        if (currentPlayer.delta[1] < 0) {
-          currentPlayer.loc[1] = self.platforms[0].loc[1] + self.platforms[0].scale[1];
-          currentPlayer.delta[1] = 0;
-          currentPlayer.jumps = currentPlayer.stats.maxJumps;
-          airborne = false;
+          if (currentPlayer.delta[1] < 0) {
+            currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
+            currentPlayer.delta[1] = 0;
+            currentPlayer.jumps = currentPlayer.stats.maxJumps;
+            airborne = false;
+          }
+
         }
       }
 
       currentPlayer.airborne = airborne;
-
       currentPlayer.tick(dt);
+
     }
     
     self.render(dt);
