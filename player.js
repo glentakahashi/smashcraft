@@ -204,7 +204,9 @@ function Player() {
   self.tick = function(dt) {
     // Gravity and terminal velocities
     var ms = dt / 1000;
-    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
+    if (self.jumps != MAX_JUMPS) {
+      vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
+    }
     vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
     vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
 
@@ -238,16 +240,7 @@ function Player() {
       self.stun -= dt;
     }
 
-    // On ground
-    if (self.jumps == MAX_JUMPS) {
-      self.loc[0] += self.delta[0];
-      self.loc[2] += self.delta[2];
-    }
-    // In air
-    else {
-      vec3.add(self.loc, self.loc, self.delta);
-    }
-
+    vec3.add(self.loc, self.loc, self.delta);
 
     // TODO: this isn't ground
     /*

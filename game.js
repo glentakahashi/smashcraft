@@ -200,11 +200,12 @@ function Game() {
       // Player-platform collision
       if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
           current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].size &&
+          current.loc[1] >= self.platforms[0].loc[1] - 2 &&
           current.loc[1] <= self.platforms[0].loc[1] + 2
           ) {
 
         if (current.delta[1] < 0) {
-          current.loc[1] = self.platforms[0].loc[1] + 2
+          current.loc[1] = self.platforms[0].loc[1] + 2;
           current.delta[1] = 0;
           current.jumps = 2;
         }
