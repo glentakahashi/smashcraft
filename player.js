@@ -189,7 +189,7 @@ function Player() {
   
   self.init = function(stats) {
     self.stats = stats;
-    model.init(vertices, textureCoords, null, textures[self.stats.texture]);
+    model.init(vertices, textureCoords, null, textures[self.stats.id]);
   };
 
   self.tick = function(dt) {

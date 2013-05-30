@@ -19,7 +19,7 @@ function Game() {
   self.heroes = {
     guyman: {
       name: 'Guy-Man',
-      texture: 'guyman',
+      id: 'guyman',
       maxHealth: 100,
       jumpHeight: 1.0,
       moveSpeed: 0.35,
@@ -36,7 +36,7 @@ function Game() {
     },
     thomas: {
       name: 'Thomas',
-      texture: 'thomas',
+      id: 'thomas',
       maxHealth: 100,
       jumpHeight: 1.2,
       moveSpeed: 0.35,
