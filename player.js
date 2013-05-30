@@ -159,7 +159,7 @@ function Player() {
   };
 
   self.spawn = function() {
-    vec3.copy(self.loc, vec3.fromValues(0.0, 30.0, 0.0));
+    vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
     self.health = self.stats.health;
 
@@ -178,6 +178,7 @@ function Player() {
     $('#'+self.stats.id).text(self.health);
 
     if (self.health <= 0) {
+      self.deaths += 1;
       self.spawn();
     }
   };
@@ -221,12 +222,12 @@ function Player() {
 
     // Gravity only when not on ground
     if (self.airborne) {
-      vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
+      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms);
     }
 
     // Terminal velocities
-    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
-    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
+    vec3.max(self.delta, self.delta, constants.physics.TERMINAL_MAX);
+    vec3.min(self.delta, self.delta, constants.physics.TERMINAL_MIN);
 
     // Side walls
     if (self.loc[2] < -25 && self.delta[2] < 0)
@@ -251,7 +252,7 @@ function Player() {
     // Only when not stunned
     if (self.stun <= 0) {
       // Friction
-      self.delta[2] /= game.physics.FRICTION_Z;
+      self.delta[2] /= constants.physics.FRICTION_Z;
       if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
         self.delta[2] = 0.0;
     }

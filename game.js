@@ -7,54 +7,6 @@ function Game() {
   self.camera = null;
   self.controller = new Controller();
 
-  // Physics constants
-  self.physics = {
-    G: vec3.fromValues(0.0, -3.0, 0.0),
-    TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
-    TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
-    FRICTION_Z: 1.5
-  };
-
-  // Player stats
-  self.heroes = {
-    guyman: {
-      name: 'Guy-Man',
-      id: 'guyman',
-      health: 100,
-      jumpHeight: 1.0,
-      maxJumps: 2.0,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 50,
-          stun: 200, // in MS
-        }
-      }
-    },
-    thomas: {
-      name: 'Thomas',
-      id: 'thomas',
-      health: 100,
-      jumpHeight: 1.2,
-      maxJumps: 4.0,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 10,
-          stun: 200, // in MS
-        }
-      }
-    }
-  };
-
   // Initialize WebGL context, shaders
   var initGL = function() {
     var canvas = document.getElementById('canvas');
@@ -173,8 +125,8 @@ function Game() {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    self.players[0].init(self.heroes.guyman);
-    self.players[1].init(self.heroes.thomas);
+    self.players[0].init(constants.heros.guyman);
+    self.players[1].init(constants.heros.thomas);
   };
 
   var lastTime = 0;
@@ -197,27 +149,27 @@ function Game() {
       self.platforms[i].tick(dt);
     }
     for (var i in self.players) {
-      var current = self.players[i];
+      var currentPlayer = self.players[i];
       var airborne = true;
 
       // Player-platform collision
-      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].scale[2] &&
-          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].scale[2] &&
-          current.loc[1] >= self.platforms[0].loc[1] - self.platforms[0].scale[1] &&
-          current.loc[1] <= self.platforms[0].loc[1] + self.platforms[0].scale[1]
+      if (currentPlayer.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].scale[2] &&
+          currentPlayer.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].scale[2] &&
+          currentPlayer.loc[1] >= self.platforms[0].loc[1] - self.platforms[0].scale[1] &&
+          currentPlayer.loc[1] <= self.platforms[0].loc[1] + self.platforms[0].scale[1]
           ) {
 
-        if (current.delta[1] < 0) {
-          current.loc[1] = self.platforms[0].loc[1] + self.platforms[0].scale[1];
-          current.delta[1] = 0;
-          current.jumps = current.stats.maxJumps;
+        if (currentPlayer.delta[1] < 0) {
+          currentPlayer.loc[1] = self.platforms[0].loc[1] + self.platforms[0].scale[1];
+          currentPlayer.delta[1] = 0;
+          currentPlayer.jumps = currentPlayer.stats.maxJumps;
           airborne = false;
         }
       }
 
-      current.airborne = airborne;
+      currentPlayer.airborne = airborne;
 
-      current.tick(dt);
+      currentPlayer.tick(dt);
     }
     
     self.render(dt);

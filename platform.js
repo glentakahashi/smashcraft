@@ -114,16 +114,18 @@ function Platform(scale) {
     0.0, 3/4,
   ];
  
-  self.loc = vec3.fromValues(0.0, -1.0, 0.0);
+  self.loc = vec3.create();
   var x = 0;
   
-  self.init = function() {
+  self.init = function(loc) {
+    if (typeof loc !== 'undefined')
+      vec3.copy(self.loc, loc);
     model.init(vertices, textureCoords, null, textures.steve);
   };
 
   self.tick = function(dt) {
     x += dt;
-    self.loc[1] = -2 + 2*Math.sin(x / 1000);
+    self.loc[1] = -2 + 2*Math.sin(x / 1000); // this is for fun!
   };
 
   self.render = function (dt) {
