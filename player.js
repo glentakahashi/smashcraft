@@ -229,12 +229,6 @@ function Player() {
     vec3.max(self.delta, self.delta, constants.physics.TERMINAL_MAX);
     vec3.min(self.delta, self.delta, constants.physics.TERMINAL_MIN);
 
-    // Side walls
-    if (self.loc[2] < -25 && self.delta[2] < 0)
-      self.delta[2] = 0;
-    else if (self.loc[2] > 25 && self.delta[2] > 0)
-      self.delta[2] = 0;
-
     // Smooth rotation
     if (self.facing == -1) {
       if (faceRotation >= 1.0)

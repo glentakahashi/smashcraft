@@ -157,6 +157,7 @@ function Game() {
       var currentPlayer = self.players[i];
       var airborne = true;
 
+
       // Player-platform collision
       for (var j in self.platforms) {
         var currentPlatform = self.platforms[j];
@@ -178,6 +179,10 @@ function Game() {
 
       currentPlayer.airborne = airborne;
       currentPlayer.tick(dt);
+
+      // Die off the bottom
+      if (currentPlayer.loc[1] < -20.0)
+        currentPlayer.getHit(99999999999);
 
     }
     
