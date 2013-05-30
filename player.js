@@ -136,7 +136,10 @@ function Player() {
   self.stun = 0;
 
   self.jump = function() {
-    if (self.jumps > 0) {
+    if (self.jumps < 0)
+      return;
+    else {
+      // Play only on first jump
       self.delta[1] = self.stats.jumpHeight;
       self.jumps -= 1;
     }

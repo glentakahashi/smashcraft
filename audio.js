@@ -16,9 +16,9 @@ function Audio() {
   }
 
   self.init = function() {
-    sfx.punchHit = initSound('audio/punch-hit.mp3');
-    sfx.punchMiss = initSound('audio/punch-miss.mp3');
-    sfx.death = initSound('audio/death.mp3');
+    sfx.punchMiss = initSound('audio/Weak Whiff.wav');
+    sfx.punchHit= initSound('audio/Small Hit.wav');
+    sfx.death = initSound('audio/SuperScope Huge Shot.wav');
   };
 
   self.playSfx = function(sound) {
