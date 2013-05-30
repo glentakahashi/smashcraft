@@ -3,10 +3,10 @@ function Game() {
 
   // Game variables
   self.platforms = [
-    new Platform(vec3.fromValues(2.0, 2.0, 24.0), vec3.fromValues(0.0, -9.0, 0.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, -14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, 14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 10.0, 0.0))
+    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0))
   ];
   self.players = [new Player(), new Player()];
   self.camera = null;
@@ -68,8 +68,8 @@ function Game() {
 
   var initCamera = function() {
     mat4.lookAt(camera,
-                vec3.fromValues(35, 6, 0),
-                vec3.fromValues(0, 5, 0),
+                vec3.fromValues(45, 14, 0),
+                vec3.fromValues(0, 8, 0),
                 vec3.fromValues(0, 1, 0)
                );
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);

@@ -19,7 +19,7 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.05),
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 15,
           stun: 200, // in MS
@@ -38,7 +38,7 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.075),
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 10,
           stun: 200, // in MS
