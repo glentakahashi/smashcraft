@@ -12,7 +12,8 @@ function Game() {
     G: vec3.fromValues(0.0, -3.0, 0.0),
     TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
     TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
-    FRICTION_Z: 1.5
+    FRICTION_Z: 1.5,
+    MAX_JUMPS: 2
   };
 
   // Player stats
@@ -29,7 +30,7 @@ function Game() {
           facing: true,
           facingPush: vec3.fromValues(0.0, 0.0, 0.5),
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 10,
+          damage: 50,
           stun: 200, // in MS
         }
       }

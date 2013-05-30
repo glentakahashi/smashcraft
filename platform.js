@@ -114,7 +114,7 @@ function Platform(size) {
     0.0, 3/4,
   ];
  
-  self.loc = vec3.fromValues(4.0, -2.0, 0.0);
+  self.loc = vec3.fromValues(0.0, -2.0, 0.0);
   
   self.init = function() {
     model.init(vertices, textureCoords, null, textures.steve);
