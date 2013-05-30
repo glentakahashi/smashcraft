@@ -9,8 +9,12 @@ function Game() {
     new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0))
   ];
   self.players = [new Player(), new Player()];
-  self.camera = null;
   self.controller = new Controller();
+
+  // Camera stuff
+  self.zoomAmt = 1.0;
+  self.cameraTarget = vec3.fromValues(0.0, 8.0, 0.0);
+  self.cameraLoc = vec3.fromValues(120.0, 14.0, 0.0);
 
   // Initialize WebGL context, shaders
   var initGL = function() {
@@ -52,27 +56,31 @@ function Game() {
     perspective = mat4.create();
 
     // Set perspective matrix
-    // TODO: This belongs in a reshape function that gets called when canvas
-    //       changes shape. Since this canvas doesn't change, we can keep this
-    //       here for now.
-    gl.viewportWidth = canvas.width;
-    gl.viewportHeight = canvas.height;
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 30, 80);
-    gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
-    // Init GL options
+    doPerspective();
+
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
     gl.enable(gl.DEPTH_TEST);
-
   }
 
   var initCamera = function() {
     mat4.lookAt(camera,
-                vec3.fromValues(45, 14, 0),
-                vec3.fromValues(0, 8, 0),
+                self.cameraLoc,
+                self.cameraTarget,
                 vec3.fromValues(0, 1, 0)
                );
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
+  };
+
+  var doPerspective = function() {
+    gl.viewportWidth = canvas.width;
+    gl.viewportHeight = canvas.height;
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    self.zoomAmt = 5;
+    mat4.perspective(perspective,
+                     Math.PI/2 / self.zoomAmt,
+                     gl.viewportWidth / gl.viewportHeight,
+                     0.1, 200);
+    gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
   };
 
   var initController = function() {
@@ -164,10 +172,11 @@ function Game() {
     }
 
     // Players
+    var avgLoc = vec3.create();
     for (var i in self.players) {
       var currentPlayer = self.players[i];
+      vec3.add(avgLoc, avgLoc, currentPlayer.loc);
       var airborne = true;
-
 
       // Player-platform collision
       for (var j in self.platforms) {
@@ -200,6 +209,10 @@ function Game() {
         currentPlayer.die();
 
     }
+
+    vec3.scale(self.cameraTarget, avgLoc, 1/self.players.length);
+    initCamera();
+
     
     self.render(dt);
   };
