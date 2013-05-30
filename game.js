@@ -163,7 +163,11 @@ function Game() {
         var currentPlatform = self.platforms[j];
         if (currentPlayer.loc[2] <= currentPlatform.loc[2] + currentPlatform.scale[2] &&
             currentPlayer.loc[2] >= currentPlatform.loc[2] - currentPlatform.scale[2] &&
-            currentPlayer.loc[1] >= currentPlatform.loc[1] - currentPlatform.scale[1] &&
+            // Above (terminal velocity below platform top)
+            currentPlayer.loc[1] >= currentPlatform.loc[1] +
+                                    currentPlatform.scale[1] +
+                                    constants.physics.TERMINAL_MAX[1] &&
+            // Below (platform top + a little extra give)
             currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1] + 0.1
             ) {
 
