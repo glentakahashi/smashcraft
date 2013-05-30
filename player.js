@@ -118,7 +118,7 @@ function Player() {
   var model = new Model();
 
   // Game variables
-  self.loc = vec3.fromValues(2.0, 0.0, 0.0);
+  self.location = vec3.fromValues(2.0, 0.0, 0.0);
   self.health = 100;
   self.animation = null;
   self.stats = {
@@ -129,8 +129,8 @@ function Player() {
       neutral: {
         range: vec3.fromValues(100.0, 3.5, 4.5),
         facing: true,
-        facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-        absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
+        facingPush: vec3.fromValues(0.0, 0.0, 2.5),
+        absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
         damage: 10,
         stun: 200, // in MS
       }
@@ -138,7 +138,7 @@ function Player() {
   };
 
   // Physics shit
-  self.delta = vec3.create();
+  self.velocity = vec3.create();
   self.facing = 0;
   var faceRotation = 0;
   var jumps = MAX_JUMPS;
@@ -146,7 +146,7 @@ function Player() {
 
   self.jump = function() {
     if (jumps > 0) {
-      self.delta[1] = self.stats.jumpHeight;
+      self.velocity[1] = self.stats.jumpHeight;
       jumps -= 1;
     }
   };
@@ -156,7 +156,7 @@ function Player() {
     if (self.stun > 0)
       return;
 
-    self.delta[2] = dir * self.stats.moveSpeed;
+    self.velocity[2] = dir * self.stats.moveSpeed;
     if (dir < 0) {
       self.facing = -1;
     }
@@ -166,8 +166,9 @@ function Player() {
   };
 
   self.getHit = function(damage, push, stunTime) {
-    vec3.add(self.delta, self.delta, push);
-    self.stun = stunTime;
+    vec3.copy(self.velocity, push);
+    self.stun = Math.max(self.stun, stunTime);
+    self.health -= damage;
   };
 
   self.attack = function(type) {
@@ -180,7 +181,7 @@ function Player() {
         continue;
       var other = game.players[p];
       var dist = vec3.create();
-      vec3.subtract(dist, self.loc, other.loc);
+      vec3.subtract(dist, self.location, other.location);
       var push = vec3.create();
 
       // If is facing or attack doesn't need facing
@@ -205,14 +206,14 @@ function Player() {
   self.tick = function(dt) {
     // Gravity and terminal velocities
     var ms = dt / 1000;
-    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
-    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
-    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
+    vec3.scaleAndAdd(self.velocity, self.velocity, game.physics.G, ms);
+    vec3.max(self.velocity, self.velocity, game.physics.TERMINAL_MAX);
+    vec3.min(self.velocity, self.velocity, game.physics.TERMINAL_MIN);
 
-    if (self.loc[2] < -25 && self.delta[2] < 0)
-      self.delta[2] = 0;
-    else if (self.loc[2] > 25 && self.delta[2] > 0)
-      self.delta[2] = 0;
+    if (self.location[2] < -25 && self.velocity[2] < 0)
+      self.velocity[2] = 0;
+    else if (self.location[2] > 25 && self.velocity[2] > 0)
+      self.velocity[2] = 0;
 
     if (self.facing == -1) {
       // Smooth rotation
@@ -231,20 +232,20 @@ function Player() {
 
     if (self.stun <= 0) {
       // Friction
-      self.delta[2] /= game.physics.FRICTION_Z;
-      if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
-        self.delta[2] = 0.0;
+      self.velocity[2] /= game.physics.FRICTION_Z;
+      if (self.velocity[2] < 0.0001 && self.velocity[2] > -0.0001)
+        self.velocity[2] = 0.0;
     }
     else {
       self.stun -= dt;
     }
 
-    vec3.add(self.loc, self.loc, self.delta);
+    vec3.add(self.location, self.location, self.velocity);
 
     // TODO: this isn't ground
-    if (self.loc[1] < 0) {
-      self.loc[1] = 0.0;
-      self.delta[1] = 0.0;
+    if (self.location[1] < 0) {
+      self.location[1] = 0.0;
+      self.velocity[1] = 0.0;
       jumps = MAX_JUMPS;
     }
 
@@ -255,7 +256,7 @@ function Player() {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      mat4.translate(newMV, newMV, self.loc); // Move it back
+      mat4.translate(newMV, newMV, self.location); // Move it back
       mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
