@@ -115,12 +115,15 @@ function Platform(size) {
   ];
  
   self.loc = vec3.fromValues(0.0, -2.0, 0.0);
+  var x = 0;
   
   self.init = function() {
     model.init(vertices, textureCoords, null, textures.steve);
   };
 
   self.tick = function(dt) {
+    x += dt;
+    self.loc[1] = -2 + 2*Math.sin(x / 1000);
   };
 
   self.render = function (dt) {

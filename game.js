@@ -198,6 +198,7 @@ function Game() {
     }
     for (var i in self.players) {
       var current = self.players[i];
+      var airborne = true;
 
       // Player-platform collision
       if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
@@ -210,12 +211,11 @@ function Game() {
           current.loc[1] = self.platforms[0].loc[1] + 2;
           current.delta[1] = 0;
           current.jumps = current.stats.maxJumps;
-          current.airborne = false;
+          airborne = false;
         }
       }
-      else {
-        current.airborne = true;
-      }
+
+      current.airborne = airborne;
 
       current.tick(dt);
     }
