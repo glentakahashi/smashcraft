@@ -136,19 +136,18 @@ function Player() {
   self.stun = 0;
 
   self.jump = function() {
-    if (self.jumps < 0)
+    if (self.jumps <= 0)
       return;
-    else {
-      // Play only on first jump
-      self.delta[1] = self.stats.jumpHeight;
-      self.jumps -= 1;
-    }
+
+    self.delta[1] = self.stats.jumpHeight;
+    self.jumps -= 1;
   };
 
   self.drop = function() {
-    if (!self.airborne) {
-      self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.05;
-    }
+    if (self.airborne)
+      return;
+
+    self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.05;
   };
 
   self.move = function(dir) {
