@@ -2,7 +2,7 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [];
+  self.platforms = [new Platform(16.0)];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
@@ -15,6 +15,43 @@ function Game() {
     FRICTION_Z: 1.5
   };
 
+  // Player stats
+  self.heroes = {
+    guyman: {
+      name: 'Guy-Man',
+      id: 'guyman',
+      health: 100,
+      jumpHeight: 1.0,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
+          damage: 10,
+          stun: 200, // in MS
+        }
+      }
+    },
+    thomas: {
+      name: 'Thomas',
+      id: 'thomas',
+      health: 100,
+      jumpHeight: 1.2,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
+          damage: 10,
+          stun: 200, // in MS
+        }
+      }
+    }
+  };
 
   // Initialize WebGL context, shaders
   var initGL = function() {
@@ -35,8 +72,10 @@ function Game() {
     gl.useProgram(program);
 
     // Get textures
+    textures.guyman = getTexture('img/guyman.png');
+    textures.thomas = getTexture('img/thomas.png');
     textures.ram = getTexture('img/ram.png');
-
+    textures.steve = getTexture('img/steve.png');
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
@@ -96,6 +135,10 @@ function Game() {
     self.controller.hold(68, function() {
         self.players[0].move(-1);
     });
+    // F
+    self.controller.tap(70, function() {
+        self.players[0].attack('neutral');
+    });
 
 
     // UP
@@ -114,6 +157,10 @@ function Game() {
     self.controller.hold(39, function() {
         self.players[1].move(-1);
     });
+    // ENTER
+    self.controller.tap(13, function() {
+        self.players[1].attack('neutral');
+    });
   };
 
   self.init = function() {
@@ -124,9 +171,8 @@ function Game() {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    for (var i in self.players) {
-      self.players[i].init();
-    }
+    self.players[0].init(self.heroes.guyman);
+    self.players[1].init(self.heroes.thomas);
   };
 
   var lastTime = 0;
@@ -149,10 +195,28 @@ function Game() {
       self.platforms[i].tick(dt);
     }
     for (var i in self.players) {
-      self.players[i].tick(dt);
-    }
-    // Collision detection here?????
+      var current = self.players[i];
 
+      // Player-platform collision
+      if (current.loc[2] <= self.platforms[0].loc[2] + self.platforms[0].size &&
+          current.loc[2] >= self.platforms[0].loc[2] - self.platforms[0].size &&
+          current.loc[1] >= self.platforms[0].loc[1] - 2 &&
+          current.loc[1] <= self.platforms[0].loc[1] + 2
+          ) {
+
+        if (current.delta[1] < 0) {
+          current.loc[1] = self.platforms[0].loc[1] + 2;
+          current.delta[1] = 0;
+          current.jumps = 2;
+        }
+      }
+      else {
+        current.jumps = 1;
+      }
+
+      current.tick(dt);
+    }
+    
     self.render(dt);
   };
 
