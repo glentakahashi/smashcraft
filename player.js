@@ -222,7 +222,7 @@ function Player() {
     }
 
     if (hit)
-      audio.playSfx('punchHit');
+      audio.playSfx(curAttack.sound);
     else
       audio.playSfx('punchMiss');
   };

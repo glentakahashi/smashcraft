@@ -17,7 +17,8 @@ function Audio() {
 
   self.init = function() {
     sfx.punchMiss = initSound('audio/Weak Whiff.wav');
-    sfx.punchHit= initSound('audio/Small Hit.wav');
+    sfx.punchHit = initSound('audio/Small Hit.wav');
+    sfx.smashHit = initSound('audio/Smack.wav');
     sfx.death = initSound('audio/SuperScope Huge Shot.wav');
   };
 

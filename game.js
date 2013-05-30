@@ -98,6 +98,10 @@ function Game() {
     self.controller.tap(70, function() {
       self.players[0].attack('neutral');
     });
+    // G
+    self.controller.tap(71, function() {
+      self.players[0].attack('sideSmash');
+    });
 
 
     // UP
@@ -119,6 +123,10 @@ function Game() {
     // ENTER
     self.controller.tap(13, function() {
       self.players[1].attack('neutral');
+    });
+    // '
+    self.controller.tap(222, function() {
+      self.players[1].attack('sideSmash');
     });
   };
 

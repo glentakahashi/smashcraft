@@ -23,6 +23,16 @@ var constants = {
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 15,
           stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
+          absolutePush: vec3.fromValues(0.0, 0.05, 0.0),
+          damage: 15,
+          stun: 500, // in MS
+          sound: 'smashHit',
         }
       }
     },
@@ -42,6 +52,16 @@ var constants = {
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 10,
           stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
+          absolutePush: vec3.fromValues(0.0, 0.35, 0.0),
+          damage: 10,
+          stun: 700, // in MS
+          sound: 'smashHit',
         }
       }
     }
