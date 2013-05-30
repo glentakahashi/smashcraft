@@ -2,7 +2,7 @@ function Game() {
   var self = this;
 
   // Game variables
-  self.platforms = [];
+  self.platforms = [new Platform(16.0)];
   self.players = [new Player(), new Player()];
   self.camera = null;
   self.controller = new Controller();
@@ -36,7 +36,7 @@ function Game() {
 
     // Get textures
     textures.ram = getTexture('img/ram.png');
-
+    textures.steve = getTexture('img/steve.png');
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
@@ -149,10 +149,25 @@ function Game() {
       self.platforms[i].tick(dt);
     }
     for (var i in self.players) {
+      if(self.players[i].loc[2] <= self.platforms[0].loc[2]+self.platforms[0].size && self.players[i].loc[2] >= self.platforms[0].loc[2]-self.platforms[0].size && self.players[i].loc[1] >= self.platforms[0].loc[1]+1.0) {
+        if(self.players[i].jumps < 2){
+	  if(self.players[i].loc[1] < 0.0) {
+	    self.players[i].loc[1] = 0.0;
+            self.players[i].delta[1] = 0.0;
+            self.players[i].jumps = 2;//MAX_JUMPS;
+	  }
+	} else {
+	  self.players[i].loc[1] = 0.0;
+          self.players[i].delta[1] = 0.0;
+          self.players[i].jumps = 2;//MAX_JUMPS;
+	}
+      } else {
+      self.players[i].jumps = 1;
+      }
       self.players[i].tick(dt);
     }
     // Collision detection here?????
-
+    
     self.render(dt);
   };
 

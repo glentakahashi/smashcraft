@@ -124,11 +124,12 @@ function Player() {
   self.delta = vec3.create();
   self.facing = 0;
   self.faceRotation = 0;
-  var jumps = MAX_JUMPS;
+ // var jumps = MAX_JUMPS;
+  self.jumps = MAX_JUMPS;
   self.jump = function() {
-    if (jumps > 0) {
+    if (self.jumps > 0) {
       self.delta[1] = 1;
-      jumps -= 1;
+      self.jumps -= 1;
     }
   };
   self.move = function(dir) {
@@ -164,11 +165,11 @@ function Player() {
     vec3.add(self.loc, self.loc, self.delta);
 
     // TODO: this isn't ground
-    if (self.loc[1] < 0) {
+ /*   if (self.loc[1] < 0) {
       self.loc[1] = 0.0;
       self.delta[1] = 0.0;
       jumps = MAX_JUMPS;
-    }
+    }*/
 
     model.tick(dt);
   };
