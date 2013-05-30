@@ -144,7 +144,7 @@ function Player() {
 
   self.drop = function() {
     if (!self.airborne) {
-      self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.15;
+      self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.05;
     }
   };
 
