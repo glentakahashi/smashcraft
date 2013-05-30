@@ -75,7 +75,6 @@ function Game() {
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    self.zoomAmt = 5;
     mat4.perspective(perspective,
                      Math.PI/2 / self.zoomAmt,
                      gl.viewportWidth / gl.viewportHeight,
@@ -172,10 +171,17 @@ function Game() {
     }
 
     // Players
-    var avgLoc = vec3.create();
+    var locSum = vec3.create();
+    var minLoc = vec3.create();
+    var maxLoc = vec3.create();
     for (var i in self.players) {
       var currentPlayer = self.players[i];
-      vec3.add(avgLoc, avgLoc, currentPlayer.loc);
+
+      // Camera location math
+      vec3.add(locSum, locSum, currentPlayer.loc);
+      vec3.max(maxLoc, maxLoc, currentPlayer.loc);
+      vec3.min(minLoc, minLoc, currentPlayer.loc);
+
       var airborne = true;
 
       // Player-platform collision
@@ -204,14 +210,19 @@ function Game() {
       currentPlayer.airborne = airborne;
       currentPlayer.tick(dt);
 
+
       // Die off the bottom
       if (currentPlayer.loc[1] < -20.0)
         currentPlayer.die();
 
     }
 
-    vec3.scale(self.cameraTarget, avgLoc, 1/self.players.length);
+    // Camera movement
+    var dist = vec3.distance(minLoc, maxLoc);
+    self.zoomAmt = 56 / (Math.pow(dist, .65));
+    vec3.scale(self.cameraTarget, locSum, 1/self.players.length);
     initCamera();
+    doPerspective();
 
     
     self.render(dt);
