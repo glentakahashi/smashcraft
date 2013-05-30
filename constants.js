@@ -11,7 +11,7 @@ var constants = {
       name: 'Guy-Man',
       id: 'guyman',
       health: 100,
-      jumpHeight: 1.0,
+      jumpHeight: 1.1,
       maxJumps: 2,
       weight: 1.0,
       moveSpeed: 0.35,

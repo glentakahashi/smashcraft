@@ -197,7 +197,7 @@ function Game() {
 
       // Die off the bottom
       if (currentPlayer.loc[1] < -20.0)
-        currentPlayer.getHit(99999999999);
+        currentPlayer.die();
 
     }
     

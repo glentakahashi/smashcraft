@@ -170,8 +170,15 @@ function Player() {
     vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
     self.health = self.stats.health;
+    self.stun = 0;
 
     $('#'+self.stats.id).text(self.health);
+  };
+
+  self.die = function() {
+    audio.playSfx('death');
+    self.deaths += 1;
+    self.spawn();
   };
 
   self.getHit = function(damage, push, stunTime) {
@@ -186,9 +193,7 @@ function Player() {
     $('#'+self.stats.id).text(self.health);
 
     if (self.health <= 0) {
-      audio.playSfx('death');
-      self.deaths += 1;
-      self.spawn();
+      self.die();
     }
   };
 
