@@ -58,9 +58,9 @@ var constants = {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
           facingPush: vec3.fromValues(0.0, 0.0, 0.65),
-          absolutePush: vec3.fromValues(0.0, 0.35, 0.0),
+          absolutePush: vec3.fromValues(0.0, 0.85, 0.0),
           damage: 10,
-          stun: 700, // in MS
+          stun: 600, // in MS
           sound: 'smashHit',
         }
       }
