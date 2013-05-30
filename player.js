@@ -194,6 +194,8 @@ function Player() {
     if (typeof curAttack === 'undefined')
       return;
 
+    var hit = false;
+
     for (var p in game.players) {
       if (game.players[p] == self)
         continue;
@@ -211,9 +213,15 @@ function Player() {
           vec3.add(push, push, curAttack.absolutePush);
 
           other.getHit(curAttack.damage, push, curAttack.stun);
+          hit = true;
         }
       }
     }
+
+    if (hit)
+      audio.playSfx('punchHit');
+    else
+      audio.playSfx('punchMiss');
   };
   
   self.init = function(stats) {
