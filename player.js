@@ -184,6 +184,7 @@ function Player() {
     $('#'+self.stats.id).text(self.health);
 
     if (self.health <= 0) {
+      audio.playSfx('death');
       self.deaths += 1;
       self.spawn();
     }

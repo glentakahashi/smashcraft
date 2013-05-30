@@ -18,6 +18,7 @@ function Audio() {
   self.init = function() {
     sfx.punchHit = initSound('audio/punch-hit.mp3');
     sfx.punchMiss = initSound('audio/punch-miss.mp3');
+    sfx.death = initSound('audio/death.mp3');
   };
 
   self.playSfx = function(sound) {
