@@ -119,7 +119,7 @@ function Player() {
 
   // Game variables
   self.location = vec3.fromValues(2.0, 0.0, 0.0);
-  self.health = 100;
+  self.health = null;
   self.animation = null;
   self.stats = null;
 
@@ -155,6 +155,10 @@ function Player() {
     vec3.copy(self.velocity, push);
     self.stun = Math.max(self.stun, stunTime);
     self.health -= damage;
+
+    // TODO: this is kinda hackish and odd
+    $('#'+self.stats.id).text(self.health);
+
     if (self.health <= 0) {
       console.log(self.stats.name + ' has died');
     }
@@ -190,6 +194,11 @@ function Player() {
   self.init = function(stats) {
     self.stats = stats;
     model.init(vertices, textureCoords, null, textures[self.stats.id]);
+
+    self.health = self.stats.health;
+
+    // TODO: this is kinda hackish and odd
+    $('#'+self.stats.id).text(self.health);
   };
 
   self.tick = function(dt) {

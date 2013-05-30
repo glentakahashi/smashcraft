@@ -20,15 +20,15 @@ function Game() {
     guyman: {
       name: 'Guy-Man',
       id: 'guyman',
-      maxHealth: 100,
+      health: 100,
       jumpHeight: 1.0,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 2.5),
-          absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 10,
           stun: 200, // in MS
         }
@@ -37,15 +37,15 @@ function Game() {
     thomas: {
       name: 'Thomas',
       id: 'thomas',
-      maxHealth: 100,
+      health: 100,
       jumpHeight: 1.2,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 2.5),
-          absolutePush: vec3.fromValues(0.0, 1.25, 0.0),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
+          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
           damage: 10,
           stun: 200, // in MS
         }
