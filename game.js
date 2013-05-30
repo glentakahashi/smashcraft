@@ -12,8 +12,7 @@ function Game() {
     G: vec3.fromValues(0.0, -3.0, 0.0),
     TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
     TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
-    FRICTION_Z: 1.5,
-    MAX_JUMPS: 2
+    FRICTION_Z: 1.5
   };
 
   // Player stats
@@ -23,6 +22,7 @@ function Game() {
       id: 'guyman',
       health: 100,
       jumpHeight: 1.0,
+      maxJumps: 2.0,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
@@ -40,6 +40,7 @@ function Game() {
       id: 'thomas',
       health: 100,
       jumpHeight: 1.2,
+      maxJumps: 4.0,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
@@ -208,11 +209,12 @@ function Game() {
         if (current.delta[1] < 0) {
           current.loc[1] = self.platforms[0].loc[1] + 2;
           current.delta[1] = 0;
-          current.jumps = 2;
+          current.jumps = current.stats.maxJumps;
+          current.airborne = false;
         }
       }
       else {
-        current.jumps = 1;
+        current.airborne = true;
       }
 
       current.tick(dt);

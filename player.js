@@ -132,6 +132,7 @@ function Player() {
   self.facing = 0;
   var faceRotation = 0;
   self.jumps = 0;
+  self.airborne = true;
   self.stun = 0;
 
   self.jump = function() {
@@ -219,7 +220,7 @@ function Player() {
     var ms = dt / 1000;
 
     // Gravity only when not on ground
-    if (self.jumps != game.physics.MAX_JUMPS) {
+    if (self.airborne) {
       vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
     }
 
@@ -259,11 +260,6 @@ function Player() {
     }
 
     vec3.add(self.loc, self.loc, self.delta);
-
-    // Die off the bottom
-    if (self.loc[1] < -30.0) {
-      self.getHit(9999999999);
-    }
 
     model.tick(dt);
   };
