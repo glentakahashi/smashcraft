@@ -136,10 +136,18 @@ function Player() {
   self.stun = 0;
 
   self.jump = function() {
-    if (self.jumps > 0) {
-      self.delta[1] = self.stats.jumpHeight;
-      self.jumps -= 1;
-    }
+    if (self.jumps <= 0)
+      return;
+
+    self.delta[1] = self.stats.jumpHeight;
+    self.jumps -= 1;
+  };
+
+  self.drop = function() {
+    if (self.airborne)
+      return;
+
+    self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.05;
   };
 
   self.move = function(dir) {
@@ -162,8 +170,15 @@ function Player() {
     vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
     self.health = self.stats.health;
+    self.stun = 0;
 
     $('#'+self.stats.id).text(self.health);
+  };
+
+  self.die = function() {
+    audio.playSfx('death');
+    self.deaths += 1;
+    self.spawn();
   };
 
   self.getHit = function(damage, push, stunTime) {
@@ -178,8 +193,7 @@ function Player() {
     $('#'+self.stats.id).text(self.health);
 
     if (self.health <= 0) {
-      self.deaths += 1;
-      self.spawn();
+      self.die();
     }
   };
 
@@ -187,6 +201,8 @@ function Player() {
     var curAttack = self.stats.attacks[type];
     if (typeof curAttack === 'undefined')
       return;
+
+    var hit = false;
 
     for (var p in game.players) {
       if (game.players[p] == self)
@@ -205,9 +221,15 @@ function Player() {
           vec3.add(push, push, curAttack.absolutePush);
 
           other.getHit(curAttack.damage, push, curAttack.stun);
+          hit = true;
         }
       }
     }
+
+    if (hit)
+      audio.playSfx(curAttack.sound);
+    else
+      audio.playSfx('punchMiss');
   };
   
   self.init = function(stats) {
@@ -222,18 +244,12 @@ function Player() {
 
     // Gravity only when not on ground
     if (self.airborne) {
-      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms);
+      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms * self.stats.weight);
     }
 
     // Terminal velocities
     vec3.max(self.delta, self.delta, constants.physics.TERMINAL_MAX);
     vec3.min(self.delta, self.delta, constants.physics.TERMINAL_MIN);
-
-    // Side walls
-    if (self.loc[2] < -25 && self.delta[2] < 0)
-      self.delta[2] = 0;
-    else if (self.loc[2] > 25 && self.delta[2] > 0)
-      self.delta[2] = 0;
 
     // Smooth rotation
     if (self.facing == -1) {

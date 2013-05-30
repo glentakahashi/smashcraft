@@ -3,10 +3,10 @@ function Game() {
 
   // Game variables
   self.platforms = [
-    new Platform(vec3.fromValues(2.0, 2.0, 24.0), vec3.fromValues(0.0, -9.0, 0.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, -14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 2.0, 14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 10.0, 0.0))
+    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0))
   ];
   self.players = [new Player(), new Player()];
   self.camera = null;
@@ -58,7 +58,7 @@ function Game() {
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100);
+    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 30, 80);
     gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
     // Init GL options
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
@@ -68,8 +68,8 @@ function Game() {
 
   var initCamera = function() {
     mat4.lookAt(camera,
-                vec3.fromValues(35, 6, 0),
-                vec3.fromValues(0, 5, 0),
+                vec3.fromValues(45, 14, 0),
+                vec3.fromValues(0, 8, 0),
                 vec3.fromValues(0, 1, 0)
                );
     gl.uniformMatrix4fv(program.uCMatrix, false, camera);
@@ -80,45 +80,53 @@ function Game() {
 
     // W
     self.controller.tap(87, function() {
-        self.players[0].jump();
+      self.players[0].jump();
     });
     // S
     self.controller.hold(83, function() {
-        //self.players[0].loc[1] -= 0.5;
+      self.players[0].drop();
     });
     // A
     self.controller.hold(65, function() {
-        self.players[0].move(1);
+      self.players[0].move(1);
     });
     // D
     self.controller.hold(68, function() {
-        self.players[0].move(-1);
+      self.players[0].move(-1);
     });
     // F
     self.controller.tap(70, function() {
-        self.players[0].attack('neutral');
+      self.players[0].attack('neutral');
+    });
+    // G
+    self.controller.tap(71, function() {
+      self.players[0].attack('sideSmash');
     });
 
 
     // UP
     self.controller.tap(38, function() {
-        self.players[1].jump();
+      self.players[1].jump();
     });
     // DOWN
     self.controller.hold(40, function() {
-        //self.players[1].loc[1] -= 0.5;
+      self.players[1].drop();
     });
     // LEFT
     self.controller.hold(37, function() {
-        self.players[1].move(1);
+      self.players[1].move(1);
     });
     // RIGHT
     self.controller.hold(39, function() {
-        self.players[1].move(-1);
+      self.players[1].move(-1);
     });
     // ENTER
     self.controller.tap(13, function() {
-        self.players[1].attack('neutral');
+      self.players[1].attack('neutral');
+    });
+    // '
+    self.controller.tap(222, function() {
+      self.players[1].attack('sideSmash');
     });
   };
 
@@ -136,9 +144,6 @@ function Game() {
 
   var lastTime = 0;
   self.tick = function() {
-    // Controllers
-    self.controller.tick();
-
     // New frame
     requestAnimFrame(self.tick);
 
@@ -150,23 +155,34 @@ function Game() {
     }
     lastTime = timeNow;
 
+    // Controllers
+    self.controller.tick();
+
+    // Platforms
     for (var i in self.platforms) {
       self.platforms[i].tick(dt);
     }
+
+    // Players
     for (var i in self.players) {
       var currentPlayer = self.players[i];
       var airborne = true;
+
 
       // Player-platform collision
       for (var j in self.platforms) {
         var currentPlatform = self.platforms[j];
         if (currentPlayer.loc[2] <= currentPlatform.loc[2] + currentPlatform.scale[2] &&
             currentPlayer.loc[2] >= currentPlatform.loc[2] - currentPlatform.scale[2] &&
-            currentPlayer.loc[1] >= currentPlatform.loc[1] - currentPlatform.scale[1] &&
-            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1]
+            // Above (terminal velocity below platform top)
+            currentPlayer.loc[1] >= currentPlatform.loc[1] +
+                                    currentPlatform.scale[1] +
+                                    constants.physics.TERMINAL_MAX[1] &&
+            // Below (platform top + a little extra give)
+            currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1] + 0.1
             ) {
 
-          if (currentPlayer.delta[1] < 0) {
+          if (currentPlayer.delta[1] <= 0) {
             currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
             currentPlayer.delta[1] = 0;
             currentPlayer.jumps = currentPlayer.stats.maxJumps;
@@ -178,6 +194,10 @@ function Game() {
 
       currentPlayer.airborne = airborne;
       currentPlayer.tick(dt);
+
+      // Die off the bottom
+      if (currentPlayer.loc[1] < -20.0)
+        currentPlayer.die();
 
     }
     

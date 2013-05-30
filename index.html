@@ -9,8 +9,8 @@
 
     <canvas id="canvas" width="800" height="500"></canvas>
     <div id="hud">
-      Guy-Man HP: <span id="guyman"></span><br>
-      Thomas HP: <span id="thomas"></span>
+      Guy-Man HP: <span id="guyman"></span> [WASD: move, F: attack, G: smash]<br>
+      Thomas HP: <span id="thomas"></span> [ARROW: move, ENTER: attack, ': smash]
     </div>
 
   </body>
@@ -50,6 +50,7 @@
   <!-- Game Data & Utility -->
   <script src="constants.js" type="text/javascript"></script>
   <script src="util.js" type="text/javascript"></script>
+  <script src="audio.js" type="text/javascript"></script>
 
   <!-- Classes -->
   <script src="controller.js" type="text/javascript"></script>
@@ -61,6 +62,7 @@
 
   <script type="text/javascript">
     // Globals
+    audio = new Audio();
     mvstack = new MatrixStack();
     gl = null;
     program = null;
@@ -72,6 +74,7 @@
     perspective = null;
 
     var game = new Game();
+    audio.init();
     game.init();
     // Tick happens after texture is loaded
     // TODO: make it less shitty, especially with multiple textures
