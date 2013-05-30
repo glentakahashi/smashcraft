@@ -58,7 +58,7 @@ function Game() {
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100);
+    mat4.perspective(perspective, 45, gl.viewportWidth / gl.viewportHeight, 30, 80);
     gl.uniformMatrix4fv(program.uPMatrix, false, perspective); 
     // Init GL options
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
