@@ -200,7 +200,7 @@ function Game() {
 
     // Camera movement
     var dist = vec3.distance(minLoc, maxLoc);
-    self.camera.zoomTarget = 40 / (Math.pow(dist, .65));
+    self.camera.zoomTarget = 35 / (Math.pow(dist, .65));
     vec3.scale(self.camera.atTarget, locSum, 1/self.players.length);
 
     self.camera.tick(dt);
