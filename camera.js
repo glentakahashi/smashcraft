@@ -51,8 +51,23 @@ function Camera() {
   };
 
   self.tick = function(dt) {
-    vec3.copy(eyeActual, self.eyeTarget);
-    vec3.copy(atActual, self.atTarget);
+    var ms = dt / 500;
+
+    // Move at
+    var atDiff = vec3.create();
+    vec3.subtract(atDiff, self.atTarget, atActual);
+    var atDiffLen = vec3.length(atDiff);
+    if (atDiffLen > 0.1)
+      vec3.scaleAndAdd(atActual, atActual, atDiff, atDiffLen * ms);
+    else
+      vec3.copy(atActual, self.atTarget);
+
+    // Change zoom
+    var zoomDiff = self.zoomTarget - zoomActual;
+    if (zoomDiff > 0.1)
+      zoomActual += zoomDiff * ms;
+    else
+      zoomActual = self.zoomTarget;
 
     doLookAt();
     doPerspective();

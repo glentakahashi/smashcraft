@@ -119,7 +119,6 @@ function Game() {
 
   self.init = function() {
     initGL();
-    //initCamera();
     self.camera.init(vec3.fromValues(80.0, 15, 0),
                      vec3.fromValues(0.0, 8.0, 0.0));
     initController();
@@ -201,7 +200,7 @@ function Game() {
 
     // Camera movement
     var dist = vec3.distance(minLoc, maxLoc);
-    self.camera.zoomTarget = 56 / (Math.pow(dist, .65));
+    self.camera.zoomTarget = 40 / (Math.pow(dist, .65));
     vec3.scale(self.camera.atTarget, locSum, 1/self.players.length);
 
     self.camera.tick(dt);
