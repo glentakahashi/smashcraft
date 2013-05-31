@@ -50,6 +50,10 @@ function Camera() {
     perspective = mat4.create();
   };
 
+  self.setZoomTarget = function(zoom) {
+    self.zoomTarget = Math.min(zoom, 6);
+  };
+
   self.tick = function(dt) {
     var ms = dt / 500;
 

@@ -6,6 +6,12 @@ var constants = {
     FRICTION_Z: 1.5
   },
 
+  stage: {
+    battlefield: {
+
+    }
+  },
+
   heros: {
     guyman: {
       name: 'Guy-Man',

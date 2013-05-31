@@ -56,9 +56,6 @@ function Game() {
     gl.enable(gl.DEPTH_TEST);
   }
 
-  var initCamera = function() {
-  };
-
   var doPerspective = function() {
   };
 
@@ -200,7 +197,7 @@ function Game() {
 
     // Camera movement
     var dist = vec3.distance(minLoc, maxLoc);
-    self.camera.zoomTarget = 35 / (Math.pow(dist, .65));
+    self.camera.setZoomTarget(35 / (Math.pow(dist, .65)));
     vec3.scale(self.camera.atTarget, locSum, 1/self.players.length);
 
     self.camera.tick(dt);
