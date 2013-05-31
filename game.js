@@ -34,18 +34,23 @@ function Game() {
     textures.guyman = getTexture('img/guyman.png');
     textures.thomas = getTexture('img/thomas.png');
     textures.ram = getTexture('img/ram.png');
-    textures.steve = getTexture('img/steve.png');
+    textures.steve = getTexture('img/steve2.png');
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
+    program.aVertexNormal = gl.getAttribLocation(program, 'aVertexNormal');
     program.uMVMatrix = gl.getUniformLocation(program, 'uMVMatrix');
     program.uPMatrix = gl.getUniformLocation(program, 'uPMatrix');
     program.uCMatrix = gl.getUniformLocation(program, 'uCMatrix');
+    program.uNMatrix = gl.getUniformLocation(program, 'uNMatrix');
+    program.uAmbientColor = gl.getUniformLocation(program, 'uAmbientColor');
+    program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
+    program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.enableVertexAttribArray(program.aTextureCoord);
-
+    gl.enableVertexAttribArray(program.aVertexNormal);
     // Initialize matrices
     modelView = mat4.create();
 
@@ -208,7 +213,11 @@ function Game() {
   self.render = function (dt) {
     //gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+    
+    //Lighting stuff
+    gl.uniform3f(program.uAmbientColor, 0.6, 0.6, 0.6);
+    gl.uniform3f(program.uPointLightingLocation, 0.0, 2.0, 0.0);
+    gl.uniform3f(program.uPointLightingColor, 1.0, 0.0, 0.0);
     for (var i in self.platforms) {
       self.platforms[i].render();
     }
