@@ -216,7 +216,7 @@ function Game() {
     
     //Lighting stuff
     gl.uniform3f(program.uAmbientColor, 0.6, 0.6, 0.6);
-    gl.uniform3f(program.uPointLightingLocation, 0.0, 2.0, 0.0);
+    gl.uniform3f(program.uPointLightingLocation, 40.0, 10.0, 0.0);
     gl.uniform3f(program.uPointLightingColor, 1.0, 0.0, 0.0);
     for (var i in self.platforms) {
       self.platforms[i].render();
