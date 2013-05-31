@@ -16,7 +16,6 @@ var constants = {
     guyman: {
       name: 'Guy-Man',
       id: 'guyman',
-      health: 100,
       jumpHeight: 1.1,
       maxJumps: 2,
       weight: 1.0,
@@ -25,8 +24,9 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.05),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.15),
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
+          scale: 1.0,
           damage: 15,
           stun: 200, // in MS
           sound: 'punchHit',
@@ -36,6 +36,7 @@ var constants = {
           facing: true,
           facingPush: vec3.fromValues(0.0, 0.0, 0.65),
           absolutePush: vec3.fromValues(0.0, 0.05, 0.0),
+          scale: 2.0,
           damage: 15,
           stun: 500, // in MS
           sound: 'smashHit',
@@ -45,7 +46,6 @@ var constants = {
     thomas: {
       name: 'Thomas',
       id: 'thomas',
-      health: 100,
       jumpHeight: 0.6,
       maxJumps: 6,
       weight: 0.6,
@@ -54,8 +54,9 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.075),
+          facingPush: vec3.fromValues(0.0, 0.0, 0.175),
           absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
+          scale: 1.0,
           damage: 10,
           stun: 200, // in MS
           sound: 'punchHit',
@@ -65,6 +66,7 @@ var constants = {
           facing: true,
           facingPush: vec3.fromValues(0.0, 0.0, 0.65),
           absolutePush: vec3.fromValues(0.0, 0.85, 0.0),
+          scale: 1.0,
           damage: 10,
           stun: 600, // in MS
           sound: 'smashHit',
