@@ -19,30 +19,29 @@
 			border-spacing: 0px;
 		}
 		.highlightRed {
-		    border-color:red;
+		    border-top-color:red;
 		}
 		.highlightBlue {
-		    border-color:blue;
+		    border-right-color:blue;
 		}
-		.highlightPurple {
-		    border-color:mediumpurple;
+		.highlightGreen {
+			border-bottom-color:green;
+		}
+		.highlightYellow {
+			border-left-color:yellow;
 		}
 		img {
 			width: inherit;
 			height: inherit;
 		}
 		#players {
-			width: 720px;
+			width: 900px;
 		}
 		.player {
 			width: 200px;
 			height: 380px;
-		}
-		#player1 {
-			float:left;
-		}
-		#player2 {
-			float:right;
+			display:inline-block;
+			margin-right:16px;
 		}
 		.playerImage {
 			border-style:inset;
@@ -54,18 +53,25 @@
 		#player2Image {
 			border-color:blue;
 		}
+		#player3Image {
+			border-color:green;
+		}
+		#player4Image {
+			border-color:yellow;
+		}
 	</style>
+	<script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
   </head>
   <body style="padding: 0; margin: 0;">
 	<div id="selection">
 	<table id="characterSelection">
 		<tr>
 			<td id="choice0" class="highlightRed"><img src="img/characters/luigiHead.png"></td>
-			<td id="choice1" class="highlightBlue"><img src="img/characters/marioHead.png"></td>
+			<td id="choice1"><img src="img/characters/marioHead.png"></td>
 			<td id="choice2"><img src="img/characters/donkey kongHead.png"></td>
 			<td id="choice3"><img src="img/characters/linkHead.png"></td>
 			<td id="choice4"><img src="img/characters/samusHead.png"></td>
-			<td id="choice5"><img src="img/characters/captain falconHead.png"></td>
+			<td id="choice5" class="highlightBlue"><img src="img/characters/captain falconHead.png"></td>
 		</tr>
 		<tr>
 			<td id="choice6"><img src="img/characters/nessHead.png"></td>
@@ -90,17 +96,31 @@
 			<img id="player1Image" class="playerImage" src="img/characters/luigiBody.png">
 		</div>
 		<div id="player2" class="player">
-			<h2>Mario</h2>
-			<img id="player2Image" class="playerImage" src="img/characters/marioBody.png">
+			<h2>Luigi</h2>
+			<img id="player2Image" class="playerImage" src="img/characters/luigiBody.png">
+		</div>
+		<div id="player3" class="player" style="display:none;">
+			<h2>Luigi</h2>
+			<img id="player3Image" class="playerImage" src="img/characters/luigiBody.png">
+		</div>
+		<div id="player4" class="player" style="display:none;">
+			<h2>Luigi</h2>
+			<img id="player4Image" class="playerImage" src="img/characters/luigiBody.png">
 		</div>
 	</div>
 	</div>
 	<script>
 	//this controls the choice of skins
-	var redLoc=0;
-	var blueLoc=1;
 	var rows=3;
 	var cols=6;
+	var redLoc=0;
+	var blueLoc=cols-1;
+	var greenLoc=(rows-1)*cols;
+	var yellowLoc=rows*cols-1;
+	var numPlayers=2;
+	$(function() {
+		updateColoring();
+	});
 	window.onkeydown = function(e) {
 	    switch(e.which) {
 	        case 87:
@@ -143,38 +163,115 @@
 	            if(blueLoc%cols==0) blueLoc+=cols-1;
 	            else blueLoc-=1;
 	            break;
+			case 89:
+				//move green up
+	            if(Math.floor(greenLoc/cols)==0) greenLoc+=(rows-1)*cols;
+	            else greenLoc-=cols;
+				break;
+			case 74:
+				//move green right
+	            if(greenLoc%cols==cols-1) greenLoc-=cols-1;
+	            else greenLoc+=1;
+				break;
+			case 72:
+				//move green down
+	            if(Math.floor(greenLoc/cols)==rows-1) greenLoc-=(rows-1)*cols;
+	            else greenLoc+=cols;
+				break;
+			case 71:
+				//move green left
+	            if(greenLoc%cols==0) greenLoc+=cols-1;
+	            else greenLoc-=1;
+				break;
+			case 80:
+				//move yellow up
+	            if(Math.floor(yellowLoc/cols)==0) yellowLoc+=(rows-1)*cols;
+	            else yellowLoc-=cols;
+				break;
+			case 222:
+				//move yellow right
+	            if(yellowLoc%cols==cols-1) yellowLoc-=cols-1;
+	            else yellowLoc+=1;
+				break;
+			case 186:
+				//move yellow down
+	            if(Math.floor(yellowLoc/cols)==rows-1) yellowLoc-=(rows-1)*cols;
+	            else yellowLoc+=cols;
+				break;
+			case 76:
+				//move yellow left
+	            if(yellowLoc%cols==0) yellowLoc+=cols-1;
+	            else yellowLoc-=1;
+				break;
+			case 50:
+				//2 player
+				$("#player3").hide();
+				$("#player4").hide();
+			    $("td").removeClass("highlightGreen");
+			    $("td").removeClass("highlightYellow");
+				numPlayers=2;
+				break;
+			case 51:
+				//3 player
+				$("#player3").show();
+				$("#player4").hide();
+			    $("td").removeClass("highlightYellow");
+				numPlayers=3;
+				break;
+			case 52:
+				//4 player
+				$("#player3").show();
+				$("#player4").show();
+				numPlayers=4;
+				break;
 			case 13:
 				//start game
 				$("#selection").hide();
 				$("#game").show();
 				var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
 				var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
+				var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
+				var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
 				redName=redName.substring(0,redName.length-8);
 				blueName=blueName.substring(0,blueName.length-8);
-			    game = new Game(redName,blueName);
+				greenName=greenName.substring(0,greenName.length-8);
+				yellowName=yellowName.substring(0,yellowName.length-8);
+				game = new Game(numPlayers,redName,blueName,greenName,yellowName);
 			    audio.init();
 			    game.init();
 				break;
 	    }
 		//update coloring
+		updateColoring();
+	};
+	function updateColoring() {
 	    $("td").removeClass("highlightRed");
 	    $("td").removeClass("highlightBlue");
-	    $("td").removeClass("highlightPurple");
-	    if(redLoc==blueLoc) {
-	        $("#choice"+redLoc).addClass("highlightPurple");
-	    } else {
-	        $("#choice"+redLoc).addClass("highlightRed");
-	        $("#choice"+blueLoc).addClass("highlightBlue");
-	    }
+	    $("td").removeClass("highlightGreen");
+	    $("td").removeClass("highlightYellow");
+	    $("#choice"+redLoc).addClass("highlightRed");
+	    $("#choice"+blueLoc).addClass("highlightBlue");
+	    if(numPlayers>2)
+			$("#choice"+greenLoc).addClass("highlightGreen");
+	    if(numPlayers>3)
+			$("#choice"+yellowLoc).addClass("highlightYellow");
 		var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
 		var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
+		var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
+		var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
 		redName=redName.substring(0,redName.length-8);
 		blueName=blueName.substring(0,blueName.length-8);
+		greenName=greenName.substring(0,greenName.length-8);
+		yellowName=yellowName.substring(0,yellowName.length-8);
 		$("#player1 img")[0].src=document.URL+"img/characters/"+redName+"Body.png";
 		$("#player2 img")[0].src=document.URL+"img/characters/"+blueName+"Body.png";
+		$("#player3 img")[0].src=document.URL+"img/characters/"+greenName+"Body.png";
+		$("#player4 img")[0].src=document.URL+"img/characters/"+yellowName+"Body.png";
 		$("#player1 h2").html(capEachWord(decodeURIComponent(redName)));
 		$("#player2 h2").html(capEachWord(decodeURIComponent(blueName)));
-	};
+		$("#player3 h2").html(capEachWord(decodeURIComponent(greenName)));
+		$("#player4 h2").html(capEachWord(decodeURIComponent(yellowName)));
+	}
 	function capEachWord(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
@@ -182,8 +279,10 @@
 	<div id="game" style="display:none;">
     <canvas id="canvas" width="800" height="500"></canvas>
     	<div id="hud">
-      		Guy-Man HP: <span id="guyman"></span> [WASD: move, F: attack, G: smash]<br>
-      		Thomas HP: <span id="thomas"></span> [ARROW: move, ENTER: attack, ': smash]
+        1P: <span id="player1hp"></span> [WASD: move, Q: attack, E: smash]<br>
+        2P: <span id="player2hp"></span> [ARROW: move, ENTER: attack, Left Shift: smash]<br>
+	  		3P: <span id="player3hp"></span> [YGHJ: move, T: attack, U: smash]<br>
+        4P: <span id="player4hp"></span> [PL;': move, O: attack, [: smash]
     	</div>
 	</div>
 
@@ -212,7 +311,7 @@
       gl_Position = uPMatrix * uCMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
       vTextureCoord = aTextureCoord;
       vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
-      vec3 transformedNormal = uNMatrix * mat3(uMVMatrix) * aVertexNormal;
+      vec3 transformedNormal = uNMatrix * aVertexNormal;
       float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
       vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
 
@@ -234,7 +333,6 @@
   </script>
 
   <!-- Libraries -->
-  <script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
   <script src="lib/gl-matrix-min.js" type="text/javascript"></script>
   <script src="lib/webgl-utils.js" type="text/javascript"></script>
 

@@ -1,14 +1,21 @@
-function Game(p1,p2) {
+function Game(players,p1,p2,p3,p4) {
   var self = this;
 
   // Game variables
   self.platforms = [
-    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0))
+    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0))
   ];
-  self.players = [new Player(1), new Player(2)];
+  if(Math.random()<0.5) {
+	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
+  }
+  if(Math.random()<0.5) {
+	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
+  }
+  if(Math.random()<0.5) {
+	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0)));
+  }
+  self.players = [];
+  for(var i=0;i<players;i++) self.players.push(new Player(i));
   self.controller = new Controller();
   self.camera = new Camera();
 
@@ -31,10 +38,12 @@ function Game(p1,p2) {
     gl.useProgram(program);
 
     // Get textures
-    textures.guyman = getTexture('img/characters/'+p1+'BMP.png');
-    textures.thomas = getTexture('img/characters/'+p2+'BMP.png');
-    textures.ram = getTexture('img/ram.png');
+    textures[0] = getTexture('img/characters/' + p1 + 'BMP.png');
+    textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
+    textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
+    textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
     textures.steve = getTexture('img/steve2.png');
+    
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
@@ -83,12 +92,12 @@ function Game(p1,p2) {
     self.controller.hold(68, function() {
       self.players[0].move(-1);
     });
-    // F
-    self.controller.tap(70, function() {
+    // Q
+    self.controller.tap(81, function() {
       self.players[0].attack('neutral');
     });
-    // G
-    self.controller.tap(71, function() {
+    // E
+    self.controller.tap(69, function() {
       self.players[0].attack('sideSmash');
     });
 
@@ -113,10 +122,63 @@ function Game(p1,p2) {
     self.controller.tap(13, function() {
       self.players[1].attack('neutral');
     });
-    // '
-    self.controller.tap(222, function() {
+    // Right Shift
+    self.controller.tap(16, function() {
       self.players[1].attack('sideSmash');
     });
+
+	if(self.players.length>2) {
+	    // Y
+	    self.controller.tap(89, function() {
+	      self.players[2].jump();
+	    });
+	    // H
+	    self.controller.hold(72, function() {
+	      self.players[2].drop();
+	    });
+	    // J
+	    self.controller.hold(71, function() {
+	      self.players[2].move(1);
+	    });
+	    // G
+	    self.controller.hold(74, function() {
+	      self.players[2].move(-1);
+	    });
+	    // T
+	    self.controller.tap(84, function() {
+	      self.players[2].attack('neutral');
+	    });
+	    // U
+	    self.controller.tap(85, function() {
+	      self.players[2].attack('sideSmash');
+	    });
+	}
+	if(self.players.length>3) {
+	    // P
+	    self.controller.tap(80, function() {
+	      self.players[3].jump();
+	    });
+	    // ;
+	    self.controller.hold(186, function() {
+	      self.players[3].drop();
+	    });
+	    // '
+	    self.controller.hold(76, function() {
+	      self.players[3].move(1);
+	    });
+	    // L
+	    self.controller.hold(222, function() {
+	      self.players[3].move(-1);
+	    });
+	    // O
+	    self.controller.tap(79, function() {
+	      self.players[3].attack('neutral');
+	    });
+	    // [
+	    self.controller.tap(219, function() {
+	      self.players[3].attack('sideSmash');
+	    });
+	}
   };
 
   self.init = function() {
@@ -128,8 +190,12 @@ function Game(p1,p2) {
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    self.players[0].init(constants.heros.guyman);
-    self.players[1].init(constants.heros.guyman);
+    self.players[0].init(constants.heros[p1]);
+    self.players[1].init(constants.heros[p2]);
+    if (players == 3)
+      self.players[2].init(constants.heros[p3]);
+    else if (players == 4)
+      self.players[3].init(constants.heros[p4]);
   };
 
   var lastTime = 0;

@@ -277,6 +277,8 @@ function Player(num) {
   self.getHit = function(attack, facing) {
     // Deal damage first
     self.health += attack.damage;
+
+    // Compute knockback amount
     var k = attack.knockback.base +
         (self.health * attack.knockback.growth) / self.stats.launchResistance;
     k /= 100;
@@ -336,7 +338,7 @@ function Player(num) {
   
   self.init = function(stats) {
     self.stats = stats;
-    model.init(vertices, textureCoords, vertexNormals, textures[self.stats.id]);
+    model.init(vertices, textureCoords, vertexNormals, textures[self.num]);
 
     self.spawn();
   };
@@ -408,7 +410,7 @@ function Player(num) {
     }
 
     model.tick(dt);
-    $('#'+self.stats.id).text(self.health);
+    $('#player' + (self.num + 1) + 'hp').text(self.health);
   };
 
   self.render = function (dt) {
