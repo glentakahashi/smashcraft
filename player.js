@@ -190,20 +190,22 @@ function Player() {
   // TODO: self applied acceleration and velocity should be separate from
   //       launch acceleration and launch velocity. no need for drift
   self.velocity = vec3.create();  // Not affected by terminal velocity
-  self.acceleration = vec3.create();
+  self.launchForce = vec3.create();
+  self.appliedForce = vec3.create();
   self.drift = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
 
   self.jump = function() {
     if (self.airborne) {
       if (self.airJumps <= 0)
         return;
-      console.log(self.airJumps);
       self.airJumps -= 1;
     }
-    self.acceleration[1] = self.stats.jumpHeight;
+
+    // Apply jumping force
+    self.appliedForce[1] = self.stats.jumpHeight;
 
     // Jump cancels all forward/backward movement
-    self.acceleration[2] = 0;
+    self.appliedForce[2] = 0;
     self.drift[2] = 0;
     self.airborne = true;
 
@@ -229,12 +231,12 @@ function Player() {
 
     // If in air, do directional influence instead (slower than running)
     if (self.airborne) {
-      self.acceleration[2] = self.stats.moveSpeed * dir * .20;
+      self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
     }
 
     // Else do normal running
     else {
-      self.acceleration[2] = dir * self.stats.moveSpeed;
+      self.appliedForce[2] = dir * self.stats.moveSpeed;
 
       // Face the right direction
       if (dir < 0) {
@@ -325,7 +327,7 @@ function Player() {
 
     vec3.set(self.velocity, 0.0, 0.0, 0.0);
     // Self-applied acceleration
-    vec3.add(self.drift, self.drift, self.acceleration);
+    vec3.add(self.drift, self.drift, self.appliedForce);
     
     // Gravity only when not on ground
     if (self.airborne) {
@@ -348,13 +350,13 @@ function Player() {
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
-        faceRotation += 1 / 8;
+        faceRotation += 1 / 4;
     }
     else {
       if (faceRotation <= 0.0)
         faceRotation = 0.0;
       else
-        faceRotation -= 1 / 8;
+        faceRotation -= 1 / 4;
     }
 
     // Only when not stunned
@@ -365,7 +367,7 @@ function Player() {
     }
 
     vec3.add(self.loc, self.loc, self.velocity);
-    vec3.set(self.acceleration, 0.0, 0.0, 0.0);
+    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
 
     // Friction if grounded
     if (!self.airborne) {
