@@ -15,7 +15,7 @@ function Game(players,p1,p2,p3,p4) {
 	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0)));
   }
   self.players = [];
-  for(var i=0;i<players;i++) self.players.push(new Player());
+  for(var i=0;i<players;i++) self.players.push(new Player(i));
   self.controller = new Controller();
   self.camera = new Camera();
 
@@ -38,10 +38,12 @@ function Game(players,p1,p2,p3,p4) {
     gl.useProgram(program);
 
     // Get textures
-    textures.guyman = getTexture('img/characters/'+p1+'BMP.png');
-    textures.thomas = getTexture('img/characters/'+p2+'BMP.png');
-    textures.ram = getTexture('img/characters/'+p3+'BMP.png');
-    textures.steve = getTexture('img/characters/'+p4+'BMP.png');
+    textures[0] = getTexture('img/characters/' + p1 + 'BMP.png');
+    textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
+    textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
+    textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
+    textures.steve = getTexture('img/steve2.png');
+    
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
@@ -181,21 +183,19 @@ function Game(players,p1,p2,p3,p4) {
 
   self.init = function() {
     initGL();
-    self.camera.init(vec3.fromValues(80.0, 15, 0),
+    self.camera.init(vec3.fromValues(80.0, 20, 0),
                      vec3.fromValues(0.0, 8.0, 0.0));
     initController();
 
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
-    self.players[0].init(constants.heros.guyman);
-    self.players[1].init(constants.heros.thomas);
-	if(self.players.length>2) {
-    	self.players[2].init(constants.heros.ram);
-	}
-	if(self.players.length>3) {
-    	self.players[3].init(constants.heros.steve);
-	}
+    self.players[0].init(constants.heros[p1]);
+    self.players[1].init(constants.heros[p2]);
+    if (players == 3)
+      self.players[2].init(constants.heros[p3]);
+    else if (players == 4)
+      self.players[3].init(constants.heros[p4]);
   };
 
   var lastTime = 0;
@@ -241,16 +241,19 @@ function Game(players,p1,p2,p3,p4) {
             // Above (terminal velocity below platform top)
             currentPlayer.loc[1] >= currentPlatform.loc[1] +
                                     currentPlatform.scale[1] +
-                                    constants.physics.TERMINAL_MAX[1] &&
+                                    currentPlayer.stats.physics.terminalNeg[1] * 1.005 &&
             // Below (platform top + a little extra give)
             currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1] + 0.1
             ) {
 
-          if (currentPlayer.delta[1] <= 0) {
+          if (currentPlayer.velocity[1] <= 0) {
             currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
-            currentPlayer.delta[1] = 0;
-            currentPlayer.jumps = currentPlayer.stats.maxJumps;
+            currentPlayer.velocity[1] = 0;
+            currentPlayer.appliedVelocity[1] = 0;
             airborne = false;
+            if (currentPlayer.airborne && currentPlayer.knockback)
+              currentPlayer.knockback = false;
+            break; // No need to check other platforms
           }
 
         }
