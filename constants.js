@@ -6,40 +6,166 @@ var constants = {
     FRICTION_Z: 1.5
   },
 
+  stage: {
+    battlefield: {
+
+    }
+  },
+
   heros: {
     guyman: {
       name: 'Guy-Man',
       id: 'guyman',
-      health: 100,
-      jumpHeight: 1.0,
-      maxJumps: 2.0,
+      jumpHeight: 1.1,
+      maxJumps: 2,
+      weight: 1.0,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.5),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 15,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.25),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.45,
+            pow: 1.0,
+            min: 0.3,
+          },
+          scale: 0.5,
+          damage: 7,
           stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 1.0,
+            pow: 4.0,
+            min: 0.4,
+          },
+          damage: 15,
+          stun: 500, // in MS
+          sound: 'smashHit',
         }
       }
     },
     thomas: {
       name: 'Thomas',
       id: 'thomas',
-      health: 100,
-      jumpHeight: 1.2,
-      maxJumps: 4.0,
+      jumpHeight: 0.6,
+      maxJumps: 6,
+      weight: 0.6,
       moveSpeed: 0.35,
       attacks: {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          damage: 10,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          scale: 0.5,
+          damage: 7,
           stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          damage: 15,
+          stun: 500, // in MS
+          sound: 'smashHit',
+        }
+      }
+    },
+    ram: {
+      name: 'Ram',
+      id: 'ram',
+      jumpHeight: 1.1,
+      maxJumps: 2,
+      weight: 1.0,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.25),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.45,
+            pow: 1.0,
+            min: 0.3,
+          },
+          scale: 0.5,
+          damage: 7,
+          stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 1.0,
+            pow: 4.0,
+            min: 0.4,
+          },
+          damage: 15,
+          stun: 500, // in MS
+          sound: 'smashHit',
+        }
+      }
+    },
+    steve: {
+      name: 'Steve',
+      id: 'steve',
+      jumpHeight: 0.6,
+      maxJumps: 6,
+      weight: 0.6,
+      moveSpeed: 0.35,
+      attacks: {
+        neutral: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          scale: 0.5,
+          damage: 7,
+          stun: 200, // in MS
+          sound: 'punchHit',
+        },
+        sideSmash: {
+          range: vec3.fromValues(100.0, 3.5, 4.5),
+          facing: true,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          damage: 15,
+          stun: 500, // in MS
+          sound: 'smashHit',
         }
       }
     }
