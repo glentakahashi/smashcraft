@@ -277,22 +277,29 @@ function Player(num) {
   self.getHit = function(attack, facing) {
     // Deal damage first
     self.health += attack.damage;
-    var k = attack.knockback.base + (self.health * attack.knockback.growth) / self.stats.launchResistance;
+    var k = attack.knockback.base +
+        (self.health * attack.knockback.growth) / self.stats.launchResistance;
     k /= 100;
-
     self.launchScalar = k;
+
+    // Flip launch angle based on facing direction
     if (facing == -1)
       self.launchAngle = Math.PI - attack.knockback.angle;
     else
       self.launchAngle = attack.knockback.angle;
+
+    // Reset launch velocity variables
     resistanceVelocity = 0.0;
     vec3.set(self.launchVelocity, 0.0, 0.0, 0.0);
 
+    // Add stun and knockback
     self.stun = attack.stun * k;
     self.knockback = true;
 
-    // TODO: this is kinda hackish and odd
-    $('#'+self.stats.id).text(self.health);
+    // TODO: this is a hack
+    // If in midair and they get hit, give them at least one jump
+    if (self.airborne && self.airJumps == 0)
+      self.airJumps = 1;
   };
 
   self.attack = function(type) {
@@ -401,6 +408,7 @@ function Player(num) {
     }
 
     model.tick(dt);
+    $('#'+self.stats.id).text(self.health);
   };
 
   self.render = function (dt) {
