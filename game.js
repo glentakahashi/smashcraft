@@ -1,4 +1,4 @@
-function Game() {
+function Game(p1,p2) {
   var self = this;
 
   // Game variables
@@ -31,8 +31,8 @@ function Game() {
     gl.useProgram(program);
 
     // Get textures
-    textures.guyman = getTexture('img/guyman.png');
-    textures.thomas = getTexture('img/thomas.png');
+    textures.guyman = getTexture('img/characters/'+p1+'BMP.png');
+    textures.thomas = getTexture('img/characters/'+p2+'BMP.png');
     textures.ram = getTexture('img/ram.png');
     textures.steve = getTexture('img/steve2.png');
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
