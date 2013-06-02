@@ -17,7 +17,7 @@ var constants = {
       name: 'Guy-Man',
       id: 'guyman',
       jumpHeight: 1.0,
-      maxJumps: 2,
+      airJumps: 1,
       moveSpeed: 0.35,
       physics: {
         gravityScale: 1.0,

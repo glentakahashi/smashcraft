@@ -182,7 +182,7 @@ function Player() {
   self.delta = vec3.create();
   self.facing = 0;
   var faceRotation = 0;
-  self.jumps = 0;
+  self.airJumps = 0;
   self.airborne = true;
   self.stun = 0;
 
@@ -194,11 +194,12 @@ function Player() {
   self.drift = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
 
   self.jump = function() {
-    if (self.jumps <= 0)
-      return;
-
-    self.jumps -= 1;
-    console.log(self.acceleration[1]);
+    if (self.airborne) {
+      if (self.airJumps <= 0)
+        return;
+      console.log(self.airJumps);
+      self.airJumps -= 1;
+    }
     self.acceleration[1] = self.stats.jumpHeight;
 
     // Jump cancels all forward/backward movement
@@ -207,7 +208,7 @@ function Player() {
     self.airborne = true;
 
     // Vertical momentum cancelling double jump
-    if (self.jumps < self.stats.maxJumps) {
+    if (self.airJumps < self.stats.airJumps) {
       self.drift[1] = 0.0;
     }
 
@@ -218,7 +219,7 @@ function Player() {
       return;
 
     self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
-    self.jumps -= 1;
+    self.airborne = true;
   };
 
   self.move = function(dir) {
@@ -324,12 +325,15 @@ function Player() {
 
     vec3.set(self.velocity, 0.0, 0.0, 0.0);
     // Self-applied acceleration
-    vec3.scaleAndAdd(self.drift, self.drift, self.acceleration, 1.0);
+    vec3.add(self.drift, self.drift, self.acceleration);
     
     // Gravity only when not on ground
     if (self.airborne) {
       vec3.scaleAndAdd(self.drift, self.drift,
         constants.physics.G, ms * self.stats.physics.gravityScale);
+    }
+    else {
+      self.airJumps = self.stats.airJumps;
     }
 
     // Terminal velocities for drift only
@@ -337,20 +341,20 @@ function Player() {
     vec3.max(self.drift, self.drift, self.stats.physics.terminalNeg);
 
     // Drift into velocity
-    vec3.scaleAndAdd(self.velocity, self.velocity, self.drift, 1.0);
+    vec3.add(self.velocity, self.velocity, self.drift);
 
     // Smooth rotation
     if (self.facing == -1) {
       if (faceRotation >= 1.0)
         faceRotation = 1.0;
       else
-        faceRotation += ms * 8;
+        faceRotation += 1 / 8;
     }
     else {
       if (faceRotation <= 0.0)
         faceRotation = 0.0;
       else
-        faceRotation -= ms * 8;
+        faceRotation -= 1 / 8;
     }
 
     // Only when not stunned
@@ -360,7 +364,7 @@ function Player() {
       self.stun -= dt;
     }
 
-    vec3.scaleAndAdd(self.loc, self.loc, self.velocity, 1.0);
+    vec3.add(self.loc, self.loc, self.velocity);
     vec3.set(self.acceleration, 0.0, 0.0, 0.0);
 
     // Friction if grounded
