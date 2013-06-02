@@ -195,7 +195,15 @@ function Game(p1,p2) {
 
 
       // Die off the bottom
-      if (currentPlayer.loc[1] < -20.0)
+      if (currentPlayer.loc[1] < -30.0)
+        currentPlayer.die();
+
+      // Right wall
+      if (currentPlayer.loc[2] < -120.0)
+        currentPlayer.die();
+
+      // Left wall
+      if (currentPlayer.loc[2] > 120.0)
         currentPlayer.die();
 
     }
@@ -210,14 +218,19 @@ function Game(p1,p2) {
     self.render(dt);
   };
 
+  var t = 0;
   self.render = function (dt) {
+    t += dt / 500;
+
+
     //gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
     //Lighting stuff
-    gl.uniform3f(program.uAmbientColor, 0.6, 0.6, 0.6);
-    gl.uniform3f(program.uPointLightingLocation, 40.0, 10.0, 0.0);
-    gl.uniform3f(program.uPointLightingColor, 1.0, 0.0, 0.0);
+    gl.uniform3f(program.uAmbientColor, 0.5, 0.5, 0.5);
+    gl.uniform3f(program.uPointLightingLocation, 0.0, 2.0 * Math.cos(t), 2 * Math.sin(t));
+    gl.uniform3f(program.uPointLightingColor, 0.0, 1.0, 1.0);
+
     for (var i in self.platforms) {
       self.platforms[i].render();
     }
