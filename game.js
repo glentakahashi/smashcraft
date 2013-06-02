@@ -8,7 +8,7 @@ function Game(p1,p2) {
     new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 14.0)),
     new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0))
   ];
-  self.players = [new Player(), new Player()];
+  self.players = [new Player(1), new Player(2)];
   self.controller = new Controller();
   self.camera = new Camera();
 
@@ -185,6 +185,9 @@ function Game(p1,p2) {
             currentPlayer.velocity[1] = 0;
             currentPlayer.appliedVelocity[1] = 0;
             airborne = false;
+            if (currentPlayer.airborne && currentPlayer.knockback)
+              currentPlayer.knockback = false;
+            break; // No need to check other platforms
           }
 
         }
