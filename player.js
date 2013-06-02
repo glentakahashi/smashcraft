@@ -234,9 +234,11 @@ function Player() {
 
   self.getHit = function(attack, facing) {
     var scaledPush = vec3.create();
-    var scale = attack.scale * self.health / 100 + 0.5;
-    vec3.scale(scaledPush, attack.facingPush, scale * facing);
-    vec3.scaleAndAdd(scaledPush, scaledPush, attack.absolutePush, scale);
+    var scale = attack.push.scale *
+                Math.pow(self.health / 100, attack.push.pow) +
+                attack.push.min;
+    vec3.scale(scaledPush, attack.push.facing, scale * facing);
+    vec3.scaleAndAdd(scaledPush, scaledPush, attack.push.absolute, scale);
     vec3.copy(self.delta, scaledPush);
 
     if (typeof stunTime === 'undefined')

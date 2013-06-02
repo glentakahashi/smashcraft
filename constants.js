@@ -24,19 +24,28 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.15),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          scale: 1.0,
-          damage: 15,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.25),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.45,
+            pow: 1.0,
+            min: 0.3,
+          },
+          scale: 0.5,
+          damage: 7,
           stun: 200, // in MS
           sound: 'punchHit',
         },
         sideSmash: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
-          absolutePush: vec3.fromValues(0.0, 0.05, 0.0),
-          scale: 2.0,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 1.0,
+            pow: 4.0,
+            min: 0.4,
+          },
           damage: 15,
           stun: 500, // in MS
           sound: 'smashHit',
@@ -54,21 +63,30 @@ var constants = {
         neutral: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.175),
-          absolutePush: vec3.fromValues(0.0, 0.25, 0.0),
-          scale: 1.0,
-          damage: 10,
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          scale: 0.5,
+          damage: 7,
           stun: 200, // in MS
           sound: 'punchHit',
         },
         sideSmash: {
           range: vec3.fromValues(100.0, 3.5, 4.5),
           facing: true,
-          facingPush: vec3.fromValues(0.0, 0.0, 0.65),
-          absolutePush: vec3.fromValues(0.0, 0.85, 0.0),
-          scale: 1.0,
-          damage: 10,
-          stun: 600, // in MS
+          push: {
+            facing: vec3.fromValues(0.0, 0.0, 0.15),
+            absolute: vec3.fromValues(0.0, 0.25, 0.0),
+            scale: 0.5,
+            pow: 1.2,
+            min: 0.2,
+          },
+          damage: 15,
+          stun: 500, // in MS
           sound: 'smashHit',
         }
       }
