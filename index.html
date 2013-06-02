@@ -311,11 +311,7 @@
       gl_Position = uPMatrix * uCMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
       vTextureCoord = aTextureCoord;
       vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
-<<<<<<< HEAD
-      vec3 transformedNormal = uNMatrix * mat3(uMVMatrix) * aVertexNormal;
-=======
       vec3 transformedNormal = uNMatrix * aVertexNormal;
->>>>>>> parent of 2ab2a68... Per Fragment Shading implemented, but i dont really see a difference lol
       float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
       vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
 
