@@ -186,40 +186,70 @@ function Player() {
   self.airborne = true;
   self.stun = 0;
 
+  // Physics shit v2
+  // TODO: self applied acceleration and velocity should be separate from
+  //       launch acceleration and launch velocity. no need for drift
+  self.velocity = vec3.create();  // Not affected by terminal velocity
+  self.acceleration = vec3.create();
+  self.drift = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
+
   self.jump = function() {
     if (self.jumps <= 0)
       return;
 
-    self.delta[1] = self.stats.jumpHeight;
     self.jumps -= 1;
+    console.log(self.acceleration[1]);
+    self.acceleration[1] = self.stats.jumpHeight;
+
+    // Jump cancels all forward/backward movement
+    self.acceleration[2] = 0;
+    self.drift[2] = 0;
+    self.airborne = true;
+
+    // Vertical momentum cancelling double jump
+    if (self.jumps < self.stats.maxJumps) {
+      self.drift[1] = 0.0;
+    }
+
   };
 
   self.drop = function() {
     if (self.airborne)
       return;
 
-    self.loc[1] += constants.physics.TERMINAL_MAX[1] - 0.05;
+    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
+    self.jumps -= 1;
   };
 
   self.move = function(dir) {
-    // Don't move if stunned or in air
+    // Don't move if stunned
     if (self.stun > 0)
       return;
 
-    self.delta[2] = dir * self.stats.moveSpeed;
+    // If in air, do directional influence instead (slower than running)
+    if (self.airborne) {
+      self.acceleration[2] = self.stats.moveSpeed * dir * .20;
+    }
 
-    // Face the right direction
-    if (dir < 0) {
-      self.facing = -1;
-    }
+    // Else do normal running
     else {
-      self.facing = 1;
+      self.acceleration[2] = dir * self.stats.moveSpeed;
+
+      // Face the right direction
+      if (dir < 0) {
+        self.facing = -1;
+      }
+      else {
+        self.facing = 1;
+      }
     }
+
   };
 
   self.spawn = function() {
     vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
+    vec3.set(self.drift, 0.0, 0.0, 0.0);
     self.health = 0;
     self.stun = 0;
 
@@ -292,14 +322,22 @@ function Player() {
   self.tick = function(dt) {
     var ms = dt / 1000;
 
+    vec3.set(self.velocity, 0.0, 0.0, 0.0);
+    // Self-applied acceleration
+    vec3.scaleAndAdd(self.drift, self.drift, self.acceleration, 1.0);
+    
     // Gravity only when not on ground
     if (self.airborne) {
-      vec3.scaleAndAdd(self.delta, self.delta, constants.physics.G, ms * self.stats.weight);
+      vec3.scaleAndAdd(self.drift, self.drift,
+        constants.physics.G, ms * self.stats.physics.gravityScale);
     }
 
-    // Terminal velocities
-    vec3.max(self.delta, self.delta, constants.physics.TERMINAL_MAX);
-    vec3.min(self.delta, self.delta, constants.physics.TERMINAL_MIN);
+    // Terminal velocities for drift only
+    vec3.min(self.drift, self.drift, self.stats.physics.terminalPos);
+    vec3.max(self.drift, self.drift, self.stats.physics.terminalNeg);
+
+    // Drift into velocity
+    vec3.scaleAndAdd(self.velocity, self.velocity, self.drift, 1.0);
 
     // Smooth rotation
     if (self.facing == -1) {
@@ -317,18 +355,18 @@ function Player() {
 
     // Only when not stunned
     if (self.stun <= 0) {
-      // Friction
-      if (!self.airborne) {
-        self.delta[2] /= constants.physics.FRICTION_Z;
-        if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
-          self.delta[2] = 0.0;
-      }
     }
     else {
       self.stun -= dt;
     }
 
-    vec3.add(self.loc, self.loc, self.delta);
+    vec3.scaleAndAdd(self.loc, self.loc, self.velocity, 1.0);
+    vec3.set(self.acceleration, 0.0, 0.0, 0.0);
+
+    // Friction if grounded
+    if (!self.airborne) {
+      self.drift[2] /= 1.5;
+    }
 
     model.tick(dt);
   };

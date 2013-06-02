@@ -3,10 +3,10 @@ function Game(p1,p2) {
 
   // Game variables
   self.platforms = [
-    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)),
-    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0))
+    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 14.0)),
+    new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0))
   ];
   self.players = [new Player(), new Player()];
   self.controller = new Controller();
@@ -121,7 +121,7 @@ function Game(p1,p2) {
 
   self.init = function() {
     initGL();
-    self.camera.init(vec3.fromValues(80.0, 15, 0),
+    self.camera.init(vec3.fromValues(80.0, 20, 0),
                      vec3.fromValues(0.0, 8.0, 0.0));
     initController();
 
@@ -129,7 +129,7 @@ function Game(p1,p2) {
       self.platforms[i].init();
     }
     self.players[0].init(constants.heros.guyman);
-    self.players[1].init(constants.heros.thomas);
+    self.players[1].init(constants.heros.guyman);
   };
 
   var lastTime = 0;
@@ -175,14 +175,15 @@ function Game(p1,p2) {
             // Above (terminal velocity below platform top)
             currentPlayer.loc[1] >= currentPlatform.loc[1] +
                                     currentPlatform.scale[1] +
-                                    constants.physics.TERMINAL_MAX[1] &&
+                                    currentPlayer.stats.physics.terminalNeg[1] * 1.005 &&
             // Below (platform top + a little extra give)
             currentPlayer.loc[1] <= currentPlatform.loc[1] + currentPlatform.scale[1] + 0.1
             ) {
 
-          if (currentPlayer.delta[1] <= 0) {
+          if (currentPlayer.velocity[1] <= 0) {
             currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
-            currentPlayer.delta[1] = 0;
+            currentPlayer.velocity[1] = 0;
+            currentPlayer.drift[1] = 0;
             currentPlayer.jumps = currentPlayer.stats.maxJumps;
             airborne = false;
           }
