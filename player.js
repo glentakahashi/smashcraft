@@ -168,7 +168,7 @@ function Player() {
 
   // Game variables
   self.loc = vec3.fromValues(0.0, 0.0, 0.0);
-  self.health = null;
+  self.health = 0;
   self.deaths = 0;
   self.kills = 0;
   self.lastHit = {
@@ -202,7 +202,7 @@ function Player() {
   };
 
   self.move = function(dir) {
-    // Don't move if stunned
+    // Don't move if stunned or in air
     if (self.stun > 0)
       return;
 
@@ -220,7 +220,7 @@ function Player() {
   self.spawn = function() {
     vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
-    self.health = self.stats.health;
+    self.health = 0;
     self.stun = 0;
 
     $('#'+self.stats.id).text(self.health);
@@ -232,20 +232,22 @@ function Player() {
     self.spawn();
   };
 
-  self.getHit = function(damage, push, stunTime) {
-    if (typeof push !== 'undefined')
-      vec3.copy(self.delta, push);
+  self.getHit = function(attack, facing) {
+    var scaledPush = vec3.create();
+    var scale = attack.push.scale *
+                Math.pow(self.health / 100, attack.push.pow) +
+                attack.push.min;
+    vec3.scale(scaledPush, attack.push.facing, scale * facing);
+    vec3.scaleAndAdd(scaledPush, scaledPush, attack.push.absolute, scale);
+    vec3.copy(self.delta, scaledPush);
+
     if (typeof stunTime === 'undefined')
       var stunTime = 0;
-    self.stun = Math.max(self.stun, stunTime);
-    self.health -= damage;
+    self.stun = Math.max(self.stun, attack.stun);
+    self.health += attack.damage;
 
     // TODO: this is kinda hackish and odd
     $('#'+self.stats.id).text(self.health);
-
-    if (self.health <= 0) {
-      self.die();
-    }
   };
 
   self.attack = function(type) {
@@ -268,10 +270,7 @@ function Player() {
         if (Math.abs(dist[0]) < curAttack.range[0] &&
             Math.abs(dist[1]) < curAttack.range[1] &&
             Math.abs(dist[2]) < curAttack.range[1]) {
-          vec3.scaleAndAdd(push, push, curAttack.facingPush, self.facing);
-          vec3.add(push, push, curAttack.absolutePush);
-
-          other.getHit(curAttack.damage, push, curAttack.stun);
+          other.getHit(curAttack, self.facing);
           hit = true;
         }
       }
@@ -319,9 +318,11 @@ function Player() {
     // Only when not stunned
     if (self.stun <= 0) {
       // Friction
-      self.delta[2] /= constants.physics.FRICTION_Z;
-      if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
-        self.delta[2] = 0.0;
+      if (!self.airborne) {
+        self.delta[2] /= constants.physics.FRICTION_Z;
+        if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
+          self.delta[2] = 0.0;
+      }
     }
     else {
       self.stun -= dt;
