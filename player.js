@@ -234,7 +234,7 @@ function Player() {
 
   self.getHit = function(attack, facing) {
     var scaledPush = vec3.create();
-    var scale = attack.push.scale *
+    var scale = 5 * attack.push.scale *
                 Math.pow(self.health / 100, attack.push.pow) +
                 attack.push.min;
     vec3.scale(scaledPush, attack.push.facing, scale * facing);
