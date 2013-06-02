@@ -183,7 +183,7 @@ function Game(p1,p2) {
           if (currentPlayer.velocity[1] <= 0) {
             currentPlayer.loc[1] = currentPlatform.loc[1] + currentPlatform.scale[1];
             currentPlayer.velocity[1] = 0;
-            currentPlayer.drift[1] = 0;
+            currentPlayer.appliedVelocity[1] = 0;
             airborne = false;
           }
 

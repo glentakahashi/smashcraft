@@ -187,12 +187,13 @@ function Player() {
   self.stun = 0;
 
   // Physics shit v2
-  // TODO: self applied acceleration and velocity should be separate from
-  //       launch acceleration and launch velocity. no need for drift
   self.velocity = vec3.create();  // Not affected by terminal velocity
+
   self.launchForce = vec3.create();
+  self.launchVelocity = vec3.create();
+
   self.appliedForce = vec3.create();
-  self.drift = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
+  self.appliedVelocity = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
 
   self.jump = function() {
     if (self.airborne) {
@@ -206,12 +207,12 @@ function Player() {
 
     // Jump cancels all forward/backward movement
     self.appliedForce[2] = 0;
-    self.drift[2] = 0;
+    self.appliedVelocity[2] = 0;
     self.airborne = true;
 
     // Vertical momentum cancelling double jump
     if (self.airJumps < self.stats.airJumps) {
-      self.drift[1] = 0.0;
+      self.appliedVelocity[1] = 0.0;
     }
 
   };
@@ -252,7 +253,7 @@ function Player() {
   self.spawn = function() {
     vec3.copy(self.loc, vec3.fromValues(0.0, 24.0, 0.0));
     vec3.copy(self.delta, vec3.fromValues(0.0, 0.0, 0.0));
-    vec3.set(self.drift, 0.0, 0.0, 0.0);
+    vec3.set(self.appliedVelocity, 0.0, 0.0, 0.0);
     self.health = 0;
     self.stun = 0;
 
@@ -325,13 +326,12 @@ function Player() {
   self.tick = function(dt) {
     var ms = dt / 1000;
 
-    vec3.set(self.velocity, 0.0, 0.0, 0.0);
     // Self-applied acceleration
-    vec3.add(self.drift, self.drift, self.appliedForce);
+    vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
     
     // Gravity only when not on ground
     if (self.airborne) {
-      vec3.scaleAndAdd(self.drift, self.drift,
+      vec3.scaleAndAdd(self.appliedVelocity, self.appliedVelocity,
         constants.physics.G, ms * self.stats.physics.gravityScale);
     }
     else {
@@ -339,11 +339,14 @@ function Player() {
     }
 
     // Terminal velocities for drift only
-    vec3.min(self.drift, self.drift, self.stats.physics.terminalPos);
-    vec3.max(self.drift, self.drift, self.stats.physics.terminalNeg);
+    vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPos);
+    vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNeg);
 
     // Drift into velocity
-    vec3.add(self.velocity, self.velocity, self.drift);
+    vec3.copy(self.velocity, self.appliedVelocity);
+
+    // Add launch force to velocity
+    vec3.add(self.velocity, self.velocity, self.launchForce);
 
     // Smooth rotation
     if (self.facing == -1) {
@@ -371,7 +374,7 @@ function Player() {
 
     // Friction if grounded
     if (!self.airborne) {
-      self.drift[2] /= 1.5;
+      self.appliedVelocity[2] /= 1.5;
     }
 
     model.tick(dt);
