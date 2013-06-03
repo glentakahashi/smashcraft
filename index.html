@@ -4,63 +4,8 @@
     <title>Smashcraft</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style>
-		h2 {
-			text-align:center;
-		}
-		td {
-		    border-style:inset;
-		    border-width:10px;
-		    border-color:#FFFFFF;
-		    width:100px;
-		    height:100px;
-			display: inline-block;
-			padding: 0px;
-			border-spacing: 0px;
-		}
-		.highlightRed {
-		    border-top-color:red;
-		}
-		.highlightBlue {
-		    border-right-color:blue;
-		}
-		.highlightGreen {
-			border-bottom-color:green;
-		}
-		.highlightYellow {
-			border-left-color:yellow;
-		}
-		img {
-			width: inherit;
-			height: inherit;
-		}
-		#players {
-			width: 900px;
-		}
-		.player {
-			width: 200px;
-			height: 380px;
-			display:inline-block;
-			margin-right:16px;
-		}
-		.playerImage {
-			border-style:inset;
-			border-width:10px;
-		}
-		#player1Image {
-			border-color:red;
-		}
-		#player2Image {
-			border-color:blue;
-		}
-		#player3Image {
-			border-color:green;
-		}
-		#player4Image {
-			border-color:yellow;
-		}
-	</style>
-	<script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
   </head>
   <body style="padding: 0; margin: 0;">
 	<div id="selection">
@@ -275,14 +220,36 @@
 	function capEachWord(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
+  $(function() {
+    var aspect = window.innerWidth / window.innerHeight;
+    var canvas = $('#canvas');
+    var width = Number(canvas.attr('width'));
+    $('#canvas').attr('height', width / aspect);
+  });
 	</script>
 	<div id="game" style="display:none;">
     <canvas id="canvas" width="800" height="500"></canvas>
     	<div id="hud">
-        1P: <span id="player1hp"></span> [WASD: move, Q: attack, E: smash]<br>
-        2P: <span id="player2hp"></span> [ARROW: move, ENTER: attack, Left Shift: smash]<br>
-	  		3P: <span id="player3hp"></span> [YGHJ: move, T: attack, U: smash]<br>
-        4P: <span id="player4hp"></span> [PL;': move, O: attack, [: smash]
+        <div id="p1">
+          <div class="damage">
+            <span id="player1hp"></span>%
+          </div>
+        </div>
+        <div id="p2">
+          <div class="damage">
+            <span id="player2hp"></span>%
+          </div>
+        </div>
+        <div id="p3">
+          <div class="damage">
+            <span id="player3hp"></span>%
+          </div>
+        </div>
+        <div id="p4">
+          <div class="damage">
+            <span id="player4hp"></span>%
+          </div>
+        </div>
     	</div>
 	</div>
 
