@@ -1,0 +1,105 @@
+h2 {
+  text-align:center;
+}
+td {
+    border-style:inset;
+    border-width:10px;
+    border-color:#FFFFFF;
+    width:100px;
+    height:100px;
+  display: inline-block;
+  padding: 0px;
+  border-spacing: 0px;
+}
+.highlightRed {
+    border-top-color:red;
+}
+.highlightBlue {
+    border-right-color:blue;
+}
+.highlightGreen {
+  border-bottom-color:green;
+}
+.highlightYellow {
+  border-left-color:yellow;
+}
+img {
+  width: inherit;
+  height: inherit;
+}
+#players {
+  width: 900px;
+}
+.player {
+  width: 200px;
+  height: 380px;
+  display:inline-block;
+  margin-right:16px;
+}
+.playerImage {
+  border-style:inset;
+  border-width:10px;
+}
+#player1Image {
+  border-color:red;
+}
+#player2Image {
+  border-color:blue;
+}
+#player3Image {
+  border-color:green;
+}
+#player4Image {
+  border-color:yellow;
+}
+
+#canvas {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#hud {
+  position: absolute;
+  bottom: 0;
+  z-index: 999;
+  width: 100%;
+}
+
+#hud > div {
+  position: absolute;
+  bottom: 0;
+  width: 25%;
+  color: white;
+  text-shadow: 1px 1px 0 #000;
+  text-align: center;
+}
+
+#hud .name {
+  font: 20px bold "Helvetica";
+  font-style: italic;
+}
+
+#hud .damage {
+  font: 40px bold "Helvetica";
+  font-style: italic;
+  padding: 15px;
+}
+
+#p1 {
+  left: 0;
+}
+
+#p2 {
+  left: 25%;
+}
+
+#p3 {
+  left: 50%;
+}
+
+#p4 {
+  left: 75%;
+}
