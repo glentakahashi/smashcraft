@@ -181,31 +181,42 @@ function Player(num) {
 
   // Physics shit
   self.facing = 0;
-  var faceRotation = 0;
+  var faceRotation = 0;  // Rotation percentage 0.0 to 1.0
   self.airJumps = 0;
   self.airborne = true;
 
-  // Physics shit v2
   self.velocity = vec3.create();  // Not affected by terminal velocity
 
+  // Knockback & Launch
   self.launchVelocity = vec3.create();
-  self.launchScalar = 0.0;
-  self.launchAngle = 0.0;
+  self.launchScalar = 0.0;  // Scalar value of force
+  self.launchAngle = 0.0;  // Angle of force
+  self.knockback = false;  // Is currently in knockback
+  self.stun = 0;  // Number of frames left in stun
+  var resistanceForce = 0.005;
+  var resistanceVelocity = 0.0;
 
-  self.knockback = false;
-  self.stun = 0;
-
+  // Gravity and player movement
   self.appliedForce = vec3.create();
   self.appliedVelocity = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
 
-  var resistanceForce = 0.005;
-  var resistanceVelocity = 0.0;
+  // Attacking
+  var NOATTACK = 0;
+  var WINDUP = 1;
+  var ATTACK = 2;
+  var COOLDOWN = 3;
+  self.attackStage = NOATTACK;
+  self.attackDuration = 0;  // Number of frames until next stage
+  self.attackData = null;
+
+  self.invincible = 0;  // Number of frames we can't get hit
 
   self.jump = function() {
     // No jumping when stunned
     if (self.stun > 0)
       return;
 
+    // Double jumping
     if (self.airborne) {
       if (self.airJumps <= 0)
         return;
@@ -303,7 +314,6 @@ function Player(num) {
     // Add stun and knockback
     self.stun = attack.stun * k;
     self.knockback = true;
-    console.log(self.stun);
 
     // Cancel all other momentum
     vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
@@ -315,35 +325,51 @@ function Player(num) {
   };
 
   self.attack = function(type) {
+    if (self.stun > 0)
+      return;
+
+    // Only attack if not attacking
+    if (self.attackStage != NOATTACK)
+      return;
+
     var curAttack = self.stats.attacks[type];
     if (typeof curAttack === 'undefined')
       return;
 
+    self.attackStage = WINDUP;
+    self.attackDuration = curAttack.timing.windup;
+    self.attackData = curAttack;
+  };
+
+  var doAttack = function(attack) {
     var hit = false;
 
     for (var p in game.players) {
       if (game.players[p] == self)
         continue;
+
       var other = game.players[p];
       var dist = vec3.create();
       vec3.subtract(dist, self.loc, other.loc);
       var push = vec3.create();
 
       // If is facing or attack doesn't need facing
-      if (!curAttack.facing || dist[2] * self.facing < 0) {
-        if (Math.abs(dist[0]) < curAttack.range[0] &&
-            Math.abs(dist[1]) < curAttack.range[1] &&
-            Math.abs(dist[2]) < curAttack.range[1]) {
-          other.getHit(curAttack, self.facing);
+      if (!attack.facing || dist[2] * self.facing < 0) {
+        if (Math.abs(dist[0]) < attack.range[0] &&
+            Math.abs(dist[1]) < attack.range[1] &&
+            Math.abs(dist[2]) < attack.range[1] &&
+            other.invincible <= 0) {
+          other.invincible = attack.timing.duration;
+          other.getHit(attack, self.facing);
           hit = true;
         }
       }
     }
 
     if (hit)
-      audio.playSfx(curAttack.sound);
-    else
-      audio.playSfx('punchMiss');
+      audio.playSfx(attack.sound);
+
+    return hit;
   };
   
   self.init = function(stats) {
@@ -356,8 +382,8 @@ function Player(num) {
   };
 
   self.tick = function(dt) {
-    // Self-applied acceleration
-    vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
+    // Tick down invincibility
+    self.invincible--;
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
@@ -366,6 +392,8 @@ function Player(num) {
         Math.sin(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0),
         Math.cos(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0))
     }
+
+    // If not knockbacked, slide across the ground with more resistance
     else {
       resistanceVelocity += 8 * resistanceForce;
       vec3.set(self.launchVelocity, 0.0, 0.0,
@@ -381,14 +409,45 @@ function Player(num) {
       self.airJumps = self.stats.airJumps;
     }
 
+    // Self-applied acceleration only when not attacking or in midair
+    if (self.airborne || self.attackStage == NOATTACK) {
+      vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
+    }
+
+    // Do attack stuff
+    if (self.attackStage != NOATTACK) {
+      self.attackDuration--;
+      console.log(self.attackDuration, self.attackStage);
+      switch (self.attackStage) {
+        case WINDUP:
+          if (self.attackDuration <= 0) {
+            self.attackStage = ATTACK;
+            self.attackDuration = self.attackData.timing.duration;
+            audio.playSfx('punchMiss');
+          }
+          break;
+        case ATTACK:
+          if (self.attackDuration <= 0) {
+            self.attackStage = COOLDOWN;
+            self.attackDuration = self.attackData.timing.cooldown;
+          }
+          doAttack(self.attackData);
+          break;
+        case COOLDOWN:
+          if (self.attackDuration <= 0) {
+            self.attackStage = NOATTACK;
+            self.attackDuration = 0;
+          }
+          break;
+      }
+    }
+
     // Terminal velocities for self-applied velocities only
     vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPos);
     vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNeg);
 
-    // Applied velocity becomes velocity for this frame
+    // Add two velocity components
     vec3.copy(self.velocity, self.appliedVelocity);
-
-    // Add launch velocity to overall velocity
     vec3.add(self.velocity, self.velocity, self.launchVelocity);
 
     // Smooth rotation
@@ -413,6 +472,7 @@ function Player(num) {
       self.stun = 0;
     }
 
+    // Move the guy and reset applied force
     vec3.add(self.loc, self.loc, self.velocity);
     vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
 
