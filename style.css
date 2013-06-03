@@ -68,19 +68,24 @@ img {
   width: 100%;
 }
 
-#hud div {
+#hud > div {
   position: absolute;
   bottom: 0;
   width: 25%;
   color: white;
   text-shadow: 1px 1px 0 #000;
+  text-align: center;
 }
 
-#hud div .damage {
+#hud .name {
+  font: 20px bold "Helvetica";
+  font-style: italic;
+}
+
+#hud .damage {
   font: 40px bold "Helvetica";
   font-style: italic;
   padding: 15px;
-  text-align: right;
 }
 
 #p1 {

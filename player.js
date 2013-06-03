@@ -340,6 +340,8 @@ function Player(num) {
     self.stats = stats;
     model.init(vertices, textureCoords, vertexNormals, textures[self.num]);
 
+    $('#p'+(num+1) + ' .name').text(self.stats.name);
+
     self.spawn();
   };
 
