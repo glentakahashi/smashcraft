@@ -1,9 +1,15 @@
-function Platform(scale, loc) {
+function Platform(scale, loc, type) {
   var self = this;
   var model = new Model();
 
   self.scale = scale;
   self.loc = loc;
+
+  if(type=="Block") {
+	self.terminalLocation = 2;
+  } else {
+	self.terminalLocation = 1.005;
+  }
 
   var vertices = [
     // Front face

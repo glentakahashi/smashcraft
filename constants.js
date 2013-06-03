@@ -13,7 +13,7 @@ function charClone(name, id) {
     launchResistance: 500.0,
     attacks: {
       neutral: {
-        range: vec3.fromValues(100.0, 3.5, 4.5),
+        range: vec3.fromValues(100.0, 5.5, 6.5),
         facing: true,
         knockback: {
           angle: Math.PI / 6,
@@ -21,16 +21,16 @@ function charClone(name, id) {
           growth: 100,
         },
         timing: {
-          windup: 5,
+          windup: 3,
           duration: 5,
-          cooldown: 10,
+          cooldown: 5,
         },
         damage: 7,
         stun: 11,
         sound: 'punchHit',
       },
       sideSmash: {
-        range: vec3.fromValues(100.0, 3.5, 4.5),
+        range: vec3.fromValues(100.0, 6.5, 8.5),
         facing: true,
         knockback: {
           angle: Math.PI / 3.5,
@@ -65,23 +65,23 @@ var constants = {
 
   heros: {
     'luigi': charClone('Luigi', 'luigi'),
-    'mario': charClone('Mario', 'luigi'),
-    'ness': charClone('Ness', 'luigi'),
-    'link': charClone('Link', 'luigi'),
-    'samus': charClone('Samus', 'luigi'),
-    'captain%20falcon': charClone('Captain Falcon', 'luigi'),
-    'thomas': charClone('Thomas', 'luigi'),
-    'guy-manuel': charClone('Guy-Manuel', 'luigi'),
-    'kirby': charClone('Kirby', 'luigi'),
-    'snoop%20dogg': charClone('Snoop Dogg', 'luigi'),
-    'michael%20jackson': charClone('Michael Jackson', 'luigi'),
-    'psy': charClone('Psy', 'luigi'),
-    'nightwing': charClone('Nightwing', 'luigi'),
-    'robin': charClone('Robin', 'luigi'),
-    'batman': charClone('Batman', 'luigi'),
-    'superman': charClone('Superman', 'luigi'),
-    'iron%20man': charClone('Iron Man', 'luigi'),
-    'spiderman': charClone('Spiderman', 'luigi'),
+    'mario': charClone('Mario', 'mario'),
+    'ness': charClone('Ness', 'ness'),
+    'link': charClone('Link', 'link'),
+    'samus': charClone('Samus', 'samus'),
+    'captain%20falcon': charClone('Captain Falcon', 'captain%20falcon'),
+    'thomas': charClone('Thomas', 'thomas'),
+    'guy-manuel': charClone('Guy-Manuel', 'guy-manuel'),
+    'kirby': charClone('Kirby', 'kirby'),
+    'snoop%20dogg': charClone('Snoop Dogg', 'snoop%20dogg'),
+    'michael%20jackson': charClone('Michael Jackson', 'michael%20jackson'),
+    'psy': charClone('Psy', 'psy'),
+    'nightwing': charClone('Nightwing', 'nightwing'),
+    'robin': charClone('Robin', 'robin'),
+    'batman': charClone('Batman', 'batman'),
+    'superman': charClone('Superman', 'superman'),
+    'iron%20man': charClone('Iron Man', 'iron%20man'),
+    'spiderman': charClone('Spiderman', 'spiderman')
   }
 
 };
