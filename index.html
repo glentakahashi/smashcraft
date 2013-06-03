@@ -4,63 +4,8 @@
     <title>Smashcraft</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style>
-		h2 {
-			text-align:center;
-		}
-		td {
-		    border-style:inset;
-		    border-width:10px;
-		    border-color:#FFFFFF;
-		    width:100px;
-		    height:100px;
-			display: inline-block;
-			padding: 0px;
-			border-spacing: 0px;
-		}
-		.highlightRed {
-		    border-top-color:red;
-		}
-		.highlightBlue {
-		    border-right-color:blue;
-		}
-		.highlightGreen {
-			border-bottom-color:green;
-		}
-		.highlightYellow {
-			border-left-color:yellow;
-		}
-		img {
-			width: inherit;
-			height: inherit;
-		}
-		#players {
-			width: 900px;
-		}
-		.player {
-			width: 200px;
-			height: 380px;
-			display:inline-block;
-			margin-right:16px;
-		}
-		.playerImage {
-			border-style:inset;
-			border-width:10px;
-		}
-		#player1Image {
-			border-color:red;
-		}
-		#player2Image {
-			border-color:blue;
-		}
-		#player3Image {
-			border-color:green;
-		}
-		#player4Image {
-			border-color:yellow;
-		}
-	</style>
-	<script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
   </head>
   <body style="padding: 0; margin: 0;">
 	<div id="selection">
@@ -90,6 +35,32 @@
 			<td id="choice17"><img src="img/characters/spidermanHead.png"></td>
 		</tr>
 	</table>
+	<div id="stageSelection">
+		<div class="stage">
+			<img id="image5" class="stageImage" src="img/backgrounds/grassland.jpg">
+			<span class="stageNumber">5</span>
+		</div>
+		<div class="stage">
+			<img id="image6" class="stageImage" src="img/backgrounds/jungle.jpg">
+			<span class="stageNumber">6</span>
+		</div>
+		<div class="stage">
+			<img id="image7" class="stageImage" src="img/backgrounds/nether.jpg">
+			<span class="stageNumber">7</span>
+		</div>
+		<div class="stage">
+			<img id="image8" class="stageImage" src="img/backgrounds/desert.jpg">
+			<span class="stageNumber">8</span>
+		</div>
+		<div class="stage">
+			<img id="image9" class="stageImage" src="img/backgrounds/mountains.jpg">
+			<span class="stageNumber">9</span>
+		</div>
+		<div class="stage">
+			<img id="image0" class="stageImage" src="img/backgrounds/ocean.jpg">
+			<span class="stageNumber">0</span>
+		</div>
+	</div>
 	<div id="players">
 		<div id="player1" class="player">
 			<h2>Luigi</h2>
@@ -118,9 +89,6 @@
 	var greenLoc=(rows-1)*cols;
 	var yellowLoc=rows*cols-1;
 	var numPlayers=2;
-	$(function() {
-		updateColoring();
-	});
 	window.onkeydown = function(e) {
 	    switch(e.which) {
 	        case 87:
@@ -224,26 +192,53 @@
 				$("#player4").show();
 				numPlayers=4;
 				break;
+			case 53:
+				//start stage 5
+				startGame(5);
+				break;
+			case 54:
+				//start stage 6
+				startGame(6);
+				break;
+			case 55:
+				//start stage 7
+				startGame(7);
+				break;
+			case 56:
+				//start stage 8
+				startGame(8);
+				break;
+			case 57:
+				//start stage 9
+				startGame(9);
+				break;
+			case 48:
+				//start stage 0
+				startGame(0);
+				break;
 			case 13:
 				//start game
-				$("#selection").hide();
-				$("#game").show();
-				var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
-				var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
-				var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
-				var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
-				redName=redName.substring(0,redName.length-8);
-				blueName=blueName.substring(0,blueName.length-8);
-				greenName=greenName.substring(0,greenName.length-8);
-				yellowName=yellowName.substring(0,yellowName.length-8);
-				game = new Game(numPlayers,redName,blueName,greenName,yellowName);
-			    audio.init();
-			    game.init();
+				startGame(5);
 				break;
 	    }
 		//update coloring
 		updateColoring();
 	};
+	function startGame(stageNum) {
+		$("#selection").hide();
+		$("#game").show();
+		var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
+		var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
+		var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
+		var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
+		redName=redName.substring(0,redName.length-8);
+		blueName=blueName.substring(0,blueName.length-8);
+		greenName=greenName.substring(0,greenName.length-8);
+		yellowName=yellowName.substring(0,yellowName.length-8);
+		game = new Game(stageNum,numPlayers,redName,blueName,greenName,yellowName);
+	    audio.init();
+	    game.init();
+	}
 	function updateColoring() {
 	    $("td").removeClass("highlightRed");
 	    $("td").removeClass("highlightBlue");
@@ -275,14 +270,41 @@
 	function capEachWord(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
+  $(function() {
+    var aspect = window.innerWidth / window.innerHeight;
+    var canvas = $('#canvas');
+    var width = Number(canvas.attr('width'));
+    $('#canvas').attr('height', width / aspect);
+	updateColoring();
+  });
 	</script>
 	<div id="game" style="display:none;">
-    <canvas id="canvas" width="800" height="500"></canvas>
+    <canvas id="canvas" width="1000"></canvas>
     	<div id="hud">
-        1P: <span id="player1hp"></span> [WASD: move, Q: attack, E: smash]<br>
-        2P: <span id="player2hp"></span> [ARROW: move, ENTER: attack, Left Shift: smash]<br>
-	  		3P: <span id="player3hp"></span> [YGHJ: move, T: attack, U: smash]<br>
-        4P: <span id="player4hp"></span> [PL;': move, O: attack, [: smash]
+        <div id="p1">
+          <div class="name"></div>
+          <div class="damage">
+            <span id="player1hp"></span>%
+          </div>
+        </div>
+        <div id="p2">
+          <div class="name"></div>
+          <div class="damage">
+            <span id="player2hp"></span>%
+          </div>
+        </div>
+        <div id="p3">
+          <div class="name"></div>
+          <div class="damage">
+            <span id="player3hp"></span>%
+          </div>
+        </div>
+        <div id="p4">
+          <div class="name"></div>
+          <div class="damage">
+            <span id="player4hp"></span>%
+          </div>
+        </div>
     	</div>
 	</div>
 
@@ -323,10 +345,16 @@
 
     varying vec2 vTextureCoord;
     uniform sampler2D uSampler;
+    uniform bool stun;
     varying vec3 vLightWeighting;
 
     void main(void) {
-      vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+      vec4 textureColor;
+      if(stun) {
+        textureColor = vec4(1.0,1.0,1.0,1.0);
+      } else {
+        textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+      }
       gl_FragColor = vec4(textureColor.rgb*vLightWeighting, textureColor.a);//texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
       
     }

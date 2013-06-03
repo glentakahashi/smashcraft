@@ -181,6 +181,7 @@ function Platform(scale, loc) {
       mat4.translate(newMV, newMV, self.loc);
       mat4.scale(newMV, newMV, self.scale);
       mat4.multiply(modelView, modelView, newMV);
+      gl.uniform1i(program.stun, false);
       model.render(dt);
     modelView = mvstack.pop();
 

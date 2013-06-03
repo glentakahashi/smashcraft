@@ -73,6 +73,8 @@ function Camera() {
     else
       zoomActual = self.zoomTarget;
 
+	vec3.copy(eyeActual,atActual);
+	eyeActual[0]+=100;
     doLookAt();
     doPerspective();
   };

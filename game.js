@@ -1,19 +1,69 @@
-function Game(players,p1,p2,p3,p4) {
+function Game(stageNum,players,p1,p2,p3,p4) {
+	$("canvas").css("background","url('"+$("#image"+stageNum).attr("src")+"') no-repeat center center fixed");
+	$("body").css("background-color","black");
+	
   var self = this;
 
   // Game variables
-  self.platforms = [
-    new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0))
-  ];
-  if(Math.random()<0.5) {
-	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
+  self.platforms = [];
+  var bottomLimit=-30.0;
+  var sideLimit=120.0;
+  switch(stageNum) {
+	case 5:
+		//grassland
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0)));
+		break;
+	case 6:
+		//jungle
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, 14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, -21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 35.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 35.0, 14.0)));
+		break;
+	case 7:
+		//nether
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
+		break;
+	case 8:
+		//desert
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		break;
+	case 9:
+		//mountains
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, -7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, 7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0)));
+		break;
+	case 0:
+		//ocean
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 10.0), vec3.fromValues(0.0, -4.0, -25.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 10.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 10.0), vec3.fromValues(0.0, -4.0, 25.0)));
+		break;
   }
-  if(Math.random()<0.5) {
-	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
-  }
-  if(Math.random()<0.5) {
-	self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0)));
-  }
+
   self.players = [];
   for(var i=0;i<players;i++) self.players.push(new Player(i));
   self.controller = new Controller();
@@ -56,6 +106,7 @@ function Game(players,p1,p2,p3,p4) {
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
+    program.stun = gl.getUniformLocation(program, 'stun');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.enableVertexAttribArray(program.aTextureCoord);
@@ -66,7 +117,7 @@ function Game(players,p1,p2,p3,p4) {
     // Set perspective matrix
     //doPerspective();
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);  // Black
     gl.enable(gl.DEPTH_TEST);
   }
 
@@ -192,10 +243,23 @@ function Game(players,p1,p2,p3,p4) {
     }
     self.players[0].init(constants.heros[p1]);
     self.players[1].init(constants.heros[p2]);
-    if (players == 3)
+    if (players >= 3)
       self.players[2].init(constants.heros[p3]);
-    else if (players == 4)
+    if (players >= 4)
       self.players[3].init(constants.heros[p4]);
+    if(players==2) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=-9;
+	} else if(players==3) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=0;
+		self.players[2].loc[2]=-9;
+	} else if(players==4) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=3;
+		self.players[2].loc[2]=-3;
+		self.players[3].loc[2]=-9;
+	}
   };
 
   var lastTime = 0;
@@ -262,17 +326,16 @@ function Game(players,p1,p2,p3,p4) {
       currentPlayer.airborne = airborne;
       currentPlayer.tick(dt);
 
-
       // Die off the bottom
-      if (currentPlayer.loc[1] < -30.0)
+      if (currentPlayer.loc[1] < bottomLimit)
         currentPlayer.die();
 
       // Right wall
-      if (currentPlayer.loc[2] < -120.0)
+      if (currentPlayer.loc[2] < -1*sideLimit)
         currentPlayer.die();
 
       // Left wall
-      if (currentPlayer.loc[2] > 120.0)
+      if (currentPlayer.loc[2] > sideLimit)
         currentPlayer.die();
 
     }
