@@ -34,7 +34,9 @@ function getShader(id) {
   return shader;
 }
 
+var _texturesLoaded = 0;
 function getTexture(src) {
+  _texturesLoaded += 1;
   var tex = gl.createTexture();
   tex.image = new Image();
   tex.image.onload = function () {
@@ -46,7 +48,9 @@ function getTexture(src) {
     gl.bindTexture(gl.TEXTURE_2D, null);
 
     // Tick the game after everything's loaded
-    game.tick();
+    _texturesLoaded -= 1;
+    if (_texturesLoaded == 0)
+      game.tick();
   };
   tex.image.src = src;
   return tex;
