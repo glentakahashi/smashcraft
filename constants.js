@@ -13,7 +13,7 @@ function charClone(name, id) {
     launchResistance: 500.0,
     attacks: {
       neutral: {
-        range: vec3.fromValues(100.0, 3.5, 4.5),
+        range: vec3.fromValues(100.0, 5.5, 6.5),
         facing: true,
         knockback: {
           angle: Math.PI / 6,
@@ -21,16 +21,16 @@ function charClone(name, id) {
           growth: 100,
         },
         timing: {
-          windup: 5,
+          windup: 3,
           duration: 5,
-          cooldown: 10,
+          cooldown: 5,
         },
         damage: 7,
         stun: 11,
         sound: 'punchHit',
       },
       sideSmash: {
-        range: vec3.fromValues(100.0, 3.5, 4.5),
+        range: vec3.fromValues(100.0, 6.5, 8.5),
         facing: true,
         knockback: {
           angle: Math.PI / 3.5,

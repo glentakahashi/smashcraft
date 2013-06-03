@@ -137,6 +137,10 @@ function Player(num) {
     k /= 100;
     self.launchScalar = k;
 
+    // Cancel attack animation and stuff
+    self.attackStage = NOATTACK;
+    self.attackData = null;
+
     // Flip launch angle based on facing direction
     if (facing == -1)
       self.launchAngle = Math.PI - attack.knockback.angle;
@@ -218,16 +222,16 @@ function Player(num) {
   };
 
   self.tick = function(dt) {
-    // Self-applied acceleration
-    vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
-    console.log(self.appliedForce[2]);
-    if((Math.abs(self.appliedForce[2]) - 0.01) < 0) {
-        model.setAnimation(0);
-    } else {
-        model.setAnimation(1);
-    }
     // Tick down invincibility
     self.invincible--;
+
+    // Animate walking
+    if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
+      model.setAnimation(0);
+    }
+    else {
+      model.setAnimation(1);
+    }
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
