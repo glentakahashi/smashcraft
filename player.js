@@ -305,7 +305,10 @@ function Player(num) {
     self.knockback = true;
     console.log(self.stun);
 
-    // TODO: this is a hack
+    // Cancel all other momentum
+    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
+    vec3.set(self.appliedVelocity, 0.0, 0.0, 0.0);
+
     // If in midair and they get hit, give them at least one jump
     if (self.airborne && self.airJumps == 0)
       self.airJumps = 1;
