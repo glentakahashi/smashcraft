@@ -262,6 +262,8 @@ function Player(num) {
     vec3.set(self.appliedVelocity, 0.0, 0.0, 0.0);
     vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
     vec3.set(self.launchVelocity, 0.0, 0.0, 0.0);
+    self.launchAngle = 0;
+    self.launchScalar = 0;
     self.health = 0;
     self.stun = 0;
 
