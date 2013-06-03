@@ -333,7 +333,7 @@
       gl_Position = uPMatrix * uCMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
       vTextureCoord = aTextureCoord;
       vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
-      vec3 transformedNormal = uNMatrix * aVertexNormal;
+      vec3 transformedNormal = mat3(uMVMatrix )* uNMatrix * aVertexNormal;
       float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
       vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
 
