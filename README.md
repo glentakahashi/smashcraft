@@ -16,5 +16,5 @@ Authors
 ### To Do
 
 *   MOAR Animation - Glen
-*   Fix Jumping - Steven
 *   Particle Effects - Sarah
+*   Refactoring?? - Steven
