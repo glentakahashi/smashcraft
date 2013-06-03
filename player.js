@@ -239,6 +239,7 @@ function Player(num) {
       vec3.set(self.launchVelocity, 0.0,
         Math.sin(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0),
         Math.cos(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0))
+      console.log(self.launchVelocity[1]);
     }
 
     // If not knockbacked, slide across the ground with more resistance
@@ -265,7 +266,6 @@ function Player(num) {
     // Do attack stuff
     if (self.attackStage != NOATTACK) {
       self.attackDuration--;
-      console.log(self.attackDuration, self.attackStage);
       switch (self.attackStage) {
         case WINDUP:
           if (self.attackDuration <= 0) {

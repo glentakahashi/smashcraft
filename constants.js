@@ -16,7 +16,7 @@ function charClone(name, id) {
         range: vec3.fromValues(100.0, 5.5, 6.5),
         facing: true,
         knockback: {
-          angle: Math.PI / 6,
+          angle: Math.PI / 4,
           base: 10,
           growth: 100,
         },
