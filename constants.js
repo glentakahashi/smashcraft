@@ -1,7 +1,48 @@
+function charClone(name, id) {
+  return {
+    name: name,
+    id: id,
+    jumpHeight: 1.0,
+    airJumps: 2,
+    moveSpeed: 0.35,
+    physics: {
+      gravityScale: 1.0,
+      terminalPos: vec3.fromValues(0.0, 100, 0.3),
+      terminalNeg: vec3.fromValues(0.0, -1.0, -0.3),
+    },
+    launchResistance: 500.0,
+    attacks: {
+      neutral: {
+        range: vec3.fromValues(100.0, 3.5, 4.5),
+        facing: true,
+        knockback: {
+          angle: Math.PI / 6,
+          base: 10,
+          growth: 100,
+        },
+        damage: 7,
+        stun: 200,
+        sound: 'punchHit',
+      },
+      sideSmash: {
+        range: vec3.fromValues(100.0, 3.5, 4.5),
+        facing: true,
+        knockback: {
+          angle: Math.PI / 4,
+          base: 30,
+          growth: 300,
+        },
+        damage: 16,
+        stun: 700,
+        sound: 'punchHit',
+      },
+    }
+  }
+}
 var constants = {
   physics: {
-    G: vec3.fromValues(0.0, -3.0, 0.0),
-    TERMINAL_MAX: vec3.fromValues(-1000.0, -0.70, -1000.0),
+    G: vec3.fromValues(0.0, -0.0375, 0.0),
+    TERMINAL_MAX: vec3.fromValues(-1000.0, -1.0, -1000.0),
     TERMINAL_MIN: vec3.fromValues(1000.0, 1000.0, 1000.0),
     FRICTION_Z: 1.5
   },
@@ -13,162 +54,24 @@ var constants = {
   },
 
   heros: {
-    guyman: {
-      name: 'Guy-Man',
-      id: 'guyman',
-      jumpHeight: 1.1,
-      maxJumps: 2,
-      weight: 1.0,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.25),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.45,
-            pow: 1.0,
-            min: 0.3,
-          },
-          scale: 0.5,
-          damage: 7,
-          stun: 200, // in MS
-          sound: 'punchHit',
-        },
-        sideSmash: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 1.0,
-            pow: 4.0,
-            min: 0.4,
-          },
-          damage: 15,
-          stun: 500, // in MS
-          sound: 'smashHit',
-        }
-      }
-    },
-    thomas: {
-      name: 'Thomas',
-      id: 'thomas',
-      jumpHeight: 0.6,
-      maxJumps: 6,
-      weight: 0.6,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.5,
-            pow: 1.2,
-            min: 0.2,
-          },
-          scale: 0.5,
-          damage: 7,
-          stun: 200, // in MS
-          sound: 'punchHit',
-        },
-        sideSmash: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.5,
-            pow: 1.2,
-            min: 0.2,
-          },
-          damage: 15,
-          stun: 500, // in MS
-          sound: 'smashHit',
-        }
-      }
-    },
-    ram: {
-      name: 'Ram',
-      id: 'ram',
-      jumpHeight: 1.1,
-      maxJumps: 2,
-      weight: 1.0,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.25),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.45,
-            pow: 1.0,
-            min: 0.3,
-          },
-          scale: 0.5,
-          damage: 7,
-          stun: 200, // in MS
-          sound: 'punchHit',
-        },
-        sideSmash: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 1.0,
-            pow: 4.0,
-            min: 0.4,
-          },
-          damage: 15,
-          stun: 500, // in MS
-          sound: 'smashHit',
-        }
-      }
-    },
-    steve: {
-      name: 'Steve',
-      id: 'steve',
-      jumpHeight: 0.6,
-      maxJumps: 6,
-      weight: 0.6,
-      moveSpeed: 0.35,
-      attacks: {
-        neutral: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.5,
-            pow: 1.2,
-            min: 0.2,
-          },
-          scale: 0.5,
-          damage: 7,
-          stun: 200, // in MS
-          sound: 'punchHit',
-        },
-        sideSmash: {
-          range: vec3.fromValues(100.0, 3.5, 4.5),
-          facing: true,
-          push: {
-            facing: vec3.fromValues(0.0, 0.0, 0.15),
-            absolute: vec3.fromValues(0.0, 0.25, 0.0),
-            scale: 0.5,
-            pow: 1.2,
-            min: 0.2,
-          },
-          damage: 15,
-          stun: 500, // in MS
-          sound: 'smashHit',
-        }
-      }
-    }
+    'luigi': charClone('Luigi', 'luigi'),
+    'mario': charClone('Luigi', 'luigi'),
+    'donkey%20kong': charClone('Luigi', 'luigi'),
+    'link': charClone('Luigi', 'luigi'),
+    'samus': charClone('Luigi', 'luigi'),
+    'captain%20falcon': charClone('Luigi', 'luigi'),
+    'ness': charClone('Luigi', 'luigi'),
+    'yoshi': charClone('Luigi', 'luigi'),
+    'kirby': charClone('Luigi', 'luigi'),
+    'fox': charClone('Luigi', 'luigi'),
+    'pikachu': charClone('Luigi', 'luigi'),
+    'jigglypuff': charClone('Luigi', 'luigi'),
+    'nightwing': charClone('Luigi', 'luigi'),
+    'robin': charClone('Luigi', 'luigi'),
+    'batman': charClone('Luigi', 'luigi'),
+    'superman': charClone('Luigi', 'luigi'),
+    'iron%20man': charClone('Luigi', 'luigi'),
+    'spiderman': charClone('Luigi', 'luigi'),
   }
 
 };
