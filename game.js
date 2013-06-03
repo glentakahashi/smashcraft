@@ -11,14 +11,14 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   switch(stageNum) {
 	case 5:
 		//grassland
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 16.0, 0.0)));
 		break;
 	case 6:
 		//jungle
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -21.0)));
@@ -40,26 +40,21 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		break;
 	case 8:
 		//desert
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
 		break;
 	case 9:
 		//mountains
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, -4.0, 0.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -28.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -14.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 0.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 14.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 28.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -21.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -7.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 7.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 21.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, -14.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, 0.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, 14.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, -7.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 7.0)));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 35.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, -4.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, -7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 7.0, 21.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, -14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 0.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 14.0, 14.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, -7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 21.0, 7.0)));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 0.75, 6.0), vec3.fromValues(0.0, 28.0, 0.0)));
 		break;
 	case 0:
 		//ocean
@@ -252,6 +247,19 @@ function Game(stageNum,players,p1,p2,p3,p4) {
       self.players[2].init(constants.heros[p3]);
     if (players >= 4)
       self.players[3].init(constants.heros[p4]);
+    if(players==2) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=-9;
+	} else if(players==3) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=0;
+		self.players[2].loc[2]=-9;
+	} else if(players==4) {
+		self.players[0].loc[2]=9;
+		self.players[1].loc[2]=3;
+		self.players[2].loc[2]=-3;
+		self.players[3].loc[2]=-9;
+	}
   };
 
   var lastTime = 0;
