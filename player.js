@@ -303,6 +303,7 @@ function Player(num) {
     // Add stun and knockback
     self.stun = attack.stun * k;
     self.knockback = true;
+    console.log(self.stun);
 
     // TODO: this is a hack
     // If in midair and they get hit, give them at least one jump
@@ -403,7 +404,7 @@ function Player(num) {
 
     // Only when not stunned
     if (self.stun > 0) {
-      self.stun -= dt;
+      self.stun -= 1;
     }
     else {
       self.stun = 0;

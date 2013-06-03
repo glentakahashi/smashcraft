@@ -20,8 +20,10 @@ function charClone(name, id) {
           base: 10,
           growth: 100,
         },
+        delay: 5,
+        cooldown: 10,
         damage: 7,
-        stun: 100,
+        stun: 11,
         sound: 'punchHit',
       },
       sideSmash: {
@@ -30,10 +32,10 @@ function charClone(name, id) {
         knockback: {
           angle: Math.PI / 3.5,
           base: 30,
-          growth: 400,
+          growth: 500,
         },
         damage: 16,
-        stun: 500,
+        stun: 28,
         sound: 'punchHit',
       },
     }
