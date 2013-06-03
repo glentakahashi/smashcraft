@@ -56,6 +56,7 @@ function Game(players,p1,p2,p3,p4) {
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
+    program.stun = gl.getUniformLocation(program, 'stun');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.enableVertexAttribArray(program.aTextureCoord);
