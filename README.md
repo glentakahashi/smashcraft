@@ -15,9 +15,6 @@ Authors
 
 ### To Do
 
-*   Animation - Glen
-*   Flashing - Sarah
+*   MOAR Animation - Glen
+*   Fix Jumping - Steven
 *   Particle Effects - Sarah
-*   Background - Alex
-*   Different Levels - Alex
-*   Whatever he wants because he's done a ton of work - Steven
