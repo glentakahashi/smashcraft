@@ -1,3 +1,6 @@
+body {
+	background-size: 100%;
+}
 h2 {
   text-align:center;
 }
@@ -31,8 +34,8 @@ img {
   width: 900px;
 }
 .player {
-  width: 200px;
-  height: 380px;
+  width: 160px;
+  height: 300px;
   display:inline-block;
   margin-right:16px;
 }
@@ -102,4 +105,21 @@ img {
 
 #p4 {
   left: 75%;
+}
+#stageSelection {
+	width: 220px;
+    margin-left: 724px;
+    top: 0px;
+    position: absolute;
+}
+.stage {
+	width: inherit;
+}
+.stageNumber {
+	font-size: 45px;
+	color: white;
+	margin-left: 5px;
+}
+.stageImage {
+	margin-bottom: -52px;
 }

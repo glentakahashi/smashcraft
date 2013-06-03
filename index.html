@@ -35,6 +35,32 @@
 			<td id="choice17"><img src="img/characters/spidermanHead.png"></td>
 		</tr>
 	</table>
+	<div id="stageSelection">
+		<div class="stage">
+			<img id="image5" class="stageImage" src="img/backgrounds/grassland.jpg">
+			<span class="stageNumber">5</span>
+		</div>
+		<div class="stage">
+			<img id="image6" class="stageImage" src="img/backgrounds/jungle.jpg">
+			<span class="stageNumber">6</span>
+		</div>
+		<div class="stage">
+			<img id="image7" class="stageImage" src="img/backgrounds/nether.jpg">
+			<span class="stageNumber">7</span>
+		</div>
+		<div class="stage">
+			<img id="image8" class="stageImage" src="img/backgrounds/desert.jpg">
+			<span class="stageNumber">8</span>
+		</div>
+		<div class="stage">
+			<img id="image9" class="stageImage" src="img/backgrounds/mountains.jpg">
+			<span class="stageNumber">9</span>
+		</div>
+		<div class="stage">
+			<img id="image0" class="stageImage" src="img/backgrounds/ocean.jpg">
+			<span class="stageNumber">0</span>
+		</div>
+	</div>
 	<div id="players">
 		<div id="player1" class="player">
 			<h2>Luigi</h2>
@@ -63,9 +89,6 @@
 	var greenLoc=(rows-1)*cols;
 	var yellowLoc=rows*cols-1;
 	var numPlayers=2;
-	$(function() {
-		updateColoring();
-	});
 	window.onkeydown = function(e) {
 	    switch(e.which) {
 	        case 87:
@@ -169,26 +192,53 @@
 				$("#player4").show();
 				numPlayers=4;
 				break;
+			case 53:
+				//start stage 5
+				startGame(5);
+				break;
+			case 54:
+				//start stage 6
+				startGame(6);
+				break;
+			case 55:
+				//start stage 7
+				startGame(7);
+				break;
+			case 56:
+				//start stage 8
+				startGame(8);
+				break;
+			case 57:
+				//start stage 9
+				startGame(9);
+				break;
+			case 48:
+				//start stage 0
+				startGame(0);
+				break;
 			case 13:
 				//start game
-				$("#selection").hide();
-				$("#game").show();
-				var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
-				var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
-				var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
-				var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
-				redName=redName.substring(0,redName.length-8);
-				blueName=blueName.substring(0,blueName.length-8);
-				greenName=greenName.substring(0,greenName.length-8);
-				yellowName=yellowName.substring(0,yellowName.length-8);
-				game = new Game(numPlayers,redName,blueName,greenName,yellowName);
-			    audio.init();
-			    game.init();
+				startGame(5);
 				break;
 	    }
 		//update coloring
 		updateColoring();
 	};
+	function startGame(stageNum) {
+		$("#selection").hide();
+		$("#game").show();
+		var redName=$("#choice"+redLoc+" img")[0].src.substring(document.URL.length+15);
+		var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
+		var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
+		var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
+		redName=redName.substring(0,redName.length-8);
+		blueName=blueName.substring(0,blueName.length-8);
+		greenName=greenName.substring(0,greenName.length-8);
+		yellowName=yellowName.substring(0,yellowName.length-8);
+		game = new Game(stageNum,numPlayers,redName,blueName,greenName,yellowName);
+	    audio.init();
+	    game.init();
+	}
 	function updateColoring() {
 	    $("td").removeClass("highlightRed");
 	    $("td").removeClass("highlightBlue");
@@ -225,6 +275,7 @@
     var canvas = $('#canvas');
     var width = Number(canvas.attr('width'));
     $('#canvas').attr('height', width / aspect);
+	updateColoring();
   });
 	</script>
 	<div id="game" style="display:none;">
