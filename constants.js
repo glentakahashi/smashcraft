@@ -21,9 +21,9 @@ function charClone(name, id) {
           growth: 100,
         },
         timing: {
-          windup: 5,
+          windup: 3,
           duration: 5,
-          cooldown: 10,
+          cooldown: 5,
         },
         damage: 7,
         stun: 11,

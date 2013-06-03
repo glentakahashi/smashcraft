@@ -137,6 +137,10 @@ function Player(num) {
     k /= 100;
     self.launchScalar = k;
 
+    // Cancel attack animation and stuff
+    self.attackStage = NOATTACK;
+    self.attackData = null;
+
     // Flip launch angle based on facing direction
     if (facing == -1)
       self.launchAngle = Math.PI - attack.knockback.angle;
