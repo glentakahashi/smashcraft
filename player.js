@@ -1,5 +1,7 @@
-function Player() {
-  var MAX_JUMPS = 2;
+function Player(num) {
+  var self = this;
+  self.num = num;
+  // Constants
   var vertices = [
     // Front face
     -1.0, -1.0,  1.0,  // 0
@@ -111,76 +113,394 @@ function Player() {
     1/8, 3/4,
     0.0, 3/4,
   ];
+
+  var vertexNormals = [
+    // Front face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+ 
+    // Back face
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+ 
+    // Top face
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+ 
+    // Bottom face
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+ 
+    // Right face
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+ 
+    // Left face
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+ 
+  ];
   
-  var self = this;
   var model = new Model();
 
   // Game variables
-  self.loc = vec3.fromValues(2.0, 0.0, 0.0);
-  self.health = 100;
+  self.loc = vec3.fromValues(0.0, 0.0, 0.0);
+  self.health = 0;
+  self.deaths = 0;
+  self.kills = 0;
+  self.lastHit = {
+    who: null,
+    when : null
+  }
   self.animation = null;
+  self.stats = null;
 
   // Physics shit
-  self.delta = vec3.create();
   self.facing = 0;
-  self.faceRotation = 0;
-  var jumps = MAX_JUMPS;
+  var faceRotation = 0;  // Rotation percentage 0.0 to 1.0
+  self.airJumps = 0;
+  self.airborne = true;
+
+  self.velocity = vec3.create();  // Not affected by terminal velocity
+
+  // Knockback & Launch
+  self.launchVelocity = vec3.create();
+  self.launchScalar = 0.0;  // Scalar value of force
+  self.launchAngle = 0.0;  // Angle of force
+  self.knockback = false;  // Is currently in knockback
+  self.stun = 0;  // Number of frames left in stun
+  var resistanceForce = 0.005;
+  var resistanceVelocity = 0.0;
+
+  // Gravity and player movement
+  self.appliedForce = vec3.create();
+  self.appliedVelocity = vec3.create();  // Velocity: DI (horiz), fall speed (vertical)
+
+  // Attacking
+  var NOATTACK = 0;
+  var WINDUP = 1;
+  var ATTACK = 2;
+  var COOLDOWN = 3;
+  self.attackStage = NOATTACK;
+  self.attackDuration = 0;  // Number of frames until next stage
+  self.attackData = null;
+
+  self.invincible = 0;  // Number of frames we can't get hit
+
   self.jump = function() {
-    if (jumps > 0) {
-      self.delta[1] = 1;
-      jumps -= 1;
+    // No jumping when stunned
+    if (self.stun > 0)
+      return;
+
+    // Double jumping
+    if (self.airborne) {
+      if (self.airJumps <= 0)
+        return;
+      self.airJumps -= 1;
     }
+
+    // Apply jumping force
+    self.appliedForce[1] = self.stats.jumpHeight;
+
+    // Jump cancels all forward/backward movement
+    self.appliedForce[2] = 0;
+    self.appliedVelocity[2] = 0;
+    self.airborne = true;
+
+    // Vertical momentum cancelling double jump
+    if (self.airJumps < self.stats.airJumps) {
+      self.appliedVelocity[1] = 0.0;
+      self.launchScalar = 0.0;
+    }
+
   };
+
+  self.drop = function() {
+    if (self.airborne)
+      return;
+
+    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
+    self.airborne = true;
+  };
+
   self.move = function(dir) {
-    self.delta[2] = dir * 0.35;
-    if (dir < 0)
+    // Don't move if stunned
+    if (self.stun > 0)
+      return;
+
+    // If in air, do directional influence instead (slower than running)
+    if (self.airborne) {
+      self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
+    }
+
+    // Else do normal running
+    else {
+      self.appliedForce[2] = dir * self.stats.moveSpeed;
+
+    }
+    // Face the right direction
+    if (dir < 0) {
+      self.facing = -1;
+    }
+    else {
       self.facing = 1;
+    }
+
+  };
+
+  self.spawn = function() {
+    vec3.set(self.loc, 0.0, 24.0, 0.0);
+    vec3.set(self.appliedVelocity, 0.0, 0.0, 0.0);
+    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
+    vec3.set(self.launchVelocity, 0.0, 0.0, 0.0);
+    self.launchAngle = 0;
+    self.launchScalar = 0;
+    self.health = 0;
+    self.stun = 0;
+
+    $('#'+self.stats.id).text(self.health);
+  };
+
+  self.die = function() {
+    audio.playSfx('death');
+    self.deaths += 1;
+    self.spawn();
+  };
+
+  self.getHit = function(attack, facing) {
+    // Deal damage first
+    self.health += attack.damage;
+
+    // Compute knockback amount
+    var k = attack.knockback.base +
+        (self.health * attack.knockback.growth) / self.stats.launchResistance;
+    k /= 100;
+    self.launchScalar = k;
+
+    // Flip launch angle based on facing direction
+    if (facing == -1)
+      self.launchAngle = Math.PI - attack.knockback.angle;
     else
-      self.facing = 0;
+      self.launchAngle = attack.knockback.angle;
+
+    // Reset launch velocity variables
+    resistanceVelocity = 0.0;
+    vec3.set(self.launchVelocity, 0.0, 0.0, 0.0);
+
+    // Add stun and knockback
+    self.stun = attack.stun * k;
+    self.knockback = true;
+
+    // Cancel all other momentum
+    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
+    vec3.set(self.appliedVelocity, 0.0, 0.0, 0.0);
+
+    // If in midair and they get hit, give them at least one jump
+    if (self.airborne && self.airJumps == 0)
+      self.airJumps = 1;
+  };
+
+  self.attack = function(type) {
+    if (self.stun > 0)
+      return;
+
+    // Only attack if not attacking
+    if (self.attackStage != NOATTACK)
+      return;
+
+    var curAttack = self.stats.attacks[type];
+    if (typeof curAttack === 'undefined')
+      return;
+
+    self.attackStage = WINDUP;
+    self.attackDuration = curAttack.timing.windup;
+    self.attackData = curAttack;
+  };
+
+  var doAttack = function(attack) {
+    var hit = false;
+
+    for (var p in game.players) {
+      if (game.players[p] == self)
+        continue;
+
+      var other = game.players[p];
+      var dist = vec3.create();
+      vec3.subtract(dist, self.loc, other.loc);
+      var push = vec3.create();
+
+      // If is facing or attack doesn't need facing
+      if (!attack.facing || dist[2] * self.facing < 0) {
+        if (Math.abs(dist[0]) < attack.range[0] &&
+            Math.abs(dist[1]) < attack.range[1] &&
+            Math.abs(dist[2]) < attack.range[1] &&
+            other.invincible <= 0) {
+          other.invincible = attack.timing.duration;
+          other.getHit(attack, self.facing);
+          hit = true;
+        }
+      }
+    }
+
+    if (hit)
+      audio.playSfx(attack.sound);
+
+    return hit;
   };
   
-  self.init = function() {
-    model.init(vertices, textureCoords, null, textures.ram);
+  self.init = function(stats) {
+    self.stats = stats;
+    model.init(vertices, textureCoords, vertexNormals, textures[self.num]);
+
+    $('#p'+(num+1) + ' .name').text(self.stats.name);
+
+    self.spawn();
   };
 
   self.tick = function(dt) {
-    // Gravity and terminal velocities
-    var ms = dt / 1000;
-    vec3.scaleAndAdd(self.delta, self.delta, game.physics.G, ms);
-    vec3.max(self.delta, self.delta, game.physics.TERMINAL_MAX);
-    vec3.min(self.delta, self.delta, game.physics.TERMINAL_MIN);
+    // Tick down invincibility
+    self.invincible--;
+
+    // Apply Launch Force to launch velocity
+    if (self.knockback) {
+      resistanceVelocity += resistanceForce;
+      vec3.set(self.launchVelocity, 0.0,
+        Math.sin(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0),
+        Math.cos(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0))
+    }
+
+    // If not knockbacked, slide across the ground with more resistance
+    else {
+      resistanceVelocity += 8 * resistanceForce;
+      vec3.set(self.launchVelocity, 0.0, 0.0,
+        Math.cos(self.launchAngle) * Math.max(self.launchScalar - resistanceVelocity, 0.0))
+    }
+    
+    // Gravity only when not on ground
+    if (self.airborne) {
+      vec3.scaleAndAdd(self.appliedVelocity, self.appliedVelocity,
+        constants.physics.G, self.stats.physics.gravityScale);
+    }
+    else {
+      self.airJumps = self.stats.airJumps;
+    }
+
+    // Self-applied acceleration only when not attacking or in midair
+    if (self.airborne || self.attackStage == NOATTACK) {
+      vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
+    }
+
+    // Do attack stuff
+    if (self.attackStage != NOATTACK) {
+      self.attackDuration--;
+      console.log(self.attackDuration, self.attackStage);
+      switch (self.attackStage) {
+        case WINDUP:
+          if (self.attackDuration <= 0) {
+            self.attackStage = ATTACK;
+            self.attackDuration = self.attackData.timing.duration;
+            audio.playSfx('punchMiss');
+          }
+          break;
+        case ATTACK:
+          if (self.attackDuration <= 0) {
+            self.attackStage = COOLDOWN;
+            self.attackDuration = self.attackData.timing.cooldown;
+          }
+          doAttack(self.attackData);
+          break;
+        case COOLDOWN:
+          if (self.attackDuration <= 0) {
+            self.attackStage = NOATTACK;
+            self.attackDuration = 0;
+          }
+          break;
+      }
+    }
+
+    // Terminal velocities for self-applied velocities only
+    vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPos);
+    vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNeg);
+
+    // Add two velocity components
+    vec3.copy(self.velocity, self.appliedVelocity);
+    vec3.add(self.velocity, self.velocity, self.launchVelocity);
 
     // Smooth rotation
-    if (self.facing == 1 && self.faceRotation < 1)
-        self.faceRotation += 1/8;
-    else if (self.facing == 0 && self.faceRotation > 0)
-        self.faceRotation -= 1/8;
+    if (self.facing == -1) {
+      if (faceRotation >= 1.0)
+        faceRotation = 1.0;
+      else
+        faceRotation += 1 / 4;
+    }
+    else {
+      if (faceRotation <= 0.0)
+        faceRotation = 0.0;
+      else
+        faceRotation -= 1 / 4;
+    }
 
-    // Friction
-    self.delta[2] /= game.physics.FRICTION_Z;
-    if (self.delta[2] < 0.0001 && self.delta[2] > -0.0001)
-      self.delta[2] = 0.0;
+    // Only when not stunned
+    if (self.stun > 0) {
+      self.stun -= 1;
+    }
+    else {
+      self.stun = 0;
+    }
 
-    vec3.add(self.loc, self.loc, self.delta);
+    // Move the guy and reset applied force
+    vec3.add(self.loc, self.loc, self.velocity);
+    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
 
-    // TODO: this isn't ground
-    if (self.loc[1] < 0) {
-      self.loc[1] = 0.0;
-      self.delta[1] = 0.0;
-      jumps = MAX_JUMPS;
+    // Friction if grounded
+    if (!self.airborne) {
+      self.appliedVelocity[2] /= 1.5;
     }
 
     model.tick(dt);
+    $('#player' + (self.num + 1) + 'hp').text(self.health);
   };
 
   self.render = function (dt) {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
-      mat4.translate(newMV, newMV, self.loc); // Move it back
-      mat4.rotateY(newMV, newMV, self.faceRotation * Math.PI);
+      // TODO: this transformation just puts the head on top of the origin
+      mat4.translate(newMV, newMV, vec3.fromValues(0.0, 1.0, 0.0));
+      mat4.translate(newMV, newMV, self.loc); // Move it to location
+      mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
+      var stunned;
+      if((Math.floor(self.stun))%2 == 0)
+        stunned = false;
+      else
+        stunned = true;
+      gl.uniform1i(program.stun, stunned);
       //mat4.translate(modelView, modelView, loc);
       model.render(dt);
     modelView = mvstack.pop();
