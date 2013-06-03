@@ -18,4 +18,3 @@ Authors
 *   MOAR Animation - Glen
 *   Fix Jumping - Steven
 *   Particle Effects - Sarah
-*   New Characters - Alex
