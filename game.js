@@ -192,9 +192,9 @@ function Game(players,p1,p2,p3,p4) {
     }
     self.players[0].init(constants.heros[p1]);
     self.players[1].init(constants.heros[p2]);
-    if (players == 3)
+    if (players >= 3)
       self.players[2].init(constants.heros[p3]);
-    else if (players == 4)
+    if (players >= 4)
       self.players[3].init(constants.heros[p4]);
   };
 
