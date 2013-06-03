@@ -262,7 +262,6 @@ function Game(players,p1,p2,p3,p4) {
       currentPlayer.airborne = airborne;
       currentPlayer.tick(dt);
 
-
       // Die off the bottom
       if (currentPlayer.loc[1] < -30.0)
         currentPlayer.die();
