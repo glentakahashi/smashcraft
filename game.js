@@ -284,12 +284,15 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     }
 
     // Players
+	var notDeadPlayers=0;
     var locSum = vec3.create();
     var minLoc = vec3.create();
     var maxLoc = vec3.create();
     for (var i in self.players) {
       var currentPlayer = self.players[i];
 
+	  if(!currentPlayer.isDead) {
+	  notDeadPlayers++;
       // Camera location math
       vec3.add(locSum, locSum, currentPlayer.loc);
       vec3.max(maxLoc, maxLoc, currentPlayer.loc);
@@ -337,13 +340,14 @@ function Game(stageNum,players,p1,p2,p3,p4) {
       // Left wall
       if (currentPlayer.loc[2] > sideLimit)
         currentPlayer.die();
+	  }
 
     }
 
     // Camera movement
     var dist = vec3.distance(minLoc, maxLoc);
     self.camera.setZoomTarget(35 / (Math.pow(dist, .65)));
-    vec3.scale(self.camera.atTarget, locSum, 1/self.players.length);
+    vec3.scale(self.camera.atTarget, locSum, 1/notDeadPlayers);
 
     self.camera.tick(dt);
     

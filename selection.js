@@ -93,6 +93,8 @@ window.onkeydown = function(e) {
 			$("#player4").hide();
 		    $("td").removeClass("highlightGreen");
 		    $("td").removeClass("highlightYellow");
+			$("#p3").hide();
+			$("#p4").hide();
 			numPlayers=2;
 			break;
 		case 51:
@@ -100,12 +102,16 @@ window.onkeydown = function(e) {
 			$("#player3").show();
 			$("#player4").hide();
 		    $("td").removeClass("highlightYellow");
+			$("#p3").show();
+			$("#p4").hide();
 			numPlayers=3;
 			break;
 		case 52:
 			//4 player
 			$("#player3").show();
 			$("#player4").show();
+			$("#p3").show();
+			$("#p4").show();
 			numPlayers=4;
 			break;
 		case 53:
