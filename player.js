@@ -495,6 +495,12 @@ function Player(num) {
       mat4.rotateY(newMV, newMV, faceRotation * Math.PI);
       mat4.multiply(modelView, modelView, newMV);
 
+      var stunned;
+      if((Math.floor(self.stun))%2 == 0)
+        stunned = false;
+      else
+        stunned = true;
+      gl.uniform1i(program.stun, stunned);
       //mat4.translate(modelView, modelView, loc);
       model.render(dt);
     modelView = mvstack.pop();

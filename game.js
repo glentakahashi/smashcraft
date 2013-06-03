@@ -56,6 +56,7 @@ function Game(players,p1,p2,p3,p4) {
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
+    program.stun = gl.getUniformLocation(program, 'stun');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.enableVertexAttribArray(program.aTextureCoord);
@@ -66,7 +67,7 @@ function Game(players,p1,p2,p3,p4) {
     // Set perspective matrix
     //doPerspective();
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Black
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);  // Black
     gl.enable(gl.DEPTH_TEST);
   }
 
