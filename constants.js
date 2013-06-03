@@ -21,19 +21,19 @@ function charClone(name, id) {
           growth: 100,
         },
         damage: 7,
-        stun: 200,
+        stun: 100,
         sound: 'punchHit',
       },
       sideSmash: {
         range: vec3.fromValues(100.0, 3.5, 4.5),
         facing: true,
         knockback: {
-          angle: Math.PI / 4,
+          angle: Math.PI / 3.5,
           base: 30,
-          growth: 300,
+          growth: 400,
         },
         damage: 16,
-        stun: 700,
+        stun: 500,
         sound: 'punchHit',
       },
     }

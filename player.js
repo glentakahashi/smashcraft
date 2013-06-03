@@ -202,6 +202,10 @@ function Player(num) {
   var resistanceVelocity = 0.0;
 
   self.jump = function() {
+    // No jumping when stunned
+    if (self.stun > 0)
+      return;
+
     if (self.airborne) {
       if (self.airJumps <= 0)
         return;
