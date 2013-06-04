@@ -20,24 +20,24 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	case 6:
 		//jungle
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, -21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, 14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, -21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 0.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 60.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 60.0, 14.0), "Trans"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, -21.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 21.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, -14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, 14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, -21.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 0.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 21.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 60.0, -14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 60.0, 14.0), "Trans", "wood"));
 		break;
 	case 7:
 		//nether
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", 'lava'));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", 'stone'));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", 'stone'));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", 'lava'));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", 'lava'));
 		break;
 	case 8:
 		//desert
@@ -155,6 +155,11 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 
   var initController = function() {
     self.controller.init();
+
+	// Escape
+	self.controller.tap(27, function() {
+		reset=true;
+	})
 
     // W
     self.controller.tap(87, function() {
@@ -340,7 +345,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		window.onkeydown=function(e) {
 			//reset game
 			var currTime=new Date().getTime();
-			if(gameOverTime+5000<currTime) {
+			if(e.which==27&&gameOverTime+10<currTime) {
 				reset=true;
 			}
 		}
