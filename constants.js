@@ -17,7 +17,7 @@ function charClone(name, id) {
         facing: true,
         knockback: {
           angle: Math.PI / 4,
-          base: 10,
+          base: 12,
           growth: 100,
         },
         timing: {
@@ -26,7 +26,7 @@ function charClone(name, id) {
           cooldown: 4,
         },
         damage: 7,
-        stun: 11,
+        stun: 16,
         sound: 'punchHit',
       },
       sideSmash: {
