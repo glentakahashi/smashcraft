@@ -264,8 +264,56 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 
   var lastTime = 0;
   self.tick = function() {
-    // New frame
-    requestAnimFrame(self.tick);
+	if(reset) {
+    	// New frame
+		gameOverTime=0;
+		reset=false;
+		$("#game").hide();
+		$("#selection").show();
+		$("#winner").hide();
+		$("body").css("background-color","white");
+		setKeys();
+	} else {	
+	    requestAnimFrame(self.tick);
+	
+	//Is Game Over?
+	var countAlive=0;
+	var isAlive=0;
+	for(var i=0;i<game.players.length;i++) {
+		if(game.players[i].isDead==false) {
+			countAlive++;
+			isAlive=i;
+		}
+	}
+	for(var i=0;i<game.players.length;i++) {
+		switch(game.players[i].rank) {
+			case 2:
+				$("#p"+(i+1)+" .damage").text("2nd");
+				break;
+			case 3:
+				$("#p"+(i+1)+" .damage").text("3rd");
+				break;
+			case 4:
+				$("#p"+(i+1)+" .damage").text("4th");
+				break;
+		}
+	}
+	if(countAlive==1&&gameOverTime==0) {
+		gameOverTime=new Date().getTime();
+		$("#winner").show();
+		$("#winner").text("Winner: "+game.players[isAlive].stats.name);
+		for(var i=0;i<game.players.length;i++) {
+			game.players[i].spawn();
+			game.players[i].loc[1]=0;
+		}
+		window.onkeydown=function(e) {
+			//reset game
+			var currTime=new Date().getTime();
+			if(gameOverTime+5000<currTime) {
+				reset=true;
+			}
+		}
+	}
 
     // Calculate dt
     var timeNow = new Date().getTime();
@@ -352,6 +400,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.camera.tick(dt);
     
     self.render(dt);
+}
   };
 
   var t = 0;
