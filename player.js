@@ -9,6 +9,9 @@ function Player(num) {
   self.health = 0;
   self.deaths = 0;
   self.kills = 0;
+  self.lives = 3;
+  self.isDead = false;
+  self.rank = 0;
   self.lastHit = {
     who: null,
     when : null
@@ -118,13 +121,58 @@ function Player(num) {
     self.health = 0;
     self.stun = 0;
 
-    $('#'+self.stats.id).text(self.health);
+    $('#'+self.stats.num+' .damage').text(self.health);
   };
 
   self.die = function() {
     audio.playSfx('death');
+	$("#p"+(self.num+1)+" img")[0].remove();
     self.deaths += 1;
-    self.spawn();
+	self.spawn();
+	if(self.deaths>=self.lives) {
+		self.loc[1]=0;
+		self.isDead=true;
+		var countAlive=0;
+		var isAlive=0;
+		for(var i=0;i<game.players.length;i++) {
+			if(game.players[i].isDead==false) {
+				countAlive++;
+				isAlive=i;
+			}
+		}
+		self.rank=countAlive+1;
+		switch(self.rank) {
+			case 2:
+				$("#p"+(self.num+1)+" .damage").text("2nd");
+				break;
+			case 3:
+				$("#p"+(self.num+1)+" .damage").text("3rd");
+				break;
+			case 4:
+				$("#p"+(self.num+1)+" .damage").text("4th");
+				break;
+		}
+		if(countAlive==1) {
+			gameOverTime=new Date().getTime();
+			$("#winner").show();
+			$("#winner").text("Winner: "+game.players[isAlive].stats.name);
+			for(var i=0;i<game.players.length;i++) {
+				game.players[i].spawn();
+				game.players[i].loc[1];
+			}
+			window.onkeydown=function(e) {
+				//reset game
+				var currTime=new Date().getTime();
+				if(gameOverTime+10000<currTime) {
+					$("#game").hide();
+					$("#selection").show();
+					$("#winner").hide();
+					$("body").css("background-color","white");
+					setKeys();
+				}
+			}
+		}
+	}
   };
 
   self.getHit = function(attack, facing) {
@@ -136,6 +184,10 @@ function Player(num) {
         (self.health * attack.knockback.growth) / self.stats.launchResistance;
     k /= 100;
     self.launchScalar = k;
+
+    // Cancel attack animation and stuff
+    self.attackStage = NOATTACK;
+    self.attackData = null;
 
     // Flip launch angle based on facing direction
     if (facing == -1)
@@ -213,21 +265,38 @@ function Player(num) {
     model.init(textures[self.num]);
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
+	for(var i=0;i<self.lives;i++) {
+		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+	}
 
     self.spawn();
   };
 
   self.tick = function(dt) {
-    // Self-applied acceleration
-    vec3.add(self.appliedVelocity, self.appliedVelocity, self.appliedForce);
-    console.log(self.appliedForce[2]);
-    if((Math.abs(self.appliedForce[2]) - 0.01) < 0) {
-        model.setAnimation(0);
-    } else {
-        model.setAnimation(1);
-    }
+	if(self.rank!=0) {
+		switch(self.rank) {
+			case 2:
+				$("#p"+(self.num+1)+" .damage").text("2nd");
+				break;
+			case 3:
+				$("#p"+(self.num+1)+" .damage").text("3rd");
+				break;
+			case 4:
+				$("#p"+(self.num+1)+" .damage").text("4th");
+				break;
+		}
+	}
+	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
+
+    // Animate walking
+    if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
+      model.setAnimation(0);
+    }
+    else {
+      model.setAnimation(1);
+    }
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
@@ -261,7 +330,6 @@ function Player(num) {
     // Do attack stuff
     if (self.attackStage != NOATTACK) {
       self.attackDuration--;
-      console.log(self.attackDuration, self.attackStage);
       switch (self.attackStage) {
         case WINDUP:
           if (self.attackDuration <= 0) {
@@ -326,10 +394,12 @@ function Player(num) {
     }
 
     model.tick(dt);
-    $('#player' + (self.num + 1) + 'hp').text(self.health);
+    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
+	}
   };
 
   self.render = function (dt) {
+	if(!self.isDead) {
     mvstack.push(modelView);
       // Should make new matrix with new operations. Can't pre-multiply with webgl
       var newMV = mat4.create();
@@ -348,5 +418,6 @@ function Player(num) {
       //mat4.translate(modelView, modelView, loc);
       model.render(dt);
     modelView = mvstack.pop();
+	}
   };
 }
