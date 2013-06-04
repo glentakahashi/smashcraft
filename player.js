@@ -253,22 +253,6 @@ function Player(num) {
 
     self.spawn();
 
-    if (stats.id == 'snoop%20dogg') {
-      setTimeout(function() {
-        audio.playMusic('snoop');
-      }, 1000);
-    }
-    else if (stats.id == 'michael%20jordan') {
-      setTimeout(function() {
-        audio.playMusic('slam');
-      }, 1000);
-    }
-    else {
-      setTimeout(function() {
-        audio.playMusic('pokemon');
-      }, 1000);
-    }
-
   };
 
   self.setAnimation = function(a) {

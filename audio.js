@@ -64,10 +64,12 @@ function Audio() {
     if (nowPlaying) {
       return;
     }
-    music[m].currentTime = 0;
-    music[m].src = music[m].src;
-    music[m].play();
+    setTimeout(function() {
+      music[m].currentTime = 0;
+      music[m].src = music[m].src;
+      music[m].play();
 
-    nowPlaying = music[m];
+      nowPlaying = music[m];
+    }, 1000);
   };
 };
