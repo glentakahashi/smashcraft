@@ -36,8 +36,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	case 7:
 		//nether
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", 'lava'));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, -14.0), "Trans", 'lava', 2));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, 14.0), "Trans", 'lava', 2.2));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, -14.0), "Trans", 'lava', 1.5));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, 14.0), "Trans", 'lava', 1.5));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 3.0), vec3.fromValues(0.0, 8.0, -28.0), "Trans", 'lava', -1.5));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 3.0), vec3.fromValues(0.0, 8.0, 28.0), "Trans", 'lava', -1.2));
 		break;

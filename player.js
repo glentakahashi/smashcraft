@@ -88,7 +88,7 @@ function Player(num) {
     if (self.airborne)
       return;
 
-    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
+    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.2;
     self.airborne = true;
   };
 
