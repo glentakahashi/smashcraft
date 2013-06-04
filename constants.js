@@ -73,6 +73,7 @@ var constants = {
     'thomas': charClone('Thomas', 'thomas'),
     'guy-manuel': charClone('Guy-Manuel', 'guy-manuel'),
     'kirby': charClone('Kirby', 'kirby'),
+    'michael%20jordan': charClone('Michael Jordan', 'michael%20jordan'),
     'snoop%20dogg': charClone('Snoop Dogg', 'snoop%20dogg'),
     'michael%20jackson': charClone('Michael Jackson', 'michael%20jackson'),
     'psy': charClone('Psy', 'psy'),
