@@ -133,45 +133,12 @@ function Player(num) {
 		self.loc[1]=0;
 		self.isDead=true;
 		var countAlive=0;
-		var isAlive=0;
 		for(var i=0;i<game.players.length;i++) {
 			if(game.players[i].isDead==false) {
 				countAlive++;
-				isAlive=i;
 			}
 		}
 		self.rank=countAlive+1;
-		switch(self.rank) {
-			case 2:
-				$("#p"+(self.num+1)+" .damage").text("2nd");
-				break;
-			case 3:
-				$("#p"+(self.num+1)+" .damage").text("3rd");
-				break;
-			case 4:
-				$("#p"+(self.num+1)+" .damage").text("4th");
-				break;
-		}
-		if(countAlive==1) {
-			gameOverTime=new Date().getTime();
-			$("#winner").show();
-			$("#winner").text("Winner: "+game.players[isAlive].stats.name);
-			for(var i=0;i<game.players.length;i++) {
-				game.players[i].spawn();
-				game.players[i].loc[1];
-			}
-			window.onkeydown=function(e) {
-				//reset game
-				var currTime=new Date().getTime();
-				if(gameOverTime+10000<currTime) {
-					$("#game").hide();
-					$("#selection").show();
-					$("#winner").hide();
-					$("body").css("background-color","white");
-					setKeys();
-				}
-			}
-		}
 	}
   };
 
@@ -282,19 +249,6 @@ function Player(num) {
   };
 
   self.tick = function(dt) {
-	if(self.rank!=0) {
-		switch(self.rank) {
-			case 2:
-				$("#p"+(self.num+1)+" .damage").text("2nd");
-				break;
-			case 3:
-				$("#p"+(self.num+1)+" .damage").text("3rd");
-				break;
-			case 4:
-				$("#p"+(self.num+1)+" .damage").text("4th");
-				break;
-		}
-	}
 	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
