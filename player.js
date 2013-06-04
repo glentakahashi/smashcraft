@@ -224,6 +224,15 @@ function Player(num) {
     if (typeof curAttack === 'undefined')
       return;
 
+  switch(type) {
+      case 'neutral':
+          model.setAnimation(3);
+          break;
+      case 'sideSmash':
+          model.setAnimation(4);
+          break;
+  }
+
     self.attackStage = WINDUP;
     self.attackDuration = curAttack.timing.windup;
     self.attackData = curAttack;
@@ -290,14 +299,6 @@ function Player(num) {
     // Tick down invincibility
     self.invincible--;
 
-    // Animate walking
-    if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
-      model.setAnimation(0);
-    }
-    else {
-      model.setAnimation(1);
-    }
-
     // Apply Launch Force to launch velocity
     if (self.knockback) {
       resistanceVelocity += resistanceForce;
@@ -317,9 +318,17 @@ function Player(num) {
     if (self.airborne) {
       vec3.scaleAndAdd(self.appliedVelocity, self.appliedVelocity,
         constants.physics.G, self.stats.physics.gravityScale);
+        model.setAnimation(2);
     }
     else {
       self.airJumps = self.stats.airJumps;
+      // Animate walking
+      if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
+          model.setAnimation(0);
+      }
+      else {
+          model.setAnimation(1);
+      }
     }
 
     // Self-applied acceleration only when not attacking or in midair
