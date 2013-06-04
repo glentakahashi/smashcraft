@@ -341,6 +341,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
 			game.players[i].loc[1]=0;
+            game.players[i].setAnimation(5);
+            game.players[i].winner = true;
 		}
 		window.onkeydown=function(e) {
 			//reset game
