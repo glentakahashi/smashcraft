@@ -248,15 +248,24 @@ function Player(num) {
       $("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
     }
 
-    // Easter egg with snoop
+    self.spawn();
+
+    if (game.musicPlaying)
+      return;
+
     if (stats.id == 'snoop%20dogg') {
-      console.log('snoop');
       setTimeout(function() {
         audio.playSfx('snoop');
-      }, 5000);
+      }, 1000);
+      game.musicPlaying = true;
+    }
+    else if (stats.id == 'michael%20jordan') {
+      setTimeout(function() {
+        audio.playSfx('slam');
+      }, 1000);
+      game.musicPlaying = true;
     }
 
-    self.spawn();
   };
 
   self.tick = function(dt) {
