@@ -64,8 +64,9 @@ function Player(num) {
       self.airJumps -= 1;
     }
 
-    // Play sound
-    audio.playSfx('jump');
+    // Play sound only when not grounded && attacking
+    if (self.airborne || self.attackStage == NOATTACK)
+      audio.playSfx('jump');
 
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
@@ -101,8 +102,8 @@ function Player(num) {
       self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
     }
 
-    // Else do normal running
-    else {
+    // Else do normal running only if not attacking
+    else if (self.attackStage == NOATTACK) {
       self.appliedForce[2] = dir * self.stats.moveSpeed;
     }
     // Face the right direction
