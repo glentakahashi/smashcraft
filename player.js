@@ -244,19 +244,29 @@ function Player(num) {
     model.init(textures[self.num]);
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
-    for(var i=0;i<self.lives;i++) {
-      $("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
-    }
-
-    // Easter egg with snoop
-    if (stats.id == 'snoop%20dogg') {
-      console.log('snoop');
-      setTimeout(function() {
-        audio.playSfx('snoop');
-      }, 5000);
-    }
+	for(var i=0;i<self.lives;i++) {
+		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+	}
+	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 
     self.spawn();
+
+    if (game.musicPlaying)
+      return;
+
+    if (stats.id == 'snoop%20dogg') {
+      setTimeout(function() {
+        audio.playSfx('snoop');
+      }, 1000);
+      game.musicPlaying = true;
+    }
+    else if (stats.id == 'michael%20jordan') {
+      setTimeout(function() {
+        audio.playSfx('slam');
+      }, 1000);
+      game.musicPlaying = true;
+    }
+
   };
 
   self.tick = function(dt) {
@@ -367,8 +377,8 @@ function Player(num) {
       self.appliedVelocity[2] /= 1.5;
     }
 
+	$("#player"+(self.num+1)+"hp").text(self.health);
     model.tick(dt);
-    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
 	}
   };
 

@@ -3,6 +3,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	$("body").css("background-color","black");
 	
   var self = this;
+  self.musicPlaying = false;
 
   // Game variables
   self.platforms = [];
@@ -263,6 +264,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.camera.init(vec3.fromValues(80.0, 20, 0),
                      vec3.fromValues(0.0, 8.0, 0.0));
     initController();
+
+    self.musicPlaying = false; // hack hack hack
 
     for (var i in self.platforms) {
       self.platforms[i].init();
