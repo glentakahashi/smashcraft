@@ -110,7 +110,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures.dirtTerrain = getTexture('img/terrain/dirt.png');
     textures.dirtNormal = getTexture('img/terrain/dirt-normal.png');
 
-    // That cunthole steve
+    // That steve
     textures.steve = getTexture('img/steve2.png');
     
     // Per-vertex attributes
