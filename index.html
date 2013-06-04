@@ -81,6 +81,17 @@
 	</div>
 	</div>
 	<div id="game" style="display:none;">
+	<div id="winner" style="
+	    text-align: center;
+	    position: absolute;
+	    font-size: 100px;
+	    top: 0px;
+	    left: 0px;
+	    z-index: 5;
+	    width: 100%;
+	    color: white;
+		display:none;
+	">Winner: Psy</div>
     <canvas id="canvas" width="1000"></canvas>
     	<div id="hud">
         <div id="p1">
@@ -95,13 +106,13 @@
             <span id="player2hp"></span>%
           </div>
         </div>
-        <div id="p3">
+        <div id="p3" style="display: none;">
           <div class="name"></div>
           <div class="damage">
             <span id="player3hp"></span>%
           </div>
         </div>
-        <div id="p4">
+        <div id="p4" style="display: none;">
           <div class="name"></div>
           <div class="damage">
             <span id="player4hp"></span>%
@@ -194,6 +205,8 @@
     modelView = null;
 	
 	var game;
+	var gameOverTime=0;
+	var reset=false;
 
     // Tick happens after texture is loaded
     // TODO: make it less shitty, especially with multiple textures
