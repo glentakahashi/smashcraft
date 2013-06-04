@@ -338,6 +338,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		gameOverTime=new Date().getTime();
 		$("#winner").show();
 		$("#winner").text("Winner: "+game.players[isAlive].stats.name);
+		$("#p"+(isAlive+1)+" .damage").text("1st");
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
 			game.players[i].loc[1]=0;
