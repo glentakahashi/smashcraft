@@ -179,7 +179,7 @@ function Platform(scale, loc, type, textureName, oscillate) {
   var t = 0;
   self.tick = function(dt) {
     if (oscillate) {
-      t += dt / 500;
+      t += dt / 600;
       self.loc[1] += Math.cos(t) / 20 * oscillate;
     }
   };
