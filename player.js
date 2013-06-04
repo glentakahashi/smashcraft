@@ -268,9 +268,15 @@ function Player(num) {
     model.init(textures[self.num]);
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
-	for(var i=0;i<self.lives;i++) {
-		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
-	}
+    for(var i=0;i<self.lives;i++) {
+      $("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+    }
+
+    // Easter egg with snoop
+    if (stats.id == 'snoop%20dogg') {
+      console.log('snoop');
+      audio.playSfx('snoop');
+    }
 
     self.spawn();
   };

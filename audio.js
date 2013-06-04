@@ -21,6 +21,7 @@ function Audio() {
     sfx.smashHit = initSound('audio/Smack.wav');
     sfx.death = initSound('audio/SuperScope Huge Shot.wav');
     sfx.jump = initSound('audio/Mario Super Jump.wav');
+    sfx.snoop = initSound('audio/kirbysnoop.mp3');
   };
 
   self.playSfx = function(sound) {
