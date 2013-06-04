@@ -12,9 +12,9 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   switch(stageNum) {
 	case 5:
 		//grassland
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "dirt"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "dirt"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 40.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -24.0), "Trans", "dirt"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 24.0), "Trans", "dirt"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "dirt"));
 		break;
 	case 6:
