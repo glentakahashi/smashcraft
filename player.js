@@ -11,6 +11,7 @@ function Player(num) {
   self.kills = 0;
   self.lives = 3;
   self.isDead = false;
+  self.rank = 0;
   self.lastHit = {
     who: null,
     when : null
@@ -131,7 +132,6 @@ function Player(num) {
 	if(self.deaths>=self.lives) {
 		self.loc[1]=0;
 		self.isDead=true;
-		$("#p"+(self.num+1)+" .damage").text("DEAD");
 		var countAlive=0;
 		var isAlive=0;
 		for(var i=0;i<game.players.length;i++) {
@@ -140,8 +140,37 @@ function Player(num) {
 				isAlive=i;
 			}
 		}
+		self.rank=countAlive+1;
+		switch(self.rank) {
+			case 2:
+				$("#p"+(self.num+1)+" .damage").text("2nd");
+				break;
+			case 3:
+				$("#p"+(self.num+1)+" .damage").text("3rd");
+				break;
+			case 4:
+				$("#p"+(self.num+1)+" .damage").text("4th");
+				break;
+		}
 		if(countAlive==1) {
-			console.log("The Winner is "+game.players[isAlive].stats.name);
+			gameOverTime=new Date().getTime();
+			$("#winner").show();
+			$("#winner").text("Winner: "+game.players[isAlive].stats.name);
+			for(var i=0;i<game.players.length;i++) {
+				game.players[i].spawn();
+				game.players[i].loc[1];
+			}
+			window.onkeydown=function(e) {
+				//reset game
+				var currTime=new Date().getTime();
+				if(gameOverTime+10000<currTime) {
+					$("#game").hide();
+					$("#selection").show();
+					$("#winner").hide();
+					$("body").css("background-color","white");
+					setKeys();
+				}
+			}
 		}
 	}
   };
@@ -244,6 +273,19 @@ function Player(num) {
   };
 
   self.tick = function(dt) {
+	if(self.rank!=0) {
+		switch(self.rank) {
+			case 2:
+				$("#p"+(self.num+1)+" .damage").text("2nd");
+				break;
+			case 3:
+				$("#p"+(self.num+1)+" .damage").text("3rd");
+				break;
+			case 4:
+				$("#p"+(self.num+1)+" .damage").text("4th");
+				break;
+		}
+	}
 	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
@@ -352,7 +394,7 @@ function Player(num) {
     }
 
     model.tick(dt);
-    $('#player' + (self.num + 1) + 'hp').text(self.health);
+    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
 	}
   };
 
