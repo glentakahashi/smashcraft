@@ -266,6 +266,11 @@ function Player(num) {
         audio.playSfx('slam');
       }, 1000);
       game.musicPlaying = true;
+    } else {
+      setTimeout(function() {
+        audio.playSfx('pokemon');
+      }, 1000);
+      game.musicPlaying = true;
     }
 
   };
