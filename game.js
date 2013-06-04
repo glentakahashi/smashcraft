@@ -161,7 +161,6 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     // Escape
     self.controller.tap(27, function() {
       reset=true;
-      audio.stopMusic();
     })
 
     // W
@@ -319,6 +318,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   self.tick = function() {
 	if(reset) {
     	// New frame
+	    audio.stopMusic();
 		gameOverTime=0;
 		reset=false;
 		$("#game").hide();
