@@ -245,9 +245,10 @@ function Player(num) {
     model.init(textures[self.num]);
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
-    for(var i=0;i<self.lives;i++) {
-      $("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
-    }
+	for(var i=0;i<self.lives;i++) {
+		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+	}
+	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 
     self.spawn();
 
@@ -385,8 +386,8 @@ function Player(num) {
       self.appliedVelocity[2] /= 1.5;
     }
 
+	$("#player"+(self.num+1)+"hp").text(self.health);
     model.tick(dt);
-    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
 	}
   };
 
