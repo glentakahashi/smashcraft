@@ -441,11 +441,11 @@ function PlayerModel() {
               //move arm back
           } else if (animtime >= 150) {
           arm.rotation = -1 * (Math.PI / 2);
-              arm.x = (100 - ((animtime - 150) % 100)) / 100;
+              arm.x = (100 - ((animtime - 150) % 100)) / 50;
               //move arm forward to punch
           } else if (animtime >= 50) {
           arm.rotation = -1 * (Math.PI / 2);
-              arm.x = ((animtime - 50) % 100) / 100;
+              arm.x = ((animtime - 50) % 100) / 50;
               //move arm up to punch
           } else {
               arm.rotation = -1 * (Math.PI / 2) * ((animtime % 50) / 50);
