@@ -93,7 +93,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
     textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
     textures.grassTerrain = getTexture('img/terrain/grass.png');
-    textures.grassNormal = getTexture('img/terrain/grassNormal.png');
+    textures.grassNormal = getTexture('img/terrain/grass-normal.png');
     textures.steve = getTexture('img/steve2.png');
     
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
@@ -108,7 +108,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
-    program.uSampler = gl.getUniformLocation(program, 'uNormalSampler');
+    program.uNormalSampler = gl.getUniformLocation(program, 'uNormalSampler');
     program.stun = gl.getUniformLocation(program, 'stun');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
