@@ -63,6 +63,9 @@ function Player(num) {
       self.airJumps -= 1;
     }
 
+    // Play sound
+    audio.playSfx('jump');
+
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
 
