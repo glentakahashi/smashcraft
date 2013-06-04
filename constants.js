@@ -44,7 +44,7 @@ function charClone(name, id) {
         },
         damage: 16,
         stun: 28,
-        sound: 'punchHit',
+        sound: 'smashHit',
       },
     }
   }
