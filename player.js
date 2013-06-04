@@ -63,6 +63,9 @@ function Player(num) {
       self.airJumps -= 1;
     }
 
+    // Play sound
+    audio.playSfx('jump');
+
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
 
@@ -191,6 +194,15 @@ function Player(num) {
     if (typeof curAttack === 'undefined')
       return;
 
+  switch(type) {
+      case 'neutral':
+          model.setAnimation(3);
+          break;
+      case 'sideSmash':
+          model.setAnimation(4);
+          break;
+  }
+
     self.attackStage = WINDUP;
     self.attackDuration = curAttack.timing.windup;
     self.attackData = curAttack;
@@ -238,20 +250,29 @@ function Player(num) {
 	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 
     self.spawn();
+
+    if (game.musicPlaying)
+      return;
+
+    if (stats.id == 'snoop%20dogg') {
+      setTimeout(function() {
+        audio.playSfx('snoop');
+      }, 1000);
+      game.musicPlaying = true;
+    }
+    else if (stats.id == 'michael%20jordan') {
+      setTimeout(function() {
+        audio.playSfx('slam');
+      }, 1000);
+      game.musicPlaying = true;
+    }
+
   };
 
   self.tick = function(dt) {
 	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
-
-    // Animate walking
-    if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
-      model.setAnimation(0);
-    }
-    else {
-      model.setAnimation(1);
-    }
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
@@ -272,9 +293,17 @@ function Player(num) {
     if (self.airborne) {
       vec3.scaleAndAdd(self.appliedVelocity, self.appliedVelocity,
         constants.physics.G, self.stats.physics.gravityScale);
+        model.setAnimation(2);
     }
     else {
       self.airJumps = self.stats.airJumps;
+      // Animate walking
+      if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
+          model.setAnimation(0);
+      }
+      else {
+          model.setAnimation(1);
+      }
     }
 
     // Self-applied acceleration only when not attacking or in midair

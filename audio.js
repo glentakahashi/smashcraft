@@ -13,13 +13,22 @@ function Audio() {
       el.currentTime = 0;
     }
     return el;
-  }
+  };
+
+  var initMusic = function(src) {
+    var el = initSound(src);
+    el.setAttribute('loop', 'loop');
+    return el;
+  };
 
   self.init = function() {
     sfx.punchMiss = initSound('audio/Weak Whiff.wav');
     sfx.punchHit = initSound('audio/Small Hit.wav');
     sfx.smashHit = initSound('audio/Smack.wav');
     sfx.death = initSound('audio/SuperScope Huge Shot.wav');
+    sfx.jump = initSound('audio/Mario Super Jump.wav');
+    sfx.snoop = initMusic('audio/kirbysnoop.mp3');
+    sfx.slam = initMusic('audio/slam.mp3');
   };
 
   self.playSfx = function(sound) {
