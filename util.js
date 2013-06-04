@@ -57,6 +57,9 @@ function getTexture(src) {
 }
 
 function genScaledUV(x, y, z) {
+  x /= 2;
+  y /= 2;
+  z /= 2;
   var textureCoords = [
     // Front face
     0.0, 0.0,

@@ -1,6 +1,8 @@
-function Platform(scale, loc, type) {
+function Platform(scale, loc, type, textureName) {
   var self = this;
   var model = new Model();
+  if (typeof textureName === 'undefined')
+    textureName = 'grass';
 
   self.scale = scale;
   self.loc = loc;
@@ -121,7 +123,7 @@ function Platform(scale, loc, type) {
   ];
 
   self.init = function() {
-    model.init(vertices, textureCoords, vertexNormals, textures.terrainGrass);
+    model.init(vertices, textureCoords, vertexNormals, textures[textureName+'Terrain'], textures[textureName+'Normal']);
   };
 
   self.tick = function(dt) {

@@ -11,10 +11,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   switch(stageNum) {
 	case 5:
 		//grassland
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "grass"));
 		break;
 	case 6:
 		//jungle
@@ -92,7 +92,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
     textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
     textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
-    textures.terrainGrass = getTexture('img/terrain/grass.png');
+    textures.grassTerrain = getTexture('img/terrain/grass.png');
+    textures.grassNormal = getTexture('img/terrain/grassNormal.png');
     textures.steve = getTexture('img/steve2.png');
     
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
@@ -107,6 +108,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
+    program.uSampler = gl.getUniformLocation(program, 'uNormalSampler');
     program.stun = gl.getUniformLocation(program, 'stun');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
@@ -365,7 +367,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     
     //Lighting stuff
     gl.uniform3f(program.uAmbientColor, 0.2, 0.2, 0.2);
-    gl.uniform3f(program.uPointLightingLocation, 0.0, 20.0 * Math.cos(t), 20 * Math.sin(t));
+    gl.uniform3f(program.uPointLightingLocation, 20.0, 80.0 * Math.cos(t), 80 * Math.sin(t));
     gl.uniform3f(program.uPointLightingColor, 1.0, 1.0, 1.0);
 
     for (var i in self.platforms) {

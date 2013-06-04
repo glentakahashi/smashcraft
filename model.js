@@ -3,14 +3,16 @@ function Model() {
   var positionBuffer;
   var uvBuffer;
   var tex;
+  var normalMap;
 
   var rotation = 0; // TODO: this is a hack and doesn't belong here
 
-  self.init = function(vertices, uvCoords, normals, texture) {
+  self.init = function(vertices, uvCoords, normals, texture, nMap) {
     var verticesFloatArr = new Float32Array(vertices);
     var uvFloatArr = new Float32Array(uvCoords);
     var vertexNormalFloatArr = new Float32Array(normals);
     tex = texture;
+    normalMap = nMap;
 
     // Position buffer
     positionBuffer = gl.createBuffer();
