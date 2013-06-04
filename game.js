@@ -36,8 +36,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	case 7:
 		//nether
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", 'lava'));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, -14.0), "Trans", 'lava', 2));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, 14.0), "Trans", 'lava', 2.2));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, -14.0), "Trans", 'lava', 1.5));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 15.0, 14.0), "Trans", 'lava', 1.5));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 3.0), vec3.fromValues(0.0, 8.0, -28.0), "Trans", 'lava', -1.5));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 3.0), vec3.fromValues(0.0, 8.0, 28.0), "Trans", 'lava', -1.2));
 		break;
@@ -274,8 +274,6 @@ function Game(stageNum,players,p1,p2,p3,p4) {
                      vec3.fromValues(0.0, 8.0, 0.0));
     initController();
 
-    self.musicPlaying = false; // hack hack hack
-
     for (var i in self.platforms) {
       self.platforms[i].init();
     }
@@ -298,6 +296,22 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		self.players[2].loc[2]=-3;
 		self.players[3].loc[2]=-9;
 	}
+
+    if (p1 == 'snoop%20dogg' ||
+        p2 == 'snoop%20dogg' ||
+        p3 == 'snoop%20dogg' ||
+        p4 == 'snoop%20dogg') {
+      audio.playMusic('snoop');
+    }
+    else if (p1 == 'michael%20jordan' ||
+             p2 == 'michael%20jordan' ||
+             p3 == 'michael%20jordan' ||
+             p4 == 'michael%20jordan') {
+      audio.playMusic('slam');
+    }
+    else {
+      audio.playMusic('pokemon');
+    }
   };
 
   var lastTime = 0;
