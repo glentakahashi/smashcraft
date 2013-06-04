@@ -8,7 +8,7 @@ function charClone(name, id) {
     physics: {
       gravityScale: 1.0,
       terminalPos: vec3.fromValues(0.0, 100, 0.4),
-      terminalNeg: vec3.fromValues(0.0, -0.8, -0.4),
+      terminalNeg: vec3.fromValues(0.0, -0.90, -0.4),
     },
     launchResistance: 500.0,
     attacks: {
