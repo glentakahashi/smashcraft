@@ -1,4 +1,4 @@
-function Platform(scale, loc, type, textureName) {
+function Platform(scale, loc, type, textureName, oscillate) {
   var self = this;
   var model = new Model();
   if (typeof textureName === 'undefined')
@@ -176,7 +176,12 @@ function Platform(scale, loc, type, textureName) {
     model.init(vertices, textureCoords, vertexNormals, vertexTangents, textures[textureName+'Terrain'], textures[textureName+'Normal']);
   };
 
+  var t = 0;
   self.tick = function(dt) {
+    if (oscillate) {
+      t += dt / 600;
+      self.loc[1] += Math.cos(t) / 20 * oscillate;
+    }
   };
 
   self.render = function (dt) {

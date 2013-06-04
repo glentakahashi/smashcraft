@@ -1,6 +1,7 @@
 function Player(num) {
   var self = this;
   self.num = num;
+  self.winner = false;
   
   var model = new PlayerModel();
 
@@ -63,8 +64,9 @@ function Player(num) {
       self.airJumps -= 1;
     }
 
-    // Play sound
-    audio.playSfx('jump');
+    // Play sound only when not grounded && attacking
+    if (self.airborne || self.attackStage == NOATTACK)
+      audio.playSfx('jump');
 
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
@@ -86,7 +88,7 @@ function Player(num) {
     if (self.airborne)
       return;
 
-    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
+    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.2;
     self.airborne = true;
   };
 
@@ -100,8 +102,8 @@ function Player(num) {
       self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
     }
 
-    // Else do normal running
-    else {
+    // Else do normal running only if not attacking
+    else if (self.attackStage == NOATTACK) {
       self.appliedForce[2] = dir * self.stats.moveSpeed;
     }
     // Face the right direction
@@ -244,28 +246,17 @@ function Player(num) {
     model.init(textures[self.num]);
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
-    for(var i=0;i<self.lives;i++) {
-      $("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
-    }
+	for(var i=0;i<self.lives;i++) {
+		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+	}
+	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 
     self.spawn();
 
-    if (game.musicPlaying)
-      return;
+  };
 
-    if (stats.id == 'snoop%20dogg') {
-      setTimeout(function() {
-        audio.playSfx('snoop');
-      }, 1000);
-      game.musicPlaying = true;
-    }
-    else if (stats.id == 'michael%20jordan') {
-      setTimeout(function() {
-        audio.playSfx('slam');
-      }, 1000);
-      game.musicPlaying = true;
-    }
-
+  self.setAnimation = function(a) {
+  model.setAnimation(a);
   };
 
   self.tick = function(dt) {
@@ -359,6 +350,10 @@ function Player(num) {
         faceRotation -= 1 / 4;
     }
 
+    if(self.winner) {
+    faceRotation = 0.5;
+    }
+
     // Only when not stunned
     if (self.stun > 0) {
       self.stun -= 1;
@@ -376,8 +371,8 @@ function Player(num) {
       self.appliedVelocity[2] /= 1.5;
     }
 
+	$("#player"+(self.num+1)+"hp").text(self.health);
     model.tick(dt);
-    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
 	}
   };
 

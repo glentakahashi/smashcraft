@@ -424,9 +424,11 @@ function PlayerModel() {
           arm.rotation = -1 * (5 * Math.PI / 6);
           var temp = animtime % 200;
           if(temp >= 100) {
-          arm.rotation += -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
+              leg.rotation = -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
+              arm.rotation += -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
           } else {
-          arm.rotation += -1 * (Math.PI / 2) * ((temp % 200) / 200);
+              leg.rotation = -1 * (Math.PI / 3) * ((temp % 200) / 200);
+              arm.rotation += -1 * (Math.PI / 3) * ((temp % 200) / 200);
           }
           //punching
       } else if (animation == 3 ) {
@@ -439,11 +441,11 @@ function PlayerModel() {
               //move arm back
           } else if (animtime >= 150) {
           arm.rotation = -1 * (Math.PI / 2);
-              arm.x = (100 - ((animtime - 150) % 100)) / 100;
+              arm.x = (100 - ((animtime - 150) % 100)) / 50;
               //move arm forward to punch
           } else if (animtime >= 50) {
           arm.rotation = -1 * (Math.PI / 2);
-              arm.x = ((animtime - 50) % 100) / 100;
+              arm.x = ((animtime - 50) % 100) / 50;
               //move arm up to punch
           } else {
               arm.rotation = -1 * (Math.PI / 2) * ((animtime % 50) / 50);
@@ -460,6 +462,13 @@ function PlayerModel() {
           }
           //winning
       } else if (animation == 5) {
+         arm.rotation = -1 * Math.PI;
+         var temp = animtime % 800;
+         if(temp >= 400) {
+             arm.rotation += -1 * (Math.PI / 2) * ((400 - (temp % 400)) / 400);
+         } else {
+             arm.rotation += -1 * (Math.PI / 2) * ((temp % 400) / 400);
+         }
       }
   };
 
@@ -557,6 +566,19 @@ function PlayerModel() {
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
         }
+        if(animation == 5) {
+            newMV = mat4.create();
+            newVec = vec3.fromValues(0,1,0);
+            mat4.translate(newMV, newMV, newVec);
+            mat4.multiply(modelView, modelView, newMV);
+            newMV = mat4.create();
+            mat4.rotateZ(newMV, newMV, arm.rotation);
+            mat4.multiply(modelView, modelView, newMV);
+            newMV = mat4.create();
+            newVec = vec3.fromValues(0,-1,0);
+            mat4.translate(newMV, newMV, newVec);
+            mat4.multiply(modelView, modelView, newMV);
+        }
         //rotate
         newMV = mat4.create();
         newVec = vec3.fromValues(0.5,1.5,0.5);
@@ -649,7 +671,7 @@ function PlayerModel() {
         newVec = vec3.fromValues(-0.5,0.5,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
-        if(animation == 1) {
+        if(animation == 1 || animation == 2) {
         newMV = mat4.create();
         newVec = vec3.fromValues(0,0.75,0);
         mat4.translate(newMV, newMV, newVec);
@@ -698,7 +720,7 @@ function PlayerModel() {
         newVec = vec3.fromValues(0.5,0.5,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
-        if(animation == 1 || animation == 4) {
+        if(animation == 1 || animation == 4 || animation == 2) {
         newMV = mat4.create();
         newVec = vec3.fromValues(0,0.75,0);
         mat4.translate(newMV, newMV, newVec);
