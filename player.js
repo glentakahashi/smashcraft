@@ -88,7 +88,7 @@ function Player(num) {
     if (self.airborne)
       return;
 
-    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.01
+    self.loc[1] += self.stats.physics.terminalNeg[1] * 1.2;
     self.airborne = true;
   };
 
@@ -252,27 +252,6 @@ function Player(num) {
 	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 
     self.spawn();
-
-    if (game.musicPlaying)
-      return;
-
-    if (stats.id == 'snoop%20dogg') {
-      setTimeout(function() {
-        audio.playSfx('snoop');
-      }, 1000);
-      game.musicPlaying = true;
-    }
-    else if (stats.id == 'michael%20jordan') {
-      setTimeout(function() {
-        audio.playSfx('slam');
-      }, 1000);
-      game.musicPlaying = true;
-    } else {
-      setTimeout(function() {
-        audio.playSfx('pokemon');
-      }, 1000);
-      game.musicPlaying = true;
-    }
 
   };
 
