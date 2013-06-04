@@ -275,7 +275,9 @@ function Player(num) {
     // Easter egg with snoop
     if (stats.id == 'snoop%20dogg') {
       console.log('snoop');
-      audio.playSfx('snoop');
+      setTimeout(function() {
+        audio.playSfx('snoop');
+      }, 5000);
     }
 
     self.spawn();
