@@ -67,61 +67,7 @@ function Platform(scale, loc, type) {
     -1.0,  1.0, -1.0,  // 23
   ];
 
-  var textureCoords = [
-    // Front face
-    1/8, 1/2,
-    1/4, 1/2,
-    1/4, 3/4,
-
-    1/8, 1/2,
-    1/4, 3/4,
-    1/8, 3/4,
-
-    // Back face
-    1/2, 1/2,
-    1/2, 3/4,
-    3/8, 3/4,
-
-    1/2, 1/2,
-    3/8, 3/4,
-    3/8, 1/2,
-
-    // Top face
-    1/8, 1.0,
-    1/8, 3/4,
-    1/4, 3/4,
-
-    1/8, 1.0,
-    1/4, 3/4,
-    1/4, 1.0,
-
-    // Bottom face
-    1/4, 1.0,
-    3/8, 1.0,
-    3/8, 3/4,
-
-    1/4, 1.0,
-    3/8, 3/4,
-    1/4, 3/4,
-
-    // Right face
-    3/8, 1/2,
-    3/8, 3/4,
-    1/4, 3/4,
-
-    3/8, 1/2,
-    1/4, 3/4,
-    1/4, 1/2,
-
-    // Left face
-    0.0, 1/2,
-    1/8, 1/2,
-    1/8, 3/4,
-
-    0.0, 1/2,
-    1/8, 3/4,
-    0.0, 3/4,
-  ];
+  var textureCoords = genScaledUV(self.scale[0], self.scale[1], self.scale[2]);
  
   var vertexNormals = [
     // Front face
@@ -175,7 +121,7 @@ function Platform(scale, loc, type) {
   ];
 
   self.init = function() {
-    model.init(vertices, textureCoords, vertexNormals, textures.steve);
+    model.init(vertices, textureCoords, vertexNormals, textures.terrainGrass);
   };
 
   self.tick = function(dt) {

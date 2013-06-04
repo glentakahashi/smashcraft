@@ -158,7 +158,7 @@
       } else {
         textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
       }
-      gl_FragColor = vec4(textureColor.rgb*vLightWeighting, textureColor.a);//texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+      gl_FragColor = vec4(textureColor.rgb*vLightWeighting, textureColor.a);
       
     }
   </script>

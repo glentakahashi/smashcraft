@@ -92,6 +92,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
     textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
     textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
+    textures.terrainGrass = getTexture('img/terrain/grass.png');
     textures.steve = getTexture('img/steve2.png');
     
     // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
@@ -363,9 +364,9 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
     //Lighting stuff
-    gl.uniform3f(program.uAmbientColor, 0.5, 0.5, 0.5);
-    gl.uniform3f(program.uPointLightingLocation, 0.0, 2.0 * Math.cos(t), 2 * Math.sin(t));
-    gl.uniform3f(program.uPointLightingColor, 0.0, 1.0, 1.0);
+    gl.uniform3f(program.uAmbientColor, 0.2, 0.2, 0.2);
+    gl.uniform3f(program.uPointLightingLocation, 0.0, 20.0 * Math.cos(t), 20 * Math.sin(t));
+    gl.uniform3f(program.uPointLightingColor, 1.0, 1.0, 1.0);
 
     for (var i in self.platforms) {
       self.platforms[i].render();
