@@ -17,7 +17,7 @@ function Audio() {
 
   var initMusic = function(src) {
     var el = initSound(src);
-    el.setAttribute('loop', 'loop');
+    //el.setAttribute('loop', 'loop');
     return el;
   };
 

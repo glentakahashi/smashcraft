@@ -444,7 +444,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     
     //Lighting stuff
     gl.uniform3f(program.uAmbientColor, 0.2, 0.2, 0.2);
-    gl.uniform3f(program.uPointLightingLocation, 20.0, 80.0 * Math.cos(t), 80 * Math.sin(t));
+    gl.uniform3f(program.uPointLightingLocation, 20.0, 80.0 * Math.cos(t/4), 80 * Math.sin(t/4));
     gl.uniform3f(program.uPointLightingColor, 1.0, 1.0, 1.0);
 
     for (var i in self.platforms) {
