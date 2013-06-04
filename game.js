@@ -12,9 +12,9 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	case 5:
 		//grassland
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "stone"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "stone"));
 		break;
 	case 6:
 		//jungle
@@ -92,10 +92,16 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
     textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
     textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
+
+    // Terrain textures
     textures.grassTerrain = getTexture('img/terrain/grass.png');
     textures.grassNormal = getTexture('img/terrain/grass-normal.png');
     textures.stoneTerrain = getTexture('img/terrain/stone.png');
     textures.stoneNormal = getTexture('img/terrain/stone-normal.png');
+    textures.woodTerrain = getTexture('img/terrain/wood.png');
+    textures.woodNormal = getTexture('img/terrain/wood-normal.png');
+
+    // That cunthole steve
     textures.steve = getTexture('img/steve2.png');
     
     // Per-vertex attributes
