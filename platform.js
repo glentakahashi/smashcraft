@@ -1,6 +1,8 @@
-function Platform(scale, loc, type) {
+function Platform(scale, loc, type, textureName) {
   var self = this;
   var model = new Model();
+  if (typeof textureName === 'undefined')
+    textureName = 'grass';
 
   self.scale = scale;
   self.loc = loc;
@@ -67,62 +69,8 @@ function Platform(scale, loc, type) {
     -1.0,  1.0, -1.0,  // 23
   ];
 
-  var textureCoords = [
-    // Front face
-    1/8, 1/2,
-    1/4, 1/2,
-    1/4, 3/4,
-
-    1/8, 1/2,
-    1/4, 3/4,
-    1/8, 3/4,
-
-    // Back face
-    1/2, 1/2,
-    1/2, 3/4,
-    3/8, 3/4,
-
-    1/2, 1/2,
-    3/8, 3/4,
-    3/8, 1/2,
-
-    // Top face
-    1/8, 1.0,
-    1/8, 3/4,
-    1/4, 3/4,
-
-    1/8, 1.0,
-    1/4, 3/4,
-    1/4, 1.0,
-
-    // Bottom face
-    1/4, 1.0,
-    3/8, 1.0,
-    3/8, 3/4,
-
-    1/4, 1.0,
-    3/8, 3/4,
-    1/4, 3/4,
-
-    // Right face
-    3/8, 1/2,
-    3/8, 3/4,
-    1/4, 3/4,
-
-    3/8, 1/2,
-    1/4, 3/4,
-    1/4, 1/2,
-
-    // Left face
-    0.0, 1/2,
-    1/8, 1/2,
-    1/8, 3/4,
-
-    0.0, 1/2,
-    1/8, 3/4,
-    0.0, 3/4,
-  ];
- 
+  var textureCoords = genScaledUV(self.scale[0], self.scale[1], self.scale[2]);
+  
   var vertexNormals = [
     // Front face
     0.0, 0.0, 1.0,
@@ -173,9 +121,59 @@ function Platform(scale, loc, type) {
     -1.0, 0.0, 0.0,
  
   ];
+  var vertexTangents = [
+    // Front face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+ 
+    // Back face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    
+    // Top face
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+ 
+    // Bottom face
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+
+    // Right face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+ 
+    // Left face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+ 
+  ];
 
   self.init = function() {
-    model.init(vertices, textureCoords, vertexNormals, textures.steve);
+    model.init(vertices, textureCoords, vertexNormals, vertexTangents, textures[textureName+'Terrain'], textures[textureName+'Normal']);
   };
 
   self.tick = function(dt) {

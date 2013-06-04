@@ -56,3 +56,61 @@ function getTexture(src) {
   return tex;
 }
 
+function genScaledUV(x, y, z) {
+  var textureCoords = [
+    // Front face
+    0.0, 0.0,
+    x, 0.0,
+    x, y,
+
+    0.0, 0.0,
+    x, y,
+    0.0, y,
+
+    // Back face
+    x, 0.0,
+    x, y,
+    0.0, y,
+
+    1.0, 0.0,
+    0.0, 1.0,
+    0.0, 0.0,
+
+    // Top face
+    0.0, z,
+    0.0, 0.0,
+    x, 0.0,
+
+    0.0, z,
+    x, 0.0,
+    x, z,
+
+    // Bottom face
+    x, z,
+    0.0, z,
+    0.0, 0.0,
+
+    x, z,
+    0.0, 0.0,
+    x, 0.0,
+
+    // Right face
+    z, 0.0,
+    z, y,
+    0.0, y,
+
+    z, 0.0,
+    0.0, y,
+    0.0, 0.0,
+
+    // Left face
+    0.0, 0.0,
+    z, 0.0,
+    z, y,
+
+    0.0, 0.0,
+    z, y,
+    0.0, y,
+  ];
+  return textureCoords;
+}
