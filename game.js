@@ -12,14 +12,14 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   switch(stageNum) {
 	case 5:
 		//grassland
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 32.0, 30.0), vec3.fromValues(0.0, -32.0, 0.0), "Block", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "grass"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "dirt"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "dirt"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "dirt"));
 		break;
 	case 6:
 		//jungle
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "dirt"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "dirt"));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "wood"));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "wood"));
 		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, -21.0), "Trans", "wood"));
@@ -41,21 +41,21 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		break;
 	case 8:
 		//desert
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "sand"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "sand"));
 		break;
 	case 9:
 		//mountains
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -7.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 7.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 21.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, -7.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, 7.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 0.0), "Trans"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 36.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -21.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -7.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 7.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 21.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, -14.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 14.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, -7.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 36.0, 7.0), "Trans", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 48.0, 0.0), "Trans", "stone"));
 		break;
 	case 0:
 		//ocean
