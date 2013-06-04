@@ -13,7 +13,7 @@ function charClone(name, id) {
     launchResistance: 500.0,
     attacks: {
       neutral: {
-        range: vec3.fromValues(100.0, 5.5, 6.5),
+        range: vec3.fromValues(100.0, 5.5, 9.5),
         facing: true,
         knockback: {
           angle: Math.PI / 4,
@@ -30,7 +30,7 @@ function charClone(name, id) {
         sound: 'punchHit',
       },
       sideSmash: {
-        range: vec3.fromValues(100.0, 6.5, 8.5),
+        range: vec3.fromValues(100.0, 5.5, 5.5),
         facing: true,
         knockback: {
           angle: Math.PI / 3.5,
@@ -40,7 +40,7 @@ function charClone(name, id) {
         timing: {
           windup: 10,
           duration: 5,
-          cooldown: 10,
+          cooldown: 20,
         },
         damage: 16,
         stun: 28,
@@ -75,7 +75,7 @@ var constants = {
     'kirby': charClone('Kirby', 'kirby'),
     'michael%20jordan': charClone('Michael Jordan', 'michael%20jordan'),
     'snoop%20dogg': charClone('Snoop Dogg', 'snoop%20dogg'),
-    'michael%20jackson': charClone('Michael Jackson', 'michael%20jackson'),
+    'fox': charClone('Fox', 'fox'),
     'psy': charClone('Psy', 'psy'),
     'nightwing': charClone('Nightwing', 'nightwing'),
     'robin': charClone('Robin', 'robin'),
