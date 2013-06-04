@@ -317,8 +317,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   var lastTime = 0;
   self.tick = function() {
 	if(reset) {
-    	// New frame
-	    audio.stopMusic();
+    // New frame
+    audio.stopMusic();
 		gameOverTime=0;
 		reset=false;
 		$("#game").hide();
