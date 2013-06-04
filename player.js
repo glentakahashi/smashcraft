@@ -1,6 +1,7 @@
 function Player(num) {
   var self = this;
   self.num = num;
+  self.winner = false;
   
   var model = new PlayerModel();
 
@@ -63,8 +64,9 @@ function Player(num) {
       self.airJumps -= 1;
     }
 
-    // Play sound
-    audio.playSfx('jump');
+    // Play sound only when not grounded && attacking
+    if (self.airborne || self.attackStage == NOATTACK)
+      audio.playSfx('jump');
 
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
@@ -100,8 +102,8 @@ function Player(num) {
       self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
     }
 
-    // Else do normal running
-    else {
+    // Else do normal running only if not attacking
+    else if (self.attackStage == NOATTACK) {
       self.appliedForce[2] = dir * self.stats.moveSpeed;
     }
     // Face the right direction
@@ -269,6 +271,10 @@ function Player(num) {
 
   };
 
+  self.setAnimation = function(a) {
+  model.setAnimation(a);
+  };
+
   self.tick = function(dt) {
 	if(!self.isDead) {
     // Tick down invincibility
@@ -358,6 +364,10 @@ function Player(num) {
         faceRotation = 0.1;
       else
         faceRotation -= 1 / 4;
+    }
+
+    if(self.winner) {
+    faceRotation = 0.5;
     }
 
     // Only when not stunned
