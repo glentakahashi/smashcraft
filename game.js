@@ -14,7 +14,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		//grassland
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 32.0, 30.0), vec3.fromValues(0.0, -32.0, 0.0), "Block", "grass"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "wood"));
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "wood"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "dirt"));
 		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "stone"));
 		break;
 	case 6:
@@ -105,6 +105,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures.sandNormal = getTexture('img/terrain/sand-normal.png');
     textures.lavaTerrain = getTexture('img/terrain/lava.png');
     textures.lavaNormal = getTexture('img/terrain/lava-normal.png');
+    textures.dirtTerrain = getTexture('img/terrain/dirt.png');
+    textures.dirtNormal = getTexture('img/terrain/dirt-normal.png');
 
     // That cunthole steve
     textures.steve = getTexture('img/steve2.png');
