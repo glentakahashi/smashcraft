@@ -11,6 +11,7 @@ function Player(num) {
   self.kills = 0;
   self.lives = 3;
   self.isDead = false;
+  self.rank = 0;
   self.lastHit = {
     who: null,
     when : null
@@ -131,18 +132,13 @@ function Player(num) {
 	if(self.deaths>=self.lives) {
 		self.loc[1]=0;
 		self.isDead=true;
-		$("#p"+(self.num+1)+" .damage").text("DEAD");
 		var countAlive=0;
-		var isAlive=0;
 		for(var i=0;i<game.players.length;i++) {
 			if(game.players[i].isDead==false) {
 				countAlive++;
-				isAlive=i;
 			}
 		}
-		if(countAlive==1) {
-			console.log("The Winner is "+game.players[isAlive].stats.name);
-		}
+		self.rank=countAlive+1;
 	}
   };
 
@@ -352,7 +348,7 @@ function Player(num) {
     }
 
     model.tick(dt);
-    $('#player' + (self.num + 1) + 'hp').text(self.health);
+    $('#p' + (self.num + 1) + ' .damage').html('<span id="player1hp">0</span>%');
 	}
   };
 
