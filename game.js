@@ -158,10 +158,11 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   var initController = function() {
     self.controller.init();
 
-	// Escape
-	self.controller.tap(27, function() {
-		reset=true;
-	})
+    // Escape
+    self.controller.tap(27, function() {
+      reset=true;
+      audio.stopMusic();
+    })
 
     // W
     self.controller.tap(87, function() {
