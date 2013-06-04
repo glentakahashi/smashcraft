@@ -1,6 +1,7 @@
 function Player(num) {
   var self = this;
   self.num = num;
+  self.winner = false;
   
   var model = new PlayerModel();
 
@@ -268,6 +269,10 @@ function Player(num) {
 
   };
 
+  self.setAnimation = function(a) {
+  model.setAnimation(a);
+  };
+
   self.tick = function(dt) {
 	if(!self.isDead) {
     // Tick down invincibility
@@ -357,6 +362,10 @@ function Player(num) {
         faceRotation = 0.1;
       else
         faceRotation -= 1 / 4;
+    }
+
+    if(self.winner) {
+    faceRotation = 0.5;
     }
 
     // Only when not stunned
