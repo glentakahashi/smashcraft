@@ -11,10 +11,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   switch(stageNum) {
 	case 5:
 		//grassland
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "grass"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "stone"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", "grass"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 1.0, 6.0), vec3.fromValues(0.0, 24.0, 0.0), "Trans", "grass"));
 		break;
 	case 6:
 		//jungle
@@ -94,26 +94,39 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
     textures.grassTerrain = getTexture('img/terrain/grass.png');
     textures.grassNormal = getTexture('img/terrain/grass-normal.png');
+    textures.stoneTerrain = getTexture('img/terrain/stone.png');
+    textures.stoneNormal = getTexture('img/terrain/stone-normal.png');
     textures.steve = getTexture('img/steve2.png');
     
-    // Locations of GLSL vars in properties of program. FUCK YEAH JAVASCRIPT
+    // Per-vertex attributes
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
     program.aTextureCoord = gl.getAttribLocation(program, 'aTextureCoord');
     program.aVertexNormal = gl.getAttribLocation(program, 'aVertexNormal');
+    program.aVertexTangent = gl.getAttribLocation(program, 'aVertexTangent');
+
+    // Transformation matrices
     program.uMVMatrix = gl.getUniformLocation(program, 'uMVMatrix');
     program.uPMatrix = gl.getUniformLocation(program, 'uPMatrix');
     program.uCMatrix = gl.getUniformLocation(program, 'uCMatrix');
     program.uNMatrix = gl.getUniformLocation(program, 'uNMatrix');
+
+    // Lighting
     program.uAmbientColor = gl.getUniformLocation(program, 'uAmbientColor');
     program.uPointLightingLocation = gl.getUniformLocation(program, 'uPointLightingLocation');
     program.uPointLightingColor = gl.getUniformLocation(program, 'uPointLightingColor');
+
+    // Texture Samplers
     program.uSampler = gl.getUniformLocation(program, 'uSampler');
     program.uNormalSampler = gl.getUniformLocation(program, 'uNormalSampler');
+
+    // Flags
     program.stun = gl.getUniformLocation(program, 'stun');
+    program.useNormalMap = gl.getUniformLocation(program, 'useNormalMap');
 
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.enableVertexAttribArray(program.aTextureCoord);
     gl.enableVertexAttribArray(program.aVertexNormal);
+    gl.enableVertexAttribArray(program.aVertexTangent);
     // Initialize matrices
     modelView = mat4.create();
 

@@ -423,6 +423,7 @@ function PlayerModel() {
   };
 
   self.render = function (dt) {
+    gl.uniform1i(program.useNormalMap, 0);
     var newMV;
     var newVec;
     mvstack.push(modelView);
