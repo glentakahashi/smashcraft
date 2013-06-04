@@ -2,6 +2,8 @@
 
 UCLA CS174A Final Project
 
+Live demo: http://glentakahashi.github.io/smashcraft/
+
 #### Authors
 
 *   Alexander Ramirez <adr2370@gmail.com>
