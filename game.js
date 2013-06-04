@@ -213,6 +213,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.controller.tap(16, function() {
       self.players[1].attack('sideSmash');
     });
+    // backslash
+    self.controller.tap(220, function() {
+      self.players[1].attack('sideSmash');
+    });
 
 	if(self.players.length>2) {
 	    // Y
