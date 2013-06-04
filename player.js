@@ -253,25 +253,20 @@ function Player(num) {
 
     self.spawn();
 
-    if (game.musicPlaying)
-      return;
-
     if (stats.id == 'snoop%20dogg') {
       setTimeout(function() {
-        audio.playSfx('snoop');
+        audio.playMusic('snoop');
       }, 1000);
-      game.musicPlaying = true;
     }
     else if (stats.id == 'michael%20jordan') {
       setTimeout(function() {
-        audio.playSfx('slam');
+        audio.playMusic('slam');
       }, 1000);
-      game.musicPlaying = true;
-    } else {
+    }
+    else {
       setTimeout(function() {
-        audio.playSfx('pokemon');
+        audio.playMusic('pokemon');
       }, 1000);
-      game.musicPlaying = true;
     }
 
   };
