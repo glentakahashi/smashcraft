@@ -34,13 +34,13 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		break;
 	case 7:
 		//nether
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0), "Block"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans"));
-		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 24.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", 'lava'));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, -14.0), "Trans", 'stone'));
+		self.platforms.push(new Platform(vec3.fromValues(6.0, 1.0, 6.0), vec3.fromValues(0.0, 12.0, 14.0), "Trans", 'stone'));
 		break;
 	case 8:
 		//desert
-		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block"));
+		self.platforms.push(new Platform(vec3.fromValues(8.0, 2.0, 30.0), vec3.fromValues(0.0, 0.0, 0.0), "Block", "sand"));
 		break;
 	case 9:
 		//mountains
@@ -100,6 +100,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     textures.stoneNormal = getTexture('img/terrain/stone-normal.png');
     textures.woodTerrain = getTexture('img/terrain/wood.png');
     textures.woodNormal = getTexture('img/terrain/wood-normal.png');
+    textures.sandTerrain = getTexture('img/terrain/sand.png');
+    textures.sandNormal = getTexture('img/terrain/sand-normal.png');
+    textures.lavaTerrain = getTexture('img/terrain/lava.png');
+    textures.lavaNormal = getTexture('img/terrain/lava-normal.png');
 
     // That cunthole steve
     textures.steve = getTexture('img/steve2.png');
