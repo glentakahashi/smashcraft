@@ -29,6 +29,7 @@ function Audio() {
     sfx.jump = initSound('audio/Mario Super Jump.wav');
     sfx.snoop = initMusic('audio/kirbysnoop.mp3');
     sfx.slam = initMusic('audio/slam.mp3');
+    sfx.pokemon = initMusic('audio/pokemon.mp3');
   };
 
   self.playSfx = function(sound) {
