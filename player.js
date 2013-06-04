@@ -136,45 +136,12 @@ function Player(num) {
 		self.loc[1]=0;
 		self.isDead=true;
 		var countAlive=0;
-		var isAlive=0;
 		for(var i=0;i<game.players.length;i++) {
 			if(game.players[i].isDead==false) {
 				countAlive++;
-				isAlive=i;
 			}
 		}
 		self.rank=countAlive+1;
-		switch(self.rank) {
-			case 2:
-				$("#p"+(self.num+1)+" .damage").text("2nd");
-				break;
-			case 3:
-				$("#p"+(self.num+1)+" .damage").text("3rd");
-				break;
-			case 4:
-				$("#p"+(self.num+1)+" .damage").text("4th");
-				break;
-		}
-		if(countAlive==1) {
-			gameOverTime=new Date().getTime();
-			$("#winner").show();
-			$("#winner").text("Winner: "+game.players[isAlive].stats.name);
-			for(var i=0;i<game.players.length;i++) {
-				game.players[i].spawn();
-				game.players[i].loc[1];
-			}
-			window.onkeydown=function(e) {
-				//reset game
-				var currTime=new Date().getTime();
-				if(gameOverTime+10000<currTime) {
-					$("#game").hide();
-					$("#selection").show();
-					$("#winner").hide();
-					$("body").css("background-color","white");
-					setKeys();
-				}
-			}
-		}
 	}
   };
 
@@ -226,6 +193,15 @@ function Player(num) {
     var curAttack = self.stats.attacks[type];
     if (typeof curAttack === 'undefined')
       return;
+
+  switch(type) {
+      case 'neutral':
+          model.setAnimation(3);
+          break;
+      case 'sideSmash':
+          model.setAnimation(4);
+          break;
+  }
 
     self.attackStage = WINDUP;
     self.attackDuration = curAttack.timing.windup;
@@ -284,30 +260,9 @@ function Player(num) {
   };
 
   self.tick = function(dt) {
-	if(self.rank!=0) {
-		switch(self.rank) {
-			case 2:
-				$("#p"+(self.num+1)+" .damage").text("2nd");
-				break;
-			case 3:
-				$("#p"+(self.num+1)+" .damage").text("3rd");
-				break;
-			case 4:
-				$("#p"+(self.num+1)+" .damage").text("4th");
-				break;
-		}
-	}
 	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
-
-    // Animate walking
-    if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
-      model.setAnimation(0);
-    }
-    else {
-      model.setAnimation(1);
-    }
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
@@ -328,9 +283,17 @@ function Player(num) {
     if (self.airborne) {
       vec3.scaleAndAdd(self.appliedVelocity, self.appliedVelocity,
         constants.physics.G, self.stats.physics.gravityScale);
+        model.setAnimation(2);
     }
     else {
       self.airJumps = self.stats.airJumps;
+      // Animate walking
+      if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
+          model.setAnimation(0);
+      }
+      else {
+          model.setAnimation(1);
+      }
     }
 
     // Self-applied acceleration only when not attacking or in midair

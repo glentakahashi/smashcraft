@@ -4,8 +4,6 @@ function PlayerModel() {
   var animation = 0;
   var animtime = 0.0;
 
-  var rotation = 0; // TODO: this is a hack and doesn't belong here
-
   var head = {
       uvCoords: [
           // Front face
@@ -384,42 +382,85 @@ function PlayerModel() {
   };
   
   self.setAnimation = function(a) {
-      if(animation == a) return;
+  //if its the same animation do dont anything
+  //or if its in a punching/kicking animation. dont override those
+      if(animation == a || animation > 2) return;
       animation = a;
       animtime = 0;
   };
 
   self.tick = function(dt) {
       animtime += dt;
+      //idle
       if(animation == 0) {
       animtime = 0;
           for(var i in bodyparts) {
               bodyparts[i].rotation = 0;
-              bodyparts[i].upswing = false;
               bodyparts[i].x = 0;
               bodyparts[i].y = 0;
               bodyparts[i].z = 0;
           }
+          //walking
       } else if (animation == 1) {
-      //head
-      //stays same
-      //body
-      //stays same
-      var temp = (Math.floor(animtime / 300) % 2) == 1;
-      //arm
-      if(temp) {
-      //arm.rotation = ((animtime % 300)-150) / 300;
-      } else {
-      //arm.rotation = (150-(animtime % 300)) / 300;
+          //head
+          //stays same
+          //body
+          //stays same
+          var temp = (Math.floor(animtime / 300) % 2) == 1;
+          //arm
+          if(temp) {
+              arm.rotation = ((animtime % 300)-150) / 300;
+          } else {
+              arm.rotation = (150-(animtime % 300)) / 300;
+          }
+          //leg
+          if(temp) {
+              leg.rotation = ((animtime % 300)-150) / 300;
+          } else {
+              leg.rotation = (150-(animtime % 300)) / 300;
+          }
+          //jumping
+      } else if (animation == 2 ) {
+          arm.rotation = -1 * (5 * Math.PI / 6);
+          var temp = animtime % 200;
+          if(temp >= 100) {
+          arm.rotation += -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
+          } else {
+          arm.rotation += -1 * (Math.PI / 2) * ((temp % 200) / 200);
+          }
+          //punching
+      } else if (animation == 3 ) {
+      //end of animation
+          if(animtime >= 300) {
+              animation = 0;
+              //move arm down
+          } else if (animtime >= 250) {
+              arm.rotation = -1 * (Math.PI / 2) * ((100 - ((animtime - 250) % 100)) / 100);
+              //move arm back
+          } else if (animtime >= 150) {
+          arm.rotation = -1 * (Math.PI / 2);
+              arm.x = (100 - ((animtime - 150) % 100)) / 100;
+              //move arm forward to punch
+          } else if (animtime >= 50) {
+          arm.rotation = -1 * (Math.PI / 2);
+              arm.x = ((animtime - 50) % 100) / 100;
+              //move arm up to punch
+          } else {
+              arm.rotation = -1 * (Math.PI / 2) * ((animtime % 50) / 50);
+          }
+      //kicking
+      } else if (animation == 4 ) {
+      //done
+          if(animtime >= 300) {
+              animation = 0;
+          } else if (animtime >= 150) {
+              leg.rotation = -1 * (Math.PI / 2) * ((150 - ((animtime - 150)) % 150) / 150);
+          } else {
+              leg.rotation = -1 * (Math.PI / 2) * ((animtime % 150) / 150);
+          }
+          //winning
+      } else if (animation == 5) {
       }
-      //leg
-      if(temp) {
-      leg.rotation = ((animtime % 300)-150) / 300;
-      } else {
-      leg.rotation = (150-(animtime % 300)) / 300;
-      }
-      }
-      //rotation += dt/1000;
   };
 
   self.render = function (dt) {
@@ -430,9 +471,6 @@ function PlayerModel() {
       //head
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
-        newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
         newVec = vec3.fromValues(0,5.5,0);
         mat4.translate(newMV, newMV, newVec);
@@ -465,9 +503,6 @@ function PlayerModel() {
       //body
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
-        newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
         newVec = vec3.fromValues(0,3.0,0);
         mat4.translate(newMV, newMV, newVec);
@@ -505,20 +540,17 @@ function PlayerModel() {
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
         newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
-        newMV = mat4.create();
         newVec = vec3.fromValues(1.5,3.0,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
         //rotate the arm
-        if(animation == 1) {
+        if(animation == 1 || animation == 2) {
         newMV = mat4.create();
         newVec = vec3.fromValues(0,0.75,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
-        mat4.rotateX(newMV, newMV, arm.rotation);
+        mat4.rotateX(newMV, newMV, -arm.rotation);
         mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
         newVec = vec3.fromValues(0,-0.75,0);
@@ -559,19 +591,22 @@ function PlayerModel() {
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
         newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
-        newMV = mat4.create();
         newVec = vec3.fromValues(-1.5,3.0,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
-        if(animation == 1) {
+        if(animation == 3) {
+        newMV = mat4.create();
+        newVec = vec3.fromValues(0,0,arm.x);
+        mat4.translate(newMV, newMV, newVec);
+        mat4.multiply(modelView, modelView, newMV);
+        }
+        if(animation == 1 || animation == 2 || animation == 3) {
         newMV = mat4.create();
         newVec = vec3.fromValues(0,0.75,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
-        mat4.rotateX(newMV, newMV, -arm.rotation);
+        mat4.rotateX(newMV, newMV, arm.rotation);
         mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
         newVec = vec3.fromValues(0,-0.75,0);
@@ -610,9 +645,6 @@ function PlayerModel() {
       //leg1
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
-        newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
         newMV = mat4.create();
         newVec = vec3.fromValues(-0.5,0.5,0);
         mat4.translate(newMV, newMV, newVec);
@@ -663,13 +695,10 @@ function PlayerModel() {
       mvstack.push(modelView);
         // Should make new matrix with new operations. Can't pre-multiply with webgl
         newMV = mat4.create();
-        mat4.rotateY(newMV, newMV, rotation);
-        mat4.multiply(modelView, modelView, newMV);
-        newMV = mat4.create();
         newVec = vec3.fromValues(0.5,0.5,0);
         mat4.translate(newMV, newMV, newVec);
         mat4.multiply(modelView, modelView, newMV);
-        if(animation == 1) {
+        if(animation == 1 || animation == 4) {
         newMV = mat4.create();
         newVec = vec3.fromValues(0,0.75,0);
         mat4.translate(newMV, newMV, newVec);
