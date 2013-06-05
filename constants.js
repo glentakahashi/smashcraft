@@ -66,7 +66,7 @@ var constants = {
   heros: {
     'luigi': charClone('Luigi', 'luigi'),
     'mario': charClone('Mario', 'mario'),
-    'ness': charClone('Ness', 'ness'),
+    'fox': charClone('Fox', 'fox'),
     'link': charClone('Link', 'link'),
     'samus': charClone('Samus', 'samus'),
     'captain%20falcon': charClone('Captain Falcon', 'captain%20falcon'),
@@ -75,7 +75,7 @@ var constants = {
     'kirby': charClone('Kirby', 'kirby'),
     'michael%20jordan': charClone('Michael Jordan', 'michael%20jordan'),
     'snoop%20dogg': charClone('Snoop Dogg', 'snoop%20dogg'),
-    'fox': charClone('Fox', 'fox'),
+    'tron': charClone('Tron', 'tron'),
     'psy': charClone('Psy', 'psy'),
     'nightwing': charClone('Nightwing', 'nightwing'),
     'robin': charClone('Robin', 'robin'),
