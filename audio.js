@@ -1,4 +1,4 @@
-function Audio() {
+function AudioPlayer() {
   var self = this;
   var sfx = { };
   var music = { };
@@ -8,19 +8,23 @@ function Audio() {
 
   var initSound = function(src) {
     loaded += 1;
-    var el = document.createElement('audio');
-    el.setAttribute('src', src);
-    el.load();
+    var el = new Audio(src);
     el.onload = function () {
       loaded -= 1;
-      el.currentTime = 0;
     }
+    el.load();
     return el;
   };
 
   var initMusic = function(src) {
-    var el = initSound(src);
-    el.setAttribute('loop', 'loop');
+    loaded += 1;
+    var el = new Audio(src);
+    el.onload = function () {
+      loaded -= 1;
+    }
+    el.loop = true;
+
+    el.load();
     return el;
   };
 
@@ -41,6 +45,7 @@ function Audio() {
 
     music.snoop = initMusic('audio/kirbysnoop.mp3');
     music.slam = initMusic('audio/slam.mp3');
+    //music.slam = initMusic('audio/Smack.wav');
     music.pokemon = initMusic('audio/pokemon.mp3');
     music.derezzed = initMusic('audio/derezzed.mp3');
 
@@ -68,6 +73,7 @@ function Audio() {
     setTimeout(function() {
       music[m].currentTime = 0;
       music[m].src = music[m].src;
+      music[m].loop = true;
       music[m].play();
 
       nowPlaying = music[m];
