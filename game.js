@@ -376,7 +376,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		$("#p"+(isAlive+1)+" .damage").text("1st");
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
-			game.players[i].loc[1]=0;
+			game.players[i].loc[1]=2;
             game.players[i].setAnimation(5);
             game.players[i].winner = true;
 		}
