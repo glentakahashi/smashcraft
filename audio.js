@@ -66,7 +66,7 @@ function AudioPlayer() {
 
   self.stopMusic = function() {
     for (var i in music) {
-      music[i].pause();
+      music[i].stop();
     }
     nowPlaying = null;
   };
@@ -75,11 +75,9 @@ function AudioPlayer() {
     if (nowPlaying) {
       return;
     }
-    setTimeout(function() {
       music[m].pos(0);
       music[m].play();
 
       nowPlaying = music[m];
-    }, 1000);
   };
 };
