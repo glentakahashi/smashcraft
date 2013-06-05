@@ -42,6 +42,7 @@ function Audio() {
     music.snoop = initMusic('audio/kirbysnoop.mp3');
     music.slam = initMusic('audio/slam.mp3');
     music.pokemon = initMusic('audio/pokemon.mp3');
+    music.derezzed = initMusic('audio/derezzed.mp3');
 
     alreadyDone = true;
   };

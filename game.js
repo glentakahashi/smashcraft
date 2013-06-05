@@ -313,6 +313,20 @@ function Game(stageNum,players,p1,p2,p3,p4) {
              p4 == 'michael%20jordan') {
       audio.playMusic('slam');
     }
+    else if ((p1 == 'thomas' ||
+              p2 == 'thomas' ||
+              p3 == 'thomas' ||
+              p4 == 'thomas') &&
+             (p1 == 'guy-manuel' ||
+              p2 == 'guy-manuel' ||
+              p3 == 'guy-manuel' ||
+              p3 == 'guy-manuel') &&
+             (p1 == 'tron' ||
+              p2 == 'tron' ||
+              p3 == 'tron' ||
+              p3 == 'tron')) {
+      audio.playMusic('derezzed');
+    }
     else {
       audio.playMusic('pokemon');
     }

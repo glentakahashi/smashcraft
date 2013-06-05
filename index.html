@@ -13,7 +13,7 @@
 		<tr>
 			<td id="choice0" class="highlightRed"><img src="img/characters/luigiHead.png"></td>
 			<td id="choice1"><img src="img/characters/marioHead.png"></td>
-			<td id="choice2"><img src="img/characters/nessHead.png"></td>
+			<td id="choice2"><img src="img/characters/foxHead.png"></td>
 			<td id="choice3"><img src="img/characters/linkHead.png"></td>
 			<td id="choice4"><img src="img/characters/samusHead.png"></td>
 			<td id="choice5" class="highlightBlue"><img src="img/characters/captain falconHead.png"></td>
@@ -23,7 +23,7 @@
 			<td id="choice7"><img src="img/characters/guy-manuelHead.png"></td>
 			<td id="choice8"><img src="img/characters/michael jordanHead.png"></td>
 			<td id="choice9"><img src="img/characters/snoop doggHead.png"></td>
-			<td id="choice10"><img src="img/characters/foxHead.png"></td>
+			<td id="choice10"><img src="img/characters/tronHead.png"></td>
 			<td id="choice11"><img src="img/characters/psyHead.png"></td>
 		</tr>
 		<tr>
@@ -213,7 +213,7 @@
       s = pow(s, 30.0);
       float a = 0.6;
       
-      vec3 color = diffuse * (0.4 * d + 0.9 * s + a);
+      vec3 color = diffuse * (0.5 * d + 0.9 * s + a);
     
       gl_FragColor = vec4(color, 1.0);
     }
