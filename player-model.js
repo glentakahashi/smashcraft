@@ -384,7 +384,7 @@ function PlayerModel() {
   self.setAnimation = function(a) {
   //if its the same animation do dont anything
   //or if its in a punching/kicking animation. dont override those
-      if(animation == a || animation > 2) return;
+      if((a < 3 && animation == a) || (animation > 2 && a < 3)) return;
       animation = a;
       animtime = 0;
   };
@@ -421,20 +421,26 @@ function PlayerModel() {
           }
           //jumping
       } else if (animation == 2 ) {
-          arm.rotation = -1 * (5 * Math.PI / 6);
-          var temp = animtime % 200;
-          if(temp >= 100) {
-              leg.rotation = -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
-              arm.rotation += -1 * (Math.PI / 2) * ((200 - (temp % 200)) / 200);
+          arm.rotation = -1 * Math.PI;
+          var temp = (Math.floor(animtime / 100) % 2) == 1;
+          //arm
+          if(temp) {
+              arm.rotation += -1 * (Math.PI / 3) * ((animtime % 100)-50) / 100;
           } else {
-              leg.rotation = -1 * (Math.PI / 3) * ((temp % 200) / 200);
-              arm.rotation += -1 * (Math.PI / 3) * ((temp % 200) / 200);
+              arm.rotation += -1 * (Math.PI / 3) * (50-(animtime % 100)) / 100;
+          }
+          //leg
+          if(temp) {
+              leg.rotation = -1 * (Math.PI / 3) * ((animtime % 100)-50) / 100;
+          } else {
+              leg.rotation = -1 * (Math.PI / 3) * (50-(animtime % 100)) / 100;
           }
           //punching
       } else if (animation == 3 ) {
       //end of animation
           if(animtime >= 300) {
               animation = 0;
+              animtime = 0;
               //move arm down
           } else if (animtime >= 250) {
               arm.rotation = -1 * (Math.PI / 2) * ((100 - ((animtime - 250) % 100)) / 100);
@@ -455,6 +461,7 @@ function PlayerModel() {
       //done
           if(animtime >= 300) {
               animation = 0;
+              animtime = 0;
           } else if (animtime >= 150) {
               leg.rotation = -1 * (Math.PI / 2) * ((150 - ((animtime - 150)) % 150) / 150);
           } else {

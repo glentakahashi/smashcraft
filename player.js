@@ -12,6 +12,7 @@ function Player(num) {
   self.kills = 0;
   self.lives = 3;
   self.isDead = false;
+  self.inDanger = false;
   self.rank = 0;
   self.lastHit = {
     who: null,
@@ -21,10 +22,11 @@ function Player(num) {
   self.stats = null;
 
   // Physics shit
-  self.facing = 0;
+  self.facing = -1;
   var faceRotation = 0;  // Rotation percentage 0.0 to 1.0
   self.airJumps = 0;
   self.airborne = true;
+  self.dodging = 0;
 
   self.velocity = vec3.create();  // Not affected by terminal velocity
 
@@ -101,7 +103,6 @@ function Player(num) {
     if (self.airborne) {
       self.appliedForce[2] = self.stats.moveSpeed * dir * .20;
     }
-
     // Else do normal running only if not attacking
     else if (self.attackStage == NOATTACK) {
       self.appliedForce[2] = dir * self.stats.moveSpeed;
@@ -115,6 +116,16 @@ function Player(num) {
     }
 
   };
+
+  self.dodge = function() {
+    if(self.dodging > self.stats.dodge.cooldown || self.airborne) {
+      return;
+    }
+    self.appliedForce[2] = self.facing * self.stats.dodge.speed;
+    self.dodging = self.stats.dodge.time;
+    self.stun = 1000;
+    self.invincible = 1000;
+  }
 
   self.spawn = function() {
     vec3.set(self.loc, 0.0, 24.0, 0.0);
@@ -145,6 +156,17 @@ function Player(num) {
 		}
 		self.rank=countAlive+1;
 	}
+  };
+
+  self.danger = function() {
+    if(self.inDanger || self.airJumps <= 0) {
+        return;
+    }
+    audio.playSfx('crowd1');
+    self.inDanger = true;
+    setTimeout(function() {
+      self.inDanger = false;
+    }, 2000);
   };
 
   self.getHit = function(attack, facing) {
@@ -263,6 +285,12 @@ function Player(num) {
 	if(!self.isDead) {
     // Tick down invincibility
     self.invincible--;
+    self.dodging--;
+    if(self.dodging == 0) {
+      self.facing *= -1;
+      self.stun = 0;
+      self.invincible = 0;
+    }
 
     // Apply Launch Force to launch velocity
     if (self.knockback) {
@@ -329,8 +357,13 @@ function Player(num) {
     }
 
     // Terminal velocities for self-applied velocities only
-    vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPos);
-    vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNeg);
+    if(self.dodging > 0) {
+        vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPosDodging);
+        vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNegDodging);
+    } else {
+        vec3.min(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalPos);
+        vec3.max(self.appliedVelocity, self.appliedVelocity, self.stats.physics.terminalNeg);
+    }
 
     // Add two velocity components
     vec3.copy(self.velocity, self.appliedVelocity);
@@ -364,7 +397,9 @@ function Player(num) {
 
     // Move the guy and reset applied force
     vec3.add(self.loc, self.loc, self.velocity);
-    vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
+    if(self.dodging <= 0) {
+        vec3.set(self.appliedForce, 0.0, 0.0, 0.0);
+    }
 
     // Friction if grounded
     if (!self.airborne) {

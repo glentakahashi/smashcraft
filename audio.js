@@ -15,6 +15,8 @@ function Audio() {
       loaded -= 1;
       el.currentTime = 0;
     }
+    el.ready = false;
+    el.addEventListener('canplaythrough', function() { el.ready = true; }, false);
     return el;
   };
 
@@ -38,11 +40,21 @@ function Audio() {
     sfx.smashHit = initSound('audio/Smack.wav');
     sfx.death = initSound('audio/SuperScope Huge Shot.wav');
     sfx.jump = initSound('audio/Mario Super Jump.wav');
+    sfx.jump.volume = .6;
+    sfx.ok = initSound('audio/menu-ok.wav');
+    sfx.crowd1 = initSound('audio/crowd1.wav');
+    sfx.crowd2 = initSound('audio/crowd2.wav');
+    sfx.crowd3 = initSound('audio/crowd3.wav');
 
     music.snoop = initMusic('audio/kirbysnoop.mp3');
+    music.snoop.volume = .7;
     music.slam = initMusic('audio/slam.mp3');
+    music.slam.volume = .8;
     music.pokemon = initMusic('audio/pokemon.mp3');
+    music.pokemon.volume = .6;
     music.derezzed = initMusic('audio/derezzed.mp3');
+    music.menu = initMusic('audio/menu.mp3');
+    music.menu.volume = .7;
 
     alreadyDone = true;
   };
@@ -51,6 +63,12 @@ function Audio() {
 	if(muted) {
 		return;
 	}
+    if(!sfx[sound].ready) {
+        setTimeout(function() {
+            self.playSfx(sound);
+        }, 1000);
+        return;
+    }
     sfx[sound].currentTime = 0;
     sfx[sound].src = sfx[sound].src;
     sfx[sound].play();
@@ -58,8 +76,10 @@ function Audio() {
 
   self.stopMusic = function() {
     for (var i in music) {
-      music[i].pause();
-      music[i].currentTime = 0;
+      if(music[i].ready) {
+        music[i].pause();
+        music[i].currentTime = 0;
+      }
     }
     nowPlaying = null;
   };
@@ -68,12 +88,17 @@ function Audio() {
     if (nowPlaying||muted) {
       return;
     }
+    if(!music[m].ready) {
+        setTimeout(function() {
+            self.playMusic(m);
+        }, 1000);
+        return;
+    }
+    nowPlaying = music[m];
     setTimeout(function() {
       music[m].currentTime = 0;
       music[m].src = music[m].src;
       music[m].play();
-
-      nowPlaying = music[m];
     }, 1000);
   };
 };

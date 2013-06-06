@@ -11,6 +11,7 @@ function charClone(name, id) {
       terminalNeg: vec3.fromValues(0.0, -0.90, -0.4),
     },
     launchResistance: 500.0,
+    dodge: {},
     attacks: {
       neutral: {
         range: vec3.fromValues(100.0, 6.5, 9.5),
@@ -74,7 +75,9 @@ $.get('characterData.csv', function(data) {
 		c.jumpHeight = parseFloat(ch[1]);
 		c.airJumps = parseFloat(ch[2]);
 		c.physics.terminalPos = vec3.fromValues(0.0, 100, ch[3]);
+		c.physics.terminalPosDodging = vec3.fromValues(0.0, 100, 1000);
 	    c.physics.terminalNeg = vec3.fromValues(0.0, -0.90, -1*ch[3]);
+	    c.physics.terminalNegDodging = vec3.fromValues(0.0, -0.90, -1*1000);
 	    c.physics.gravityScale = parseFloat(ch[4]);
 		c.launchResistance=parseFloat(ch[5]);
 		c.attacks.neutral.range = vec3.fromValues(100.0, parseFloat(ch[6]), 9.5);
@@ -93,8 +96,14 @@ $.get('characterData.csv', function(data) {
 		c.attacks.sideSmash.timing.cooldown = parseFloat(ch[19]);
 		c.attacks.sideSmash.damage = parseFloat(ch[20]);
 		c.attacks.sideSmash.stun = parseFloat(ch[21]);
+        c.buff = ch[22];
+        c.nerf = ch[23];
+        c.dodge.cooldown = parseFloat(-1 * ch[24]);
+        c.dodge.speed = parseFloat(ch[25]);
+        c.dodge.time = parseFloat(ch[26]);
 		constants.heros[name] = c;
 	}
+    updateColoring();
 });
 
 function CSVToArray( strData, strDelimiter ){

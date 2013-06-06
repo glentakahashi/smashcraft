@@ -97,6 +97,7 @@ function setKeys() {
 			case 49:
 				//friedman
 				isFriedman=true;
+                audio.playSfx('crowd3');
 				break;
 			case 50:
 				//2 player
@@ -182,7 +183,8 @@ function startGame(stageNum) {
 		redName="friedman";
 	}
 	game = new Game(stageNum,numPlayers,redName,blueName,greenName,yellowName);
-    audio.init();
+    audio.stopMusic();
+    audio.playSfx('ok');
     game.init();
 }
 function updateColoring() {
@@ -212,9 +214,19 @@ function updateColoring() {
 	$("#player2 h2").html(capEachWord(decodeURIComponent(blueName)));
 	$("#player3 h2").html(capEachWord(decodeURIComponent(greenName)));
 	$("#player4 h2").html(capEachWord(decodeURIComponent(yellowName)));
+    $("#player1a").html(constants.heros[redName].buff);
+    $("#player2a").html(constants.heros[blueName].buff);
+    $("#player3a").html(constants.heros[greenName].buff);
+    $("#player4a").html(constants.heros[yellowName].buff);
+    $("#player1d").html(constants.heros[redName].nerf);
+    $("#player2d").html(constants.heros[blueName].nerf);
+    $("#player3d").html(constants.heros[greenName].nerf);
+    $("#player4d").html(constants.heros[yellowName].nerf);
 	if(isFriedman) {
 		$("#player1 img")[0].src=document.URL+"img/characters/friedmanBody.png";
-		$("#player1 h2").html("Friedman");
+        $("#player1 h2").html("Friedman");
+        $("#player1a").html(constants.heros["friedman"].buff);
+        $("#player1d").html(constants.heros["friedman"].nerf);
 	}
 }
 function capEachWord(str) {
@@ -225,6 +237,8 @@ var aspect = window.innerWidth / window.innerHeight;
 var canvas = $('#canvas');
 var width = Number(canvas.attr('width'));
 $('#canvas').attr('height', width / aspect);
+audio.init();
+audio.playMusic('menu');
 setKeys();
 updateColoring();
 });
