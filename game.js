@@ -161,7 +161,18 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     // Escape
     self.controller.tap(27, function() {
       reset=true;
-    })
+    });
+
+	// Muted
+    self.controller.tap(77, function() {
+		muted=!muted;
+		if(muted) {
+			audio.stopMusic();
+		} else if(!$("#selection").is(":visible")) {
+			audio.playMusic('pokemon');
+		}
+    });
+		
 
     // W
     self.controller.tap(87, function() {

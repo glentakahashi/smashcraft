@@ -48,6 +48,9 @@ function Audio() {
   };
 
   self.playSfx = function(sound) {
+	if(muted) {
+		return;
+	}
     sfx[sound].currentTime = 0;
     sfx[sound].src = sfx[sound].src;
     sfx[sound].play();
@@ -62,7 +65,7 @@ function Audio() {
   };
 
   self.playMusic = function(m) {
-    if (nowPlaying) {
+    if (nowPlaying||muted) {
       return;
     }
     setTimeout(function() {
