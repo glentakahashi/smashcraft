@@ -61,29 +61,70 @@ var constants = {
     battlefield: {
 
     }
-  },
-
-  heros: {
-    'luigi': charClone('Luigi', 'luigi'),
-    'mario': charClone('Mario', 'mario'),
-    'fox': charClone('Fox', 'fox'),
-    'link': charClone('Link', 'link'),
-    'samus': charClone('Samus', 'samus'),
-    'captain%20falcon': charClone('Captain Falcon', 'captain%20falcon'),
-    'thomas': charClone('Thomas', 'thomas'),
-    'guy-manuel': charClone('Guy-Manuel', 'guy-manuel'),
-    'kirby': charClone('Kirby', 'kirby'),
-    'michael%20jordan': charClone('Michael Jordan', 'michael%20jordan'),
-    'snoop%20dogg': charClone('Snoop Dogg', 'snoop%20dogg'),
-    'tron': charClone('Tron', 'tron'),
-    'psy': charClone('Psy', 'psy'),
-    'nightwing': charClone('Nightwing', 'nightwing'),
-    'robin': charClone('Robin', 'robin'),
-    'batman': charClone('Batman', 'batman'),
-    'superman': charClone('Superman', 'superman'),
-    'iron%20man': charClone('Iron Man', 'iron%20man'),
-    'spiderman': charClone('Spiderman', 'spiderman')
   }
-
 };
 
+$.get('characterData.csv', function(data) {
+	var arr=CSVToArray(data);
+	constants.heros=new Object();
+	for(var i=1;i<arr.length;i++) {
+		var ch=arr[i];
+		var name=encodeURIComponent(ch[0].toLowerCase());
+		var c = charClone(ch[0],name);
+		c.jumpHeight=parseFloat(ch[1]);
+		c.airJumps=parseFloat(ch[2]);
+	    c.moveSpeed=parseFloat(ch[3]);
+	    c.physics.gravityScale=parseFloat(ch[4]);
+		c.launchResistance=parseFloat(ch[5]);
+		c.attacks.neutral.range = vec3.fromValues(100.0, parseFloat(ch[6]), 9.5);
+		c.attacks.neutral.knockback.base = parseFloat(ch[7]);
+		c.attacks.neutral.knockback.growth = parseFloat(ch[8]);
+		c.attacks.neutral.timing.windup = parseFloat(ch[9]);
+		c.attacks.neutral.timing.duration = parseFloat(ch[10]);
+		c.attacks.neutral.timing.cooldown = parseFloat(ch[11]);
+		c.attacks.neutral.damage = parseFloat(ch[12]);
+		c.attacks.neutral.stun = parseFloat(ch[13]);
+		c.attacks.sideSmash.range = vec3.fromValues(100.0, parseFloat(ch[14]), 9.5);
+		c.attacks.sideSmash.knockback.base = parseFloat(ch[15]);
+		c.attacks.sideSmash.knockback.growth = parseFloat(ch[16]);
+		c.attacks.sideSmash.timing.windup = parseFloat(ch[17]);
+		c.attacks.sideSmash.timing.duration = parseFloat(ch[18]);
+		c.attacks.sideSmash.timing.cooldown = parseFloat(ch[19]);
+		c.attacks.sideSmash.damage = parseFloat(ch[20]);
+		c.attacks.sideSmash.stun = parseFloat(ch[21]);
+		constants.heros[name] = c;
+	}
+});
+
+function CSVToArray( strData, strDelimiter ){
+	strDelimiter = (strDelimiter || ",");
+	var objPattern = new RegExp(
+		(
+			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+			"([^\"\\" + strDelimiter + "\\r\\n]*))"
+		),
+		"gi"
+		);
+	var arrData = [[]];
+	var arrMatches = null;
+	while (arrMatches = objPattern.exec( strData )){
+		var strMatchedDelimiter = arrMatches[ 1 ];
+		if (
+			strMatchedDelimiter.length &&
+			(strMatchedDelimiter != strDelimiter)
+			){
+			arrData.push( [] );
+		}
+		if (arrMatches[ 2 ]){
+			var strMatchedValue = arrMatches[ 2 ].replace(
+				new RegExp( "\"\"", "g" ),
+				"\""
+				);
+		} else {
+			var strMatchedValue = arrMatches[ 3 ];
+		}
+		arrData[ arrData.length - 1 ].push( strMatchedValue );
+	}
+	return( arrData );
+}
