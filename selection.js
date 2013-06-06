@@ -6,6 +6,7 @@ var greenLoc=(rows-1)*cols;
 var yellowLoc=rows*cols-1;
 var numPlayers=2;
 var isFriedman=false;
+var muted=false;
 function setKeys() {
 	window.onkeydown = function(e) {
 	    switch(e.which) {
@@ -151,6 +152,15 @@ function setKeys() {
 			case 13:
 				//start game
 				startGame(5);
+				break;
+			case 77:
+				//mute
+				muted=!muted;
+				if(muted) {
+					audio.stopMusic();
+				} else if(!$("#selection").is(":visible")) {
+					audio.playMusic('pokemon');
+				}
 				break;
 	    }
 		//update coloring
