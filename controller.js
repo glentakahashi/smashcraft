@@ -14,6 +14,11 @@ function Controller() {
     var oldstate = down[e.which];
     if (typeof oldstate == 'undefined')
       down[e.which] = true;
+
+    // Prevent arrow keys from scrolling window
+    if (e.which <= 40 && e.which >= 37)
+      e.preventDefault();
+
   };
 
   var keyUp = function(e) {

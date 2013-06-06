@@ -7,105 +7,109 @@
     <link rel="stylesheet" href="style.css">
     <script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
   </head>
-  <body style="padding: 0; margin: 0;">
-	<div id="selection">
-	<table id="characterSelection">
-		<tr>
-			<td id="choice0" class="highlightRed"><img src="img/characters/luigiHead.png"></td>
-			<td id="choice1"><img src="img/characters/marioHead.png"></td>
-			<td id="choice2"><img src="img/characters/foxHead.png"></td>
-			<td id="choice3"><img src="img/characters/linkHead.png"></td>
-			<td id="choice4"><img src="img/characters/samusHead.png"></td>
-			<td id="choice5" class="highlightBlue"><img src="img/characters/captain falconHead.png"></td>
-		</tr>
-		<tr>
-			<td id="choice6"><img src="img/characters/thomasHead.png"></td>
-			<td id="choice7"><img src="img/characters/guy-manuelHead.png"></td>
-			<td id="choice8"><img src="img/characters/michael jordanHead.png"></td>
-			<td id="choice9"><img src="img/characters/snoop doggHead.png"></td>
-			<td id="choice10"><img src="img/characters/tronHead.png"></td>
-			<td id="choice11"><img src="img/characters/psyHead.png"></td>
-		</tr>
-		<tr>
-			<td id="choice12"><img src="img/characters/nightwingHead.png"></td>
-			<td id="choice13"><img src="img/characters/robinHead.png"></td>
-			<td id="choice14"><img src="img/characters/batmanHead.png"></td>
-			<td id="choice15"><img src="img/characters/supermanHead.png"></td>
-			<td id="choice16"><img src="img/characters/iron manHead.png"></td>
-			<td id="choice17"><img src="img/characters/spidermanHead.png"></td>
-		</tr>
-	</table>
-	<div id="stageSelection">
-		<div class="stage">
-			<img id="image5" class="stageImage" src="img/backgrounds/grassland.jpg">
-			<span class="stageNumber">5</span>
-		</div>
-		<div class="stage">
-			<img id="image6" class="stageImage" src="img/backgrounds/jungle.jpg">
-			<span class="stageNumber">6</span>
-		</div>
-		<div class="stage">
-			<img id="image7" class="stageImage" src="img/backgrounds/nether.jpg">
-			<span class="stageNumber">7</span>
-		</div>
-		<div class="stage">
-			<img id="image8" class="stageImage" src="img/backgrounds/desert.jpg">
-			<span class="stageNumber">8</span>
-		</div>
-		<div class="stage">
-			<img id="image9" class="stageImage" src="img/backgrounds/mountains.jpg">
-			<span class="stageNumber">9</span>
-		</div>
-		<div class="stage">
-			<img id="image0" class="stageImage" src="img/backgrounds/ocean.jpg">
-			<span class="stageNumber">0</span>
-		</div>
-	</div>
-	<div id="instructions" style="width: 220px;margin-left: 950px;top: 0px;position: absolute;">
-		<h3>Instructions</h3>
-		<p>Press 2, 3, or 4 to change the number of players</p>
-		<p>Press 5, 6, 7, 8, 9, or 0 to start the game on the corresponding stage</p>
-		<p>Press Escape to go back to the character selection screen</p>
-		<b>Player 1 Controls</b><br>
-		WASD for movement<br>
-		Q for punch attack<br>
-		E for kick attack<br><br>
-		<b>Player 2 Controls</b><br>
-		Arrow Keys for movement<br>
-		Right Shift for punch attack<br>
-		Enter Key for kick attack<br><br>
-		<b>Player 3 Controls</b><br>
-		YGHJ for movement<br>
-		T for punch attack<br>
-		U for kick attack<br><br>
-		<b>Player 4 Controls</b><br>
-		PL;' for movement<br>
-		O for punch attack<br>
-		[ for kick attack<br><br>
-	</div>
-	<div id="players">
-		<div id="player1" class="player">
-			<h2>Luigi</h2>
-			<img id="player1Image" class="playerImage" src="img/characters/luigiBody.png">
-		</div>
-		<div id="player2" class="player">
-			<h2>Luigi</h2>
-			<img id="player2Image" class="playerImage" src="img/characters/luigiBody.png">
-		</div>
-		<div id="player3" class="player" style="display:none;">
-			<h2>Luigi</h2>
-			<img id="player3Image" class="playerImage" src="img/characters/luigiBody.png">
-		</div>
-		<div id="player4" class="player" style="display:none;">
-			<h2>Luigi</h2>
-			<img id="player4Image" class="playerImage" src="img/characters/luigiBody.png">
-		</div>
-	</div>
-	</div>
-	<div id="game" style="display:none;">
-	<div id="winner">Winner: Psy</div>
-    <canvas id="canvas" width="1000"></canvas>
-    	<div id="hud">
+  <body>
+    <div id="selection">
+      <div id="title">
+        <img src="img/smashcraft.png">
+      </div>
+      <table id="characterSelection">
+        <tr>
+          <td id="choice0" class="highlightRed"><img src="img/characters/luigiHead.png"></td>
+          <td id="choice1"><img src="img/characters/marioHead.png"></td>
+          <td id="choice2"><img src="img/characters/foxHead.png"></td>
+          <td id="choice3"><img src="img/characters/linkHead.png"></td>
+          <td id="choice4"><img src="img/characters/samusHead.png"></td>
+          <td id="choice5" class="highlightBlue"><img src="img/characters/captain falconHead.png"></td>
+        </tr>
+        <tr>
+          <td id="choice6"><img src="img/characters/thomasHead.png"></td>
+          <td id="choice7"><img src="img/characters/guy-manuelHead.png"></td>
+          <td id="choice8"><img src="img/characters/michael jordanHead.png"></td>
+          <td id="choice9"><img src="img/characters/snoop doggHead.png"></td>
+          <td id="choice10"><img src="img/characters/tronHead.png"></td>
+          <td id="choice11"><img src="img/characters/psyHead.png"></td>
+        </tr>
+        <tr>
+          <td id="choice12"><img src="img/characters/nightwingHead.png"></td>
+          <td id="choice13"><img src="img/characters/robinHead.png"></td>
+          <td id="choice14"><img src="img/characters/batmanHead.png"></td>
+          <td id="choice15"><img src="img/characters/supermanHead.png"></td>
+          <td id="choice16"><img src="img/characters/iron manHead.png"></td>
+          <td id="choice17"><img src="img/characters/spidermanHead.png"></td>
+        </tr>
+      </table>
+      <div id="players">
+        <div id="player1" class="player">
+          <h2>Luigi</h2>
+          <img id="player1Image" class="playerImage" src="img/characters/luigiBody.png">
+        </div>
+        <div id="player2" class="player">
+          <h2>Luigi</h2>
+          <img id="player2Image" class="playerImage" src="img/characters/luigiBody.png">
+        </div>
+        <div id="player3" class="player" style="display:none;">
+          <h2>Luigi</h2>
+          <img id="player3Image" class="playerImage" src="img/characters/luigiBody.png">
+        </div>
+        <div id="player4" class="player" style="display:none;">
+          <h2>Luigi</h2>
+          <img id="player4Image" class="playerImage" src="img/characters/luigiBody.png">
+        </div>
+      </div>
+      <div id="stageSelection">
+        <div class="stage">
+          <img id="image5" class="stageImage" src="img/backgrounds/grassland.jpg">
+          <span class="stageNumber">5</span>
+        </div>
+        <div class="stage">
+          <img id="image6" class="stageImage" src="img/backgrounds/jungle.jpg">
+          <span class="stageNumber">6</span>
+        </div>
+        <div class="stage">
+          <img id="image7" class="stageImage" src="img/backgrounds/nether.jpg">
+          <span class="stageNumber">7</span>
+        </div>
+        <div class="stage">
+          <img id="image8" class="stageImage" src="img/backgrounds/desert.jpg">
+          <span class="stageNumber">8</span>
+        </div>
+        <div class="stage">
+          <img id="image9" class="stageImage" src="img/backgrounds/mountains.jpg">
+          <span class="stageNumber">9</span>
+        </div>
+        <div class="stage">
+          <img id="image0" class="stageImage" src="img/backgrounds/ocean.jpg">
+          <span class="stageNumber">0</span>
+        </div>
+      </div>
+      <div id="instructions">
+        <h3>Instructions</h3>
+        <p>Press 2, 3, or 4 to change the number of players</p>
+        <p>Press 5, 6, 7, 8, 9, or 0 to start the game on the corresponding stage</p>
+        <p>Press Escape to go back to the character selection screen</p>
+        <b>Player 1 Controls</b><br>
+        WASD for movement<br>
+        Q for punch attack<br>
+        E for kick attack<br><br>
+        <b>Player 2 Controls</b><br>
+        Arrow Keys for movement<br>
+        Right Shift for punch attack<br>
+        Enter Key for kick attack<br><br>
+        <b>Player 3 Controls</b><br>
+        YGHJ for movement<br>
+        T for punch attack<br>
+        U for kick attack<br><br>
+        <b>Player 4 Controls</b><br>
+        PL;' for movement<br>
+        O for punch attack<br>
+        [ for kick attack<br><br>
+      </div>
+    </div>
+
+    <div id="game" style="display:none;">
+      <div id="winner"></div>
+      <canvas id="canvas" width="1000"></canvas>
+      <div id="hud">
         <div id="p1">
           <div class="name"></div>
           <div class="damage">
@@ -130,10 +134,10 @@
             <span id="player4hp"></span>%
           </div>
         </div>
-    	</div>
-	</div>
+      </div>
+    </div>
 
-</body>
+  </body>
   <script src="selection.js" type="text/javascript"></script>
 
   <!-- Shaders -->
@@ -248,11 +252,11 @@
 
     // Global matrices
     modelView = null;
-	
-	var game;
-	var gameOverTime=0;
-	var reset=false;
-	var isAlive=0;
+    
+    var game;
+    var gameOverTime=0;
+    var reset=false;
+    var isAlive=0;
 
     // Tick happens after texture is loaded
     // TODO: make it less shitty, especially with multiple textures

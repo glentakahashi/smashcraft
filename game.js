@@ -1,5 +1,5 @@
 function Game(stageNum,players,p1,p2,p3,p4) {
-	$("canvas").css("background","url('"+$("#image"+stageNum).attr("src")+"') no-repeat center center fixed");
+	$("canvas").css("background-image","url('"+$("#image"+stageNum).attr("src")+"')");
 	$("body").css("background-color","black");
 	
   var self = this;
