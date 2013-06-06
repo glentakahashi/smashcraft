@@ -55,7 +55,7 @@ function Camera() {
   };
 
   self.tick = function(dt) {
-    var ms = dt / 500;
+    var ms = dt / 1000;
 
     // Move at
     var atDiff = vec3.create();
@@ -73,8 +73,9 @@ function Camera() {
     else
       zoomActual = self.zoomTarget;
 
-	vec3.copy(eyeActual,atActual);
-	eyeActual[0]+=100;
+    vec3.copy(eyeActual,atActual);
+    eyeActual[0]+=100;
+
     doLookAt();
     doPerspective();
   };

@@ -1,5 +1,5 @@
 function Game(stageNum,players,p1,p2,p3,p4) {
-	$("canvas").css("background","url('"+$("#image"+stageNum).attr("src")+"') no-repeat center center fixed");
+	$("canvas").css("background-image","url('"+$("#image"+stageNum).attr("src")+"')");
 	$("body").css("background-color","black");
 	
   var self = this;
@@ -213,6 +213,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.controller.tap(16, function() {
       self.players[1].attack('sideSmash');
     });
+    // backslash
+    self.controller.tap(220, function() {
+      self.players[1].attack('sideSmash');
+    });
 
 	if(self.players.length>2) {
 	    // Y
@@ -309,6 +313,20 @@ function Game(stageNum,players,p1,p2,p3,p4) {
              p4 == 'michael%20jordan') {
       audio.playMusic('slam');
     }
+    else if ((p1 == 'thomas' ||
+              p2 == 'thomas' ||
+              p3 == 'thomas' ||
+              p4 == 'thomas') &&
+             (p1 == 'guy-manuel' ||
+              p2 == 'guy-manuel' ||
+              p3 == 'guy-manuel' ||
+              p3 == 'guy-manuel') &&
+             (p1 == 'tron' ||
+              p2 == 'tron' ||
+              p3 == 'tron' ||
+              p3 == 'tron')) {
+      audio.playMusic('derezzed');
+    }
     else {
       audio.playMusic('pokemon');
     }
@@ -358,7 +376,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		$("#p"+(isAlive+1)+" .damage").text("1st");
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
-			game.players[i].loc[1]=0;
+			game.players[i].loc[1]=2;
             game.players[i].setAnimation(5);
             game.players[i].winner = true;
 		}

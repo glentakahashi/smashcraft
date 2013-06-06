@@ -34,7 +34,7 @@ function Player(num) {
   self.launchAngle = 0.0;  // Angle of force
   self.knockback = false;  // Is currently in knockback
   self.stun = 0;  // Number of frames left in stun
-  var resistanceForce = 0.005;
+  var resistanceForce = 0.010;
   var resistanceVelocity = 0.0;
 
   // Gravity and player movement

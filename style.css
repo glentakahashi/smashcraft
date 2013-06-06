@@ -1,68 +1,183 @@
 body {
 	background-size: 100%;
+  font-family: Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: url('img/squairy_light.png');
 }
-h2 {
-  text-align:center;
-  font-size: 22px;
+
+#title {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  height: 85px;
 }
+
+#title img {
+  padding-top: 15px;
+  width: auto;
+  -webkit-animation-name: zoomy;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes zoomy {
+  from {
+    height: 70px;
+    padding-top: 15px;
+  }
+
+  to {
+    height: 75px;
+    padding-top: 10px;
+  }
+}
+
+/*
+ * Character selection
+ */
+
+#selection {
+  width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#characterSelection {
+  padding-top: 85px;
+}
+
 td {
-    border-style:inset;
-    border-width:10px;
-    border-color:#FFFFFF;
-    width:100px;
-    height:100px;
+  border-style:inset;
+  border-width:10px;
+  border-color:#FFFFFF;
+
+  width: 100px;
+  height: 100px;
   display: inline-block;
   padding: 0px;
   border-spacing: 0px;
 }
+
 .highlightRed {
-    border-top-color:red;
+  border-left-color: red !important;
+  border-color: red;
 }
+
 .highlightBlue {
-    border-right-color:blue;
+  border-right-color: blue !important;
+  border-color: blue;
 }
+
 .highlightGreen {
-  border-bottom-color:green;
+  border-top-color: green !important;
+  border-color: green;
 }
+
 .highlightYellow {
-  border-left-color:yellow;
+  border-bottom-color: yellow !important;
+  border-color: yellow;
 }
-img {
+
+#characterSelection img {
   width: inherit;
   height: inherit;
 }
+
 #players {
   width: 900px;
 }
+
 .player {
   width: 160px;
   height: 300px;
   display:inline-block;
-  margin-right:16px;
+  margin-right:20px;
+
 }
+
+.player h2 {
+  text-align: center;
+  font-size: 22px;
+  font-style: italic;
+}
+
+.player img {
+  width: inherit;
+  height: inherit;
+  margin: -10px;
+}
+
 .playerImage {
   border-style:inset;
   border-width:10px;
 }
+
 #player1Image {
   border-color:red;
 }
+
 #player2Image {
   border-color:blue;
 }
+
 #player3Image {
   border-color:green;
 }
+
 #player4Image {
   border-color:yellow;
 }
 
+/*
+ * Stage Selection
+ */
+#stageSelection {
+	width: 220px;
+  top: 85px;
+  right: 0px;
+  position: absolute;
+}
+
+.stage {
+	width: inherit;
+  height: 60px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stage img {
+  width: inherit;
+  height: auto;
+  position: absolute;
+  top: -20px;
+}
+
+.stageNumber {
+	font-size: 45px;
+  font-style: italic;
+	color: white;
+  padding-right: 10px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/*
+ * Game display
+ */
 #canvas {
   position: absolute;
   z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: 50% 50%;
+  background-repeat: no-repeat no-repeat;
 }
 
 #hud {
@@ -107,23 +222,6 @@ img {
 #p4 {
   left: 75%;
 }
-#stageSelection {
-	width: 220px;
-    margin-left: 724px;
-    top: 0px;
-    position: absolute;
-}
-.stage {
-	width: inherit;
-}
-.stageNumber {
-	font-size: 45px;
-	color: white;
-	margin-left: 5px;
-}
-.stageImage {
-	margin-bottom: -52px;
-}
 
 #winner {
   text-align: center;
@@ -138,4 +236,12 @@ img {
   color: white;
   display:none;
   text-shadow: 1px 1px 0 #000;
+}
+
+#instructions {
+  font-size: 10px;
+  width: 220px;
+  position: absolute;
+  top: 450px;
+  right: 0px;
 }
