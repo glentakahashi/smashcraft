@@ -7,8 +7,8 @@ function charClone(name, id) {
     moveSpeed: 0.35,
     physics: {
       gravityScale: 1.0,
-      terminalPos: vec3.fromValues(0.0, 100, 0.3),
-      terminalNeg: vec3.fromValues(0.0, -1.0, -0.3),
+      terminalPos: vec3.fromValues(0.0, 100, 0.4),
+      terminalNeg: vec3.fromValues(0.0, -0.90, -0.4),
     },
     launchResistance: 500.0,
     attacks: {
@@ -17,7 +17,7 @@ function charClone(name, id) {
         facing: true,
         knockback: {
           angle: Math.PI / 4,
-          base: 10,
+          base: 12,
           growth: 100,
         },
         timing: {
@@ -26,11 +26,11 @@ function charClone(name, id) {
           cooldown: 4,
         },
         damage: 7,
-        stun: 11,
+        stun: 16,
         sound: 'punchHit',
       },
       sideSmash: {
-        range: vec3.fromValues(100.0, 3.5, 5.5),
+        range: vec3.fromValues(100.0, 5.5, 6.5),
         facing: true,
         knockback: {
           angle: Math.PI / 3.5,
@@ -44,7 +44,7 @@ function charClone(name, id) {
         },
         damage: 16,
         stun: 28,
-        sound: 'punchHit',
+        sound: 'smashHit',
       },
     }
   }
