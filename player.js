@@ -10,7 +10,7 @@ function Player(num) {
   self.health = 0;
   self.deaths = 0;
   self.kills = 0;
-  self.lives = 2;
+  self.lives = 3;
   self.isDead = false;
   self.inDanger = false;
   self.rank = 0;
