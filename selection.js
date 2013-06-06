@@ -5,6 +5,7 @@ var blueLoc=cols-1;
 var greenLoc=(rows-1)*cols;
 var yellowLoc=rows*cols-1;
 var numPlayers=2;
+var isFriedman=false;
 function setKeys() {
 	window.onkeydown = function(e) {
 	    switch(e.which) {
@@ -12,21 +13,25 @@ function setKeys() {
 	        	//move red up
 	            if(Math.floor(redLoc/cols)==0) redLoc+=(rows-1)*cols;
 	            else redLoc-=cols;
+				isFriedman=false;
 	            break;
 	        case 68:	
 	            //move red right
 	            if(redLoc%cols==cols-1) redLoc-=cols-1;
 	            else redLoc+=1;
+				isFriedman=false;
 	            break;
 	        case 83:	
 	            //move red down
 	            if(Math.floor(redLoc/cols)==rows-1) redLoc-=(rows-1)*cols;
 	            else redLoc+=cols;
+				isFriedman=false;
 	            break;
 	        case 65:	
 	            //move red left
 	            if(redLoc%cols==0) redLoc+=cols-1;
 	            else redLoc-=1;
+				isFriedman=false;
 	            break;
 	        case 38:	
 	            //move blue up
@@ -87,6 +92,10 @@ function setKeys() {
 				//move yellow left
 	            if(yellowLoc%cols==0) yellowLoc+=cols-1;
 	            else yellowLoc-=1;
+				break;
+			case 49:
+				//friedman
+				isFriedman=true;
 				break;
 			case 50:
 				//2 player
@@ -159,6 +168,9 @@ function startGame(stageNum) {
 	blueName=blueName.substring(0,blueName.length-8);
 	greenName=greenName.substring(0,greenName.length-8);
 	yellowName=yellowName.substring(0,yellowName.length-8);
+	if(isFriedman) {
+		redName="friedman";
+	}
 	game = new Game(stageNum,numPlayers,redName,blueName,greenName,yellowName);
     audio.init();
     game.init();
@@ -190,6 +202,10 @@ function updateColoring() {
 	$("#player2 h2").html(capEachWord(decodeURIComponent(blueName)));
 	$("#player3 h2").html(capEachWord(decodeURIComponent(greenName)));
 	$("#player4 h2").html(capEachWord(decodeURIComponent(yellowName)));
+	if(isFriedman) {
+		$("#player1 img")[0].src=document.URL+"img/characters/friedmanBody.png";
+		$("#player1 h2").html("Friedman");
+	}
 }
 function capEachWord(str) {
 	return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
