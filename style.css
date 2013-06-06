@@ -85,6 +85,14 @@ td {
   height: inherit;
 }
 
+.buff {
+    font-weight: bold;
+}
+
+.nerf {
+    font-weight: bold;
+}
+
 #players {
   width: 900px;
 }
@@ -107,6 +115,7 @@ td {
   width: inherit;
   height: inherit;
   margin: -10px;
+  margin-bottom: -4px;
 }
 
 .playerImage {

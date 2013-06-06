@@ -198,6 +198,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.controller.tap(69, function() {
       self.players[0].attack('sideSmash');
     });
+    // Z
+    self.controller.tap(90, function() {
+      self.players[0].dodge();
+    });
 
 
     // UP
@@ -228,6 +232,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     self.controller.tap(220, function() {
       self.players[1].attack('sideSmash');
     });
+    // .
+    self.controller.tap(190, function() {
+      self.players[1].dodge();
+    });
 
 	if(self.players.length>2) {
 	    // Y
@@ -254,6 +262,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	    self.controller.tap(85, function() {
 	      self.players[2].attack('sideSmash');
 	    });
+	    // V
+	    self.controller.tap(86, function() {
+	      self.players[2].dodge();
+	    });
 	}
 	if(self.players.length>3) {
 	    // P
@@ -279,6 +291,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	    // [
 	    self.controller.tap(219, function() {
 	      self.players[3].attack('sideSmash');
+	    });
+	    // ]
+	    self.controller.tap(221, function() {
+	      self.players[3].dodge();
 	    });
 	}
   };
@@ -385,6 +401,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		$("#winner").show();
 		$("#winner").text("Winner: "+game.players[isAlive].stats.name);
 		$("#p"+(isAlive+1)+" .damage").text("1st");
+        audio.playSfx('crowd2');
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
 			game.players[i].loc[1]=2;
@@ -465,6 +482,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
       // Die off the bottom
       if (currentPlayer.loc[1] < bottomLimit)
         currentPlayer.die();
+
+      // Danger if close
+      if (currentPlayer.loc[1] < bottomLimit / 2)
+        currentPlayer.danger();
 
       // Right wall
       if (currentPlayer.loc[2] < -1*sideLimit)
