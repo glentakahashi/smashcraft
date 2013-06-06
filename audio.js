@@ -11,27 +11,13 @@ function AudioPlayer() {
 
   var initSound = function(src) {
     loaded += 1;
-    var el = new Howl({
-      urls: [src],
-      autoplay: false,
-    });
-    el.onload = function () {
-      loaded -= 1;
-    }
+    var el = new Audio(src);
     return el;
   };
 
   var initMusic = function(src) {
-    loaded += 1;
-    var el = new Howl({
-      urls: [src],
-      autoplay: false,
-      loop: true,
-      buffer: true
-    });
-    el.onload = function () {
-      loaded -= 1;
-    }
+    var el = initSound(src);
+    el.loop = true;
 
     return el;
   };
@@ -50,7 +36,7 @@ function AudioPlayer() {
     sfx.smashHit = initSound('audio/Smack.wav');
     sfx.death = initSound('audio/SuperScope Huge Shot.wav');
     sfx.jump = initSound('audio/Mario Super Jump.wav');
-    sfx.jump.volume(0.45);
+    sfx.jump.volume = 0.45;
 
     music.snoop = initMusic('audio/kirbysnoop.mp3');
     music.slam = initMusic('audio/slam.mp3');
@@ -61,12 +47,15 @@ function AudioPlayer() {
   };
 
   self.playSfx = function(sound) {
+    sfx[sound].volume = 1.0;
+    sfx[sound].currentTime = 0;
+    sfx[sound].load();
     sfx[sound].play();
   };
 
   self.stopMusic = function() {
     for (var i in music) {
-      music[i].stop();
+      music[i].pause();
     }
     nowPlaying = null;
   };
@@ -75,9 +64,12 @@ function AudioPlayer() {
     if (nowPlaying) {
       return;
     }
-      music[m].pos(0);
+    setTimeout(function() {
+      music[m].currentTime = 0;
+      music[m].load();
       music[m].play();
 
       nowPlaying = music[m];
+    }, 500);
   };
 };
