@@ -27,6 +27,7 @@ function Player(num) {
   self.airJumps = 0;
   self.airborne = true;
   self.dodging = 0;
+  var prevAirborne = false;
 
   self.velocity = vec3.create();  // Not affected by terminal velocity
 
@@ -121,6 +122,7 @@ function Player(num) {
     if(self.dodging > self.stats.dodge.cooldown || self.airborne) {
       return;
     }
+    audio.playSfx('dodge');
     self.appliedForce[2] = self.facing * self.stats.dodge.speed;
     self.dodging = self.stats.dodge.time;
     self.stun = 1000;
@@ -145,6 +147,7 @@ function Player(num) {
 	$("#p"+(self.num+1)+" img")[0].remove();
     self.deaths += 1;
 	self.spawn();
+    self.inDanger = false;
 	if(self.deaths>=self.lives) {
 		self.loc[1]=0;
 		self.isDead=true;
@@ -156,17 +159,6 @@ function Player(num) {
 		}
 		self.rank=countAlive+1;
 	}
-  };
-
-  self.danger = function() {
-    if(self.inDanger || self.airJumps <= 0) {
-        return;
-    }
-    audio.playSfx('crowd1');
-    self.inDanger = true;
-    setTimeout(function() {
-      self.inDanger = false;
-    }, 2000);
   };
 
   self.getHit = function(attack, facing) {
@@ -314,6 +306,10 @@ function Player(num) {
         model.setAnimation(2);
     }
     else {
+      if(self.inDanger && prevAirborne) {
+    audio.playSfx('crowd1');
+    self.inDanger = false;
+      }
       self.airJumps = self.stats.airJumps;
       // Animate walking
       if (Math.abs(self.appliedForce[2]) - 0.01 < 0) {
@@ -406,6 +402,7 @@ function Player(num) {
       self.appliedVelocity[2] /= 1.5;
     }
 
+    prevAirborne = self.airborne;
 	$("#player"+(self.num+1)+"hp").text(self.health);
     model.tick(dt);
 	}

@@ -364,6 +364,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 	if(reset) {
     // New frame
     audio.stopMusic();
+    audio.playMusic('menu');
 		gameOverTime=0;
 		reset=false;
 		$("#game").hide();
@@ -484,8 +485,9 @@ function Game(stageNum,players,p1,p2,p3,p4) {
         currentPlayer.die();
 
       // Danger if close
-      if (currentPlayer.loc[1] < bottomLimit / 2)
-        currentPlayer.danger();
+      if (currentPlayer.loc[1] < bottomLimit / 2) {
+          currentPlayer.inDanger = true;
+      }
 
       // Right wall
       if (currentPlayer.loc[2] < -1*sideLimit)

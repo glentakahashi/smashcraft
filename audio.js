@@ -42,6 +42,7 @@ function Audio() {
     sfx.jump = initSound('audio/Mario Super Jump.wav');
     sfx.jump.volume = .6;
     sfx.ok = initSound('audio/menu-ok.wav');
+    sfx.dodge = initSound('audio/swoosh3.wav');
     sfx.crowd1 = initSound('audio/crowd1.wav');
     sfx.crowd2 = initSound('audio/crowd2.wav');
     sfx.crowd3 = initSound('audio/crowd3.wav');
