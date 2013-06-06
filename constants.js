@@ -71,10 +71,11 @@ $.get('characterData.csv', function(data) {
 		var ch=arr[i];
 		var name=encodeURIComponent(ch[0].toLowerCase());
 		var c = charClone(ch[0],name);
-		c.jumpHeight=parseFloat(ch[1]);
-		c.airJumps=parseFloat(ch[2]);
-	    c.moveSpeed=parseFloat(ch[3]);
-	    c.physics.gravityScale=parseFloat(ch[4]);
+		c.jumpHeight = parseFloat(ch[1]);
+		c.airJumps = parseFloat(ch[2]);
+		c.physics.terminalPos = vec3.fromValues(0.0, 100, ch[3]);
+	    c.physics.terminalNeg = vec3.fromValues(0.0, -0.90, -1*ch[3]);
+	    c.physics.gravityScale = parseFloat(ch[4]);
 		c.launchResistance=parseFloat(ch[5]);
 		c.attacks.neutral.range = vec3.fromValues(100.0, parseFloat(ch[6]), 9.5);
 		c.attacks.neutral.knockback.base = parseFloat(ch[7]);
