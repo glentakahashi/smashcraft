@@ -9,7 +9,10 @@ function AudioFile(src) {
 
   var playThrough = function() {
     audio.removeEventListener('canplaythrough', playThrough);
+
+    // Set play to actually play isntead of waiting
     self.play = doPlay;
+
     // Play if we're waiting on load to play the track
     if (waitingToPlay) {
       doPlay(willLoop);
@@ -19,9 +22,12 @@ function AudioFile(src) {
   self.load = function() {
     if (loadStarted)
       return;
+
     loadStarted = true;
     audio = new Audio(src);
     audio.addEventListener('canplaythrough', playThrough, false);
+
+    // Looping logic
     audio.addEventListener('ended', function() {
       if (willLoop)
         self.play();
@@ -34,8 +40,7 @@ function AudioFile(src) {
     willLoop = loop || false;
     if (vol)
       volume = vol;
-    if (!loadStarted)
-      self.load();
+    self.load();
   };
 
   // Play function when sound is ready to be played
@@ -68,30 +73,21 @@ function AudioFile(src) {
 
 function AudioPlayer() {
   // TODO: load from JSON file
-  var soundfiles = {
-    punchMiss: { src: 'assets/audio/Weak Whiff.wav' },
-    punchHit: { src: 'assets/audio/Small Hit.wav' },
-    smashHit: { src: 'assets/audio/Smack.wav' },
-    death: { src: 'assets/audio/SuperScope Huge Shot.wav' },
-    jump: { src: 'assets/audio/Mario Super Jump.wav', volume: 0.5 },
-    ok: { src: 'assets/audio/menu-ok.wav' },
-    dodge: { src: 'assets/audio/swoosh3.wav' },
-    crowd1: { src: 'assets/audio/crowd1.wav' },
-    crowd2: { src: 'assets/audio/crowd2.wav' },
-    crowd3: { src: 'assets/audio/crowd3.wav' },
-
-    snoop: { src: 'assets/audio/kirbysnoop.mp3', volume: 0.7, preload: false },
-    slam: { src: 'assets/audio/slam.mp3', volume: 0.8, preload: false },
-    pokemon: { src: 'assets/audio/pokemon.mp3', volume: 0.6, preload: false },
-    derezzed: { src: 'assets/audio/derezzed.mp3', preload: false },
-    menu: { src: 'assets/audio/menu.mp3', volume: 0.7, preload: false },
-  };
-
   var self = this;
   self.sounds = {};
 
   self.init = function() {
     // Synchronously get audio json
+    var soundfiles;
+    $.ajax({
+      async: false,
+      dataType: 'json',
+      data: {},
+      url: 'data/audiofiles.json',
+    }).done(function(data) {
+      soundfiles = data;
+    });
+
     for (var i in soundfiles) {
       var current = soundfiles[i];
 
