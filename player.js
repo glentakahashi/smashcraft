@@ -69,7 +69,7 @@ function Player(num) {
 
     // Play sound only when not grounded && attacking
     if (self.airborne || self.attackStage == NOATTACK)
-      audio.playSfx('jump');
+      audio.sounds.jump.play();
 
     // Apply jumping force
     self.appliedForce[1] = self.stats.jumpHeight;
@@ -122,7 +122,7 @@ function Player(num) {
     if(self.dodging > self.stats.dodge.cooldown || self.airborne) {
       return;
     }
-    audio.playSfx('dodge');
+    audio.sounds.dodge.play();
     self.appliedForce[2] = self.facing * self.stats.dodge.speed;
     self.dodging = self.stats.dodge.time;
     self.stun = 1000;
@@ -143,7 +143,7 @@ function Player(num) {
   };
 
   self.die = function() {
-    audio.playSfx('death');
+    audio.sounds.death.play();
 	$("#p"+(self.num+1)+" img")[0].remove();
     self.deaths += 1;
 	self.spawn();
@@ -250,7 +250,7 @@ function Player(num) {
     }
 
     if (hit)
-      audio.playSfx(attack.sound);
+      audio.sounds[attack.sound].play();
 
     return hit;
   };
@@ -307,7 +307,7 @@ function Player(num) {
     }
     else {
       if(self.inDanger && prevAirborne) {
-    audio.playSfx('crowd1');
+    audio.sounds.crowd1.play();
     self.inDanger = false;
       }
       self.airJumps = self.stats.airJumps;
@@ -333,7 +333,7 @@ function Player(num) {
           if (self.attackDuration <= 0) {
             self.attackStage = ATTACK;
             self.attackDuration = self.attackData.timing.duration;
-            audio.playSfx('punchMiss');
+            audio.sounds.punchMiss.play();
           }
           break;
         case ATTACK:

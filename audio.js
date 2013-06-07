@@ -1,105 +1,115 @@
-function Audio() {
+function AudioFile(src) {
   var self = this;
-  var sfx = { };
-  var music = { };
-  var loaded = 0;
-  var alreadyDone = false;
-  var nowPlaying = null;
+  var audio = null;
 
-  var initSound = function(src) {
-    loaded += 1;
-    var el = document.createElement('audio');
-    el.setAttribute('src', src);
-    el.load();
-    el.onload = function () {
-      loaded -= 1;
-      el.currentTime = 0;
+  var loadStarted = false;
+  var waitingToPlay = false;
+  var willLoop = false;
+  var volume = 1.0;
+
+  var playThrough = function() {
+    audio.removeEventListener('canplaythrough', playThrough);
+    self.play = doPlay;
+    // Play if we're waiting on load to play the track
+    if (waitingToPlay) {
+      doPlay(willLoop);
     }
-    el.ready = false;
-    el.addEventListener('canplaythrough', function() { el.ready = true; }, false);
-    return el;
   };
 
-  var initMusic = function(src) {
-    var el = initSound(src);
-    el.setAttribute('loop', 'loop');
-    return el;
+  self.load = function() {
+    if (loadStarted)
+      return;
+    loadStarted = true;
+    audio = new Audio(src);
+    audio.addEventListener('canplaythrough', playThrough, false);
+    audio.addEventListener('ended', function() {
+      if (willLoop)
+        self.play();
+    }, false);
   };
+
+  // Play function when sound file is not ready to be played
+  var doWaitingPlay = function(loop, vol) {
+    waitingToPlay = true;
+    willLoop = loop || false;
+    if (vol)
+      volume = vol;
+    if (!loadStarted)
+      self.load();
+  };
+
+  // Play function when sound is ready to be played
+  var doPlay = function(loop, vol) {
+    audio.src = audio.src;
+    audio.volume = vol || volume;
+    willLoop = loop || false;
+    audio.play();
+  };
+
+  self.play = doWaitingPlay; // Will be changed once track is loaded
+
+  // Alias for play(true)
+  self.loop = function() {
+    self.play(true);
+  };
+
+  self.stop = function() {
+    if (audio == null)
+      return;
+    audio.pause();
+    audio.loop = false;
+    audio.currentTime = 0.0;
+  };
+
+  self.setVolume = function(vol) {
+    volume = vol;
+  };
+};
+
+function AudioPlayer() {
+  // TODO: load from JSON file
+  var soundfiles = {
+    punchMiss: { src: 'audio/Weak Whiff.wav' },
+    punchHit: { src: 'audio/Small Hit.wav' },
+    smashHit: { src: 'audio/Smack.wav' },
+    death: { src: 'audio/SuperScope Huge Shot.wav' },
+    jump: { src: 'audio/Mario Super Jump.wav', volume: 0.5 },
+    ok: { src: 'audio/menu-ok.wav' },
+    dodge: { src: 'audio/swoosh3.wav' },
+    crowd1: { src: 'audio/crowd1.wav' },
+    crowd2: { src: 'audio/crowd2.wav' },
+    crowd3: { src: 'audio/crowd3.wav' },
+
+    snoop: { src: 'audio/kirbysnoop.mp3', volume: 0.7, preload: false },
+    slam: { src: 'audio/slam.mp3', volume: 0.8, preload: false },
+    pokemon: { src: 'audio/pokemon.mp3', volume: 0.6, preload: false },
+    derezzed: { src: 'audio/derezzed.mp3', preload: false },
+    menu: { src: 'audio/menu.mp3', volume: 0.7, preload: false },
+  };
+
+  var self = this;
+  self.sounds = {};
 
   self.init = function() {
-    // stop all other sounds
-    self.stopMusic();
+    for (var i in soundfiles) {
+      var current = soundfiles[i];
 
-    // HACK: stop loading shit again
-    if (alreadyDone)
-      return;
+      // Set defaults
+      var preload = (current.hasOwnProperty('preload')) ? current.preload : true;
 
+      // Make new sound
+      self.sounds[i] = new AudioFile(current.src);
 
-    sfx.punchMiss = initSound('audio/Weak Whiff.wav');
-    sfx.punchHit = initSound('audio/Small Hit.wav');
-    sfx.smashHit = initSound('audio/Smack.wav');
-    sfx.death = initSound('audio/SuperScope Huge Shot.wav');
-    sfx.jump = initSound('audio/Mario Super Jump.wav');
-    sfx.jump.volume = .6;
-    sfx.ok = initSound('audio/menu-ok.wav');
-    sfx.dodge = initSound('audio/swoosh3.wav');
-    sfx.crowd1 = initSound('audio/crowd1.wav');
-    sfx.crowd2 = initSound('audio/crowd2.wav');
-    sfx.crowd3 = initSound('audio/crowd3.wav');
-
-    music.snoop = initMusic('audio/kirbysnoop.mp3');
-    music.snoop.volume = .7;
-    music.slam = initMusic('audio/slam.mp3');
-    music.slam.volume = .8;
-    music.pokemon = initMusic('audio/pokemon.mp3');
-    music.pokemon.volume = .6;
-    music.derezzed = initMusic('audio/derezzed.mp3');
-    music.menu = initMusic('audio/menu.mp3');
-    music.menu.volume = .7;
-
-    alreadyDone = true;
+      if (preload)
+        self.sounds[i].load();
+    };
   };
 
-  self.playSfx = function(sound) {
-	if(muted) {
-		return;
-	}
-    if(!sfx[sound].ready) {
-        setTimeout(function() {
-            self.playSfx(sound);
-        }, 1000);
-        return;
-    }
-    sfx[sound].currentTime = 0;
-    sfx[sound].src = sfx[sound].src;
-    sfx[sound].play();
+  self.stop = function() {
+    for (var i in self.sounds) {
+      var current = self.sounds[i];
+      current.stop();
+    };
   };
 
-  self.stopMusic = function() {
-    for (var i in music) {
-      if(music[i].ready) {
-        music[i].pause();
-        music[i].currentTime = 0;
-      }
-    }
-    nowPlaying = null;
-  };
-
-  self.playMusic = function(m) {
-    if (nowPlaying||muted) {
-      return;
-    }
-    if(!music[m].ready) {
-        setTimeout(function() {
-            self.playMusic(m);
-        }, 1000);
-        return;
-    }
-    nowPlaying = music[m];
-    setTimeout(function() {
-      music[m].currentTime = 0;
-      music[m].src = music[m].src;
-      music[m].play();
-    }, 1000);
-  };
 };

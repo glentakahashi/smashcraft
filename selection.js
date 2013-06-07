@@ -97,7 +97,7 @@ function setKeys() {
 			case 49:
 				//friedman
 				isFriedman=true;
-                audio.playSfx('crowd3');
+                audio.sounds.crowd3.play();
 				break;
 			case 50:
 				//2 player
@@ -158,9 +158,9 @@ function setKeys() {
 				//mute
 				muted=!muted;
 				if(muted) {
-					audio.stopMusic();
+					audio.stop();
 				} else if(!$("#selection").is(":visible")) {
-					audio.playMusic('pokemon');
+					audio.sounds.pokemon.play(true);
 				}
 				break;
 	    }
@@ -183,8 +183,8 @@ function startGame(stageNum) {
 		redName="friedman";
 	}
 	game = new Game(stageNum,numPlayers,redName,blueName,greenName,yellowName);
-    audio.stopMusic();
-    audio.playSfx('ok');
+    audio.stop();
+    audio.sounds.ok.play();
     game.init();
 }
 function updateColoring() {
@@ -238,7 +238,7 @@ var canvas = $('#canvas');
 var width = Number(canvas.attr('width'));
 $('#canvas').attr('height', width / aspect);
 audio.init();
-audio.playMusic('menu');
+audio.sounds.menu.play(true);
 setKeys();
 updateColoring();
 });

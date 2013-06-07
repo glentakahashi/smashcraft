@@ -169,7 +169,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		if(muted) {
 			audio.stopMusic();
 		} else if(!$("#selection").is(":visible")) {
-			audio.playMusic('pokemon');
+			audio.sounds.pokemon.loop();
 		}
     });
 		
@@ -332,13 +332,13 @@ function Game(stageNum,players,p1,p2,p3,p4) {
         p2 == 'snoop%20dogg' ||
         p3 == 'snoop%20dogg' ||
         p4 == 'snoop%20dogg') {
-      audio.playMusic('snoop');
+      audio.sounds.snoop.loop();
     }
     else if (p1 == 'michael%20jordan' ||
              p2 == 'michael%20jordan' ||
              p3 == 'michael%20jordan' ||
              p4 == 'michael%20jordan') {
-      audio.playMusic('slam');
+      audio.sounds.slam.loop();
     }
     else if ((p1 == 'thomas' ||
               p2 == 'thomas' ||
@@ -352,10 +352,10 @@ function Game(stageNum,players,p1,p2,p3,p4) {
               p2 == 'tron' ||
               p3 == 'tron' ||
               p3 == 'tron')) {
-      audio.playMusic('derezzed');
+      audio.sounds.derezzed.loop();
     }
     else {
-      audio.playMusic('pokemon');
+      audio.sounds.pokemon.loop()
     }
   };
 
@@ -363,8 +363,8 @@ function Game(stageNum,players,p1,p2,p3,p4) {
   self.tick = function() {
 	if(reset) {
     // New frame
-    audio.stopMusic();
-    audio.playMusic('menu');
+    audio.stop();
+    audio.sounds.menu.loop();
 		gameOverTime=0;
 		reset=false;
 		$("#game").hide();
@@ -402,7 +402,7 @@ function Game(stageNum,players,p1,p2,p3,p4) {
 		$("#winner").show();
 		$("#winner").text("Winner: "+game.players[isAlive].stats.name);
 		$("#p"+(isAlive+1)+" .damage").text("1st");
-        audio.playSfx('crowd2');
+        audio.sounds.crowd2.play();
 		for(var i=0;i<game.players.length;i++) {
 			game.players[i].spawn();
 			game.players[i].loc[1]=2;
