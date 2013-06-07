@@ -83,7 +83,7 @@ function AudioPlayer() {
       async: false,
       dataType: 'json',
       data: {},
-      url: '/data/audiofiles.js',
+      url: '/data/audiofiles.json',
     }).done(function(data) {
       soundfiles = data;
     });
