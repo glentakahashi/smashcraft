@@ -1,3 +1,4 @@
+console.log('asdf');
 function charClone(name, id) {
   return {
     name: name,
@@ -65,7 +66,7 @@ var constants = {
   }
 };
 
-$.get('characterData.csv', function(data) {
+$.get('data/characterData.csv', function(data) {
 	var arr=CSVToArray(data);
 	constants.heros=new Object();
 	for(var i=1;i<arr.length;i++) {

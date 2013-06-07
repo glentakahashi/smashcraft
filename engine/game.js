@@ -91,27 +91,27 @@ function Game(stageNum,players,p1,p2,p3,p4) {
     gl.useProgram(program);
 
     // Get textures
-    textures[0] = getTexture('img/characters/' + p1 + 'BMP.png');
-    textures[1] = getTexture('img/characters/' + p2 + 'BMP.png');
-    textures[2] = getTexture('img/characters/' + p3 + 'BMP.png');
-    textures[3] = getTexture('img/characters/' + p4 + 'BMP.png');
+    textures[0] = getTexture('assets/img/characters/' + p1 + 'BMP.png');
+    textures[1] = getTexture('assets/img/characters/' + p2 + 'BMP.png');
+    textures[2] = getTexture('assets/img/characters/' + p3 + 'BMP.png');
+    textures[3] = getTexture('assets/img/characters/' + p4 + 'BMP.png');
 
     // Terrain textures
-    textures.grassTerrain = getTexture('img/terrain/grass.png');
-    textures.grassNormal = getTexture('img/terrain/grass-normal.png');
-    textures.stoneTerrain = getTexture('img/terrain/stone.png');
-    textures.stoneNormal = getTexture('img/terrain/stone-normal.png');
-    textures.woodTerrain = getTexture('img/terrain/wood.png');
-    textures.woodNormal = getTexture('img/terrain/wood-normal.png');
-    textures.sandTerrain = getTexture('img/terrain/sand.png');
-    textures.sandNormal = getTexture('img/terrain/sand-normal.png');
-    textures.lavaTerrain = getTexture('img/terrain/lava.png');
-    textures.lavaNormal = getTexture('img/terrain/lava-normal.png');
-    textures.dirtTerrain = getTexture('img/terrain/dirt.png');
-    textures.dirtNormal = getTexture('img/terrain/dirt-normal.png');
+    textures.grassTerrain = getTexture('assets/img/terrain/grass.png');
+    textures.grassNormal = getTexture('assets/img/terrain/grass-normal.png');
+    textures.stoneTerrain = getTexture('assets/img/terrain/stone.png');
+    textures.stoneNormal = getTexture('assets/img/terrain/stone-normal.png');
+    textures.woodTerrain = getTexture('assets/img/terrain/wood.png');
+    textures.woodNormal = getTexture('assets/img/terrain/wood-normal.png');
+    textures.sandTerrain = getTexture('assets/img/terrain/sand.png');
+    textures.sandNormal = getTexture('assets/img/terrain/sand-normal.png');
+    textures.lavaTerrain = getTexture('assets/img/terrain/lava.png');
+    textures.lavaNormal = getTexture('assets/img/terrain/lava-normal.png');
+    textures.dirtTerrain = getTexture('assets/img/terrain/dirt.png');
+    textures.dirtNormal = getTexture('assets/img/terrain/dirt-normal.png');
 
     // That steve
-    textures.steve = getTexture('img/steve2.png');
+    textures.steve = getTexture('assets/img/steve2.png');
     
     // Per-vertex attributes
     program.aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');

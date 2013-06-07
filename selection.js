@@ -175,10 +175,10 @@ function startGame(stageNum) {
 	var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
 	var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
 	var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
-	redName=redName.substring(0,redName.length-8);
-	blueName=blueName.substring(0,blueName.length-8);
-	greenName=greenName.substring(0,greenName.length-8);
-	yellowName=yellowName.substring(0,yellowName.length-8);
+	redName=redName.substring(7,redName.length-8);
+	blueName=blueName.substring(7,blueName.length-8);
+	greenName=greenName.substring(7,greenName.length-8);
+	yellowName=yellowName.substring(7,yellowName.length-8);
 	if(isFriedman) {
 		redName="friedman";
 	}
@@ -202,14 +202,14 @@ function updateColoring() {
 	var blueName=$("#choice"+blueLoc+" img")[0].src.substring(document.URL.length+15);
 	var greenName=$("#choice"+greenLoc+" img")[0].src.substring(document.URL.length+15);
 	var yellowName=$("#choice"+yellowLoc+" img")[0].src.substring(document.URL.length+15);
-	redName=redName.substring(0,redName.length-8);
-	blueName=blueName.substring(0,blueName.length-8);
-	greenName=greenName.substring(0,greenName.length-8);
-	yellowName=yellowName.substring(0,yellowName.length-8);
-	$("#player1 img")[0].src=document.URL+"img/characters/"+redName+"Body.png";
-	$("#player2 img")[0].src=document.URL+"img/characters/"+blueName+"Body.png";
-	$("#player3 img")[0].src=document.URL+"img/characters/"+greenName+"Body.png";
-	$("#player4 img")[0].src=document.URL+"img/characters/"+yellowName+"Body.png";
+	redName=redName.substring(7,redName.length-8);
+	blueName=blueName.substring(7,blueName.length-8);
+	greenName=greenName.substring(7,greenName.length-8);
+	yellowName=yellowName.substring(7,yellowName.length-8);
+	$("#player1 img")[0].src=document.URL+"assets/img/characters/"+redName+"Body.png";
+	$("#player2 img")[0].src=document.URL+"assets/img/characters/"+blueName+"Body.png";
+	$("#player3 img")[0].src=document.URL+"assets/img/characters/"+greenName+"Body.png";
+	$("#player4 img")[0].src=document.URL+"assets/img/characters/"+yellowName+"Body.png";
 	$("#player1 h2").html(capEachWord(decodeURIComponent(redName)));
 	$("#player2 h2").html(capEachWord(decodeURIComponent(blueName)));
 	$("#player3 h2").html(capEachWord(decodeURIComponent(greenName)));
@@ -223,7 +223,7 @@ function updateColoring() {
     $("#player3d").html(constants.heros[greenName].nerf);
     $("#player4d").html(constants.heros[yellowName].nerf);
 	if(isFriedman) {
-		$("#player1 img")[0].src=document.URL+"img/characters/friedmanBody.png";
+		$("#player1 img")[0].src=document.URL+"assets/img/characters/friedmanBody.png";
         $("#player1 h2").html("Friedman");
         $("#player1a").html(constants.heros["friedman"].buff);
         $("#player1d").html(constants.heros["friedman"].nerf);

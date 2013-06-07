@@ -261,7 +261,7 @@ function Player(num) {
 
     $('#p'+(num+1) + ' .name').text(self.stats.name);
 	for(var i=0;i<self.lives;i++) {
-		$("#p"+(num+1)+" .name").append("<img src='img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
+		$("#p"+(num+1)+" .name").append("<img src='assets/img/characters/"+self.stats.id+"Head.png' style='height: 20px;margin-left: 5px;'>");
 	}
 	$('#p' + (self.num + 1) + ' .damage').html('<span id="player'+(self.num + 1)+'hp">0</span>%');
 

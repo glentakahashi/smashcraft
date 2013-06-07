@@ -69,28 +69,29 @@ function AudioFile(src) {
 function AudioPlayer() {
   // TODO: load from JSON file
   var soundfiles = {
-    punchMiss: { src: 'audio/Weak Whiff.wav' },
-    punchHit: { src: 'audio/Small Hit.wav' },
-    smashHit: { src: 'audio/Smack.wav' },
-    death: { src: 'audio/SuperScope Huge Shot.wav' },
-    jump: { src: 'audio/Mario Super Jump.wav', volume: 0.5 },
-    ok: { src: 'audio/menu-ok.wav' },
-    dodge: { src: 'audio/swoosh3.wav' },
-    crowd1: { src: 'audio/crowd1.wav' },
-    crowd2: { src: 'audio/crowd2.wav' },
-    crowd3: { src: 'audio/crowd3.wav' },
+    punchMiss: { src: 'assets/audio/Weak Whiff.wav' },
+    punchHit: { src: 'assets/audio/Small Hit.wav' },
+    smashHit: { src: 'assets/audio/Smack.wav' },
+    death: { src: 'assets/audio/SuperScope Huge Shot.wav' },
+    jump: { src: 'assets/audio/Mario Super Jump.wav', volume: 0.5 },
+    ok: { src: 'assets/audio/menu-ok.wav' },
+    dodge: { src: 'assets/audio/swoosh3.wav' },
+    crowd1: { src: 'assets/audio/crowd1.wav' },
+    crowd2: { src: 'assets/audio/crowd2.wav' },
+    crowd3: { src: 'assets/audio/crowd3.wav' },
 
-    snoop: { src: 'audio/kirbysnoop.mp3', volume: 0.7, preload: false },
-    slam: { src: 'audio/slam.mp3', volume: 0.8, preload: false },
-    pokemon: { src: 'audio/pokemon.mp3', volume: 0.6, preload: false },
-    derezzed: { src: 'audio/derezzed.mp3', preload: false },
-    menu: { src: 'audio/menu.mp3', volume: 0.7, preload: false },
+    snoop: { src: 'assets/audio/kirbysnoop.mp3', volume: 0.7, preload: false },
+    slam: { src: 'assets/audio/slam.mp3', volume: 0.8, preload: false },
+    pokemon: { src: 'assets/audio/pokemon.mp3', volume: 0.6, preload: false },
+    derezzed: { src: 'assets/audio/derezzed.mp3', preload: false },
+    menu: { src: 'assets/audio/menu.mp3', volume: 0.7, preload: false },
   };
 
   var self = this;
   self.sounds = {};
 
   self.init = function() {
+    // Synchronously get audio json
     for (var i in soundfiles) {
       var current = soundfiles[i];
 
