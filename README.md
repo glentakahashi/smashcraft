@@ -21,24 +21,28 @@ for the audio and textures.
     *   *WSAD:* move
     *   *Q:* punch
     *   *E:* kick
+    *   *V:* dodge
     
 *   Player 2
     *   *Arrow keys:* move
     *   *Enter:* punch
     *   *Shift:* kick
+    *   *.:* dodge
     
 *   Player 3
     *   *YGHJ:* move
     *   *T:* punch
     *   *U:* kick
+    *   *V:* dodge
   
 *   Player 4
     *   *PL;':* move
     *   *O:* punch
     *   *[:* kick
+    *   *]:* dodge
 
 *   Settings
-    *   *1-4:* set number of players
+    *   *2-4:* set number of players
     *   *5-0:* start game with stage
     *   *Enter:* start game with stage ID 5
 
