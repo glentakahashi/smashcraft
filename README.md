@@ -2,7 +2,7 @@
 
 UCLA CS174A Final Project
 
-Live demo: http://glentakahashi.github.io/smashcraft/
+Live demo: http://smashcraft.co/
 
 **NOTE:** to run it yourself, you have to deploy it using a webserver 
 like SimpleHTTPServer or Apache because of Cross Site Scripting errors
